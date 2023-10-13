@@ -471,5 +471,6 @@
 	</body>
 </html>
 ```
-
+### 피그마 - 페이지 설계.
+![image.png](./image.png)
 				
