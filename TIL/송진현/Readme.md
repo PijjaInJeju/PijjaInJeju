@@ -473,4 +473,6 @@
 ```
 ### 피그마 - 페이지 설계.
 ![image.png](./image.png)
-				
+### 서버측 Rest로 경로에 대한  StringPath데이터 검증.
+https://tmapapi.sktelecom.com/main.html#webservice/docs/tmapRouteDoc
+
