@@ -49,3 +49,4 @@
 
 # 2023.10.16 기능 회의
 ![기능명세서](/uploads/71f70bc2b8c795f89d7151202e89041d/기능명세서.png)
+![자율 erd.PNG](https://prod-files-secure.s3.us-west-2.amazonaws.com/ecbff431-f1b6-4db8-a51d-226a6e64a3c0/5c27de70-9d80-4c20-bae8-01fd5c0c3478/%EC%9E%90%EC%9C%A8_erd.png)
