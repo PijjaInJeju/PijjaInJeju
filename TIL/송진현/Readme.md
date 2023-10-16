@@ -475,4 +475,14 @@
 ![image.png](./image.png)
 ### 서버측 Rest로 경로에 대한  StringPath데이터 검증.
 https://tmapapi.sktelecom.com/main.html#webservice/docs/tmapRouteDoc
+### Node.js 18.18.2으로 협의
+
+### RN 0.70으로 협의
+ -> 기본이 JS라서.
+### Android Studio 설치
+![image-1.png](./image-1.png)
+### Android Project Create
+![image-2.png](./image-2.png)
+![image-3.png](./image-3.png)
+
 
