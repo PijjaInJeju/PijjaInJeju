@@ -1,3 +1,20 @@
+# 23.10.17
+## API 명세서
+![api명세](/uploads/9f1f9cd6d4267a2ad897a49f2f021eb6/api명세.png)
+
+## 회의
+### 추천 필요 기술
+
+- 플라스크 (Flask)
+    - 랜덤 포레스트 모델
+    - 협업 필터링
+
+### 네이밍 회의
+
+- PIJJA : P가 짜는 계획
+
+![PIJJA_로고](/uploads/b271dac7b0e05cadb2a250b7ec494879/PIJJA_로고.png)
+
 # 23.10.16
 ## 기능 명세서
 ![기능명세서](/uploads/71f70bc2b8c795f89d7151202e89041d/기능명세서.png)
