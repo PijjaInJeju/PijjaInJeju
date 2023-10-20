@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, StyleSheet} from "react-native";
+import {View, Text, StyleSheet, StatusBar} from "react-native";
 
 const DateHead = ({date}) =>{
     console.log(date);
@@ -11,9 +11,12 @@ const DateHead = ({date}) =>{
     const mergeString = `${year}년 ${month}월 ${day}일`;
 
     return (
-        <View style={styles.block}>
-            <Text style={styles.dateText}>{mergeString}</Text>
-        </View>
+        <>
+            <StatusBar backgroundColor={'#25a69a'}/>
+            <View style={styles.block}>
+                <Text style={styles.dateText}>{mergeString}</Text>
+            </View>
+        </>
     );
 };
 
