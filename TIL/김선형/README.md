@@ -1,3 +1,8 @@
+# 23.10.20
+## 중간 팀 평가 피드백
+![screencapture-notion-so-23-10-20-567f32b8e9624fcd9b88e4045ed735fc-2023-10-20-13_56_09](/uploads/e570057bf5340e13d2f4315d1ef3e66d/screencapture-notion-so-23-10-20-567f32b8e9624fcd9b88e4045ed735fc-2023-10-20-13_56_09.png)
+
+
 # 23.10.19
 ## 기획안 PPT 작성 완료
 ## 회의
