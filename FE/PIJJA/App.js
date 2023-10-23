@@ -1,94 +1,93 @@
 /**
+ * Sample React Native App
+ * https://github.com/facebook/react-native
+ *
  * @format
  * @flow strict-local
  */
+
 import React from 'react';
-import { SafeAreaView,View, Text, StyleSheet, Image,TouchableOpacity, PixelRatio, Dimensions } from 'react-native';
+//import type { Node } from 'react';
+import {
+  SafeAreaView,
+  ScrollView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  useColorScheme,
+  View,
+} from 'react-native';
 
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
-const pixelRatio = PixelRatio.get();
+import {
+  Colors,
+  DebugInstructions,
+  Header,
+  LearnMoreLinks,
+  ReloadInstructions,
+} from 'react-native/Libraries/NewAppScreen';
 
-//@Flow
+/* $FlowFixMe[missing-local-annot] The type annotation(s) required by Flow's
+ * LTI update could not be added via codemod */
+
 const App = () => {
-  
+  const isDarkMode = useColorScheme() === 'dark';
 
-  console.log('Pixel Ratio: ', pixelRatio);
-  console.log('Screen Width: ', screenWidth);
-  console.log('Screen Height: ', screenHeight);
-
-  const login = require('./img/kakao_login_mobile.png');
-  const logo = require('./img/logo_mobile.png');
+  const backgroundStyle = {
+    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
 
   return (
-    <SafeAreaView style={{ flex: 1, position: 'relative' }}>
-        <View style={{ flex: 1 }}>
-        <View
-        style={{
-          width: screenWidth,
-          height: screenHeight * 0.35,
-          backgroundColor: 'rgb(254, 196, 38)',
-        }}
+    <SafeAreaView style={backgroundStyle}>
+      <StatusBar
+        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+        backgroundColor={backgroundStyle.backgroundColor}
       />
-      <View
-        style={[
-          styles.outerCircle,
-          {
-            width: screenWidth*1.2,
-            height: screenWidth*0.95,
-            borderRadius: screenWidth,
-            backgroundColor: 'rgb(254, 196, 38)',
-            top: screenHeight * 0.1,
-          },
-        ]}
-      />
-        </View>
-        <TouchableOpacity 
-          onPress={() => {
-            alert('You tapped the button!');
-          }} 
-          style={[
-            styles.login,
-            {
-              flex:1,
-              top: screenHeight * 0.8, // 아래에서 20% 위치에 고정
-            },
-          ]}>
-          <Image source={login}/>
-        </TouchableOpacity>
+      <ScrollView
+        contentInsetAdjustmentBehavior="automatic"
+        style={backgroundStyle}
+      >
+        <Header />
         <View
           style={{
-            position: 'absolute',
-            left: 0,
-            right: 0,
-            screenHeight,
-            backgroundColor: 'rgb(254, 196, 38)',
-            transform: [{ translateY: - screenHeight / 2 }],
-            borderRadius: screenWidth,
+            backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}
-        ></View>
-      </SafeAreaView>
+        >
+          <Section title="Step One">
+            Edit <Text style={styles.highlight}>App.js</Text> to change this
+            screen and then come back to see your edits.
+          </Section>
+          <Section title="See Your Changes">
+            <ReloadInstructions />
+          </Section>
+          <Section title="Debug">
+            <DebugInstructions />
+          </Section>
+          <Section title="Learn More">
+            Read the docs to discover what to do next:
+          </Section>
+          <LearnMoreLinks />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  outerCircle: {
-    position: 'absolute',
-    top: '35%',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
+  sectionContainer: {
+    marginTop: 32,
+    paddingHorizontal: 24,
   },
-  login: {
-    position: 'absolute',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
+  sectionTitle: {
+    fontSize: 24,
+    fontWeight: '600',
   },
-  img: {
-    position: 'absolute',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
+  sectionDescription: {
+    marginTop: 8,
+    fontSize: 18,
+    fontWeight: '400',
+  },
+  highlight: {
+    fontWeight: '700',
   },
 });
 
