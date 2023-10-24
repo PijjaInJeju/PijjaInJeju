@@ -5,7 +5,7 @@ const Button = ({ title, onPress, buttonStyle }) => {
   return (
     <Pressable
       style={({ pressed }) => [
-        styles.button,
+        styles.stageButton,
         pressed && { backgroundColor: '#ffffff' },
         buttonStyle,
       ]}
@@ -17,7 +17,7 @@ const Button = ({ title, onPress, buttonStyle }) => {
 };
 
 const styles = StyleSheet.create({
-  button: {
+  stageButton: {
     backgroundColor: '#ffffff',
     justifyContent: 'center',
     alignItems: 'center',
