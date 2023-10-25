@@ -11,45 +11,22 @@ import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Button from './components/Button.js';
-import MakeGroup from './Screen/MakeGroup.js';
+import Login from './Screen/Login.js';
 import Main from './Screen/Main.js';
+import MakeGroup from './Screen/MakeGroup.js';
 
-import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
-
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
 const Stack = createNativeStackNavigator();
 
-function MainScreen() {
-  return (
-    <View style={styles.container}>
-      <Text>Main Page</Text>
-    </View>
-  );
-}
-
 const App = ({ navigation }) => {
-  //let b_res = 0;
   const [b_res, setBtnRes] = useState(0);
   return (
     <NavigationContainer>
-      <Stack.Navigator initialRoutName="Main">
-        <Stack.Screen name="Main" component={Main} />
+      <Stack.Navigator initialRoutName="Login">
+        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="MakeGroup" component={MakeGroup} />
+        <Stack.Screen name="Main" component={Main} />
       </Stack.Navigator>
     </NavigationContainer>
   );

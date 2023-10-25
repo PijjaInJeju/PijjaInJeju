@@ -3,19 +3,28 @@ import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Button from '../components/Button.js';
+import Main from './Main.js';
 
 import { StyleSheet, Text, View } from 'react-native';
 
-const MakeGroup = ({ navigation }) => {
+import {
+  Colors,
+  DebugInstructions,
+  Header,
+  LearnMoreLinks,
+  ReloadInstructions,
+} from 'react-native/Libraries/NewAppScreen';
+
+const Login = ({ navigation }) => {
   //let b_res = 0;
-  const [b_res, setBtnRes] = useState(0);
   return (
     <View style={styles.container}>
-      {/* <Button
-        title="go_to_Main"
+      <Text>Log in</Text>
+      <Button
+        title="goToMain"
         onPress={() => navigation.navigate('Main')}
         buttonStyle={{ width: 100, height: 100 }}
-      ></Button> */}
+      ></Button>
     </View>
   );
 };
@@ -29,4 +38,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MakeGroup;
+export default Login;
