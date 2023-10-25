@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: 'white',
     },
     description:{
         fontSize: 24,
@@ -29,7 +30,6 @@ const styles = StyleSheet.create({
     image: {
         width: 240,
         height: 179,
-        backgroundColor: 'white',
     },
 });
 

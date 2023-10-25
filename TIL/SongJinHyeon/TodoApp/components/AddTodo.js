@@ -3,7 +3,7 @@ import {View, StyleSheet, TextInput,Image, TouchableOpacity, Platform, Touchable
 
 
 
-const AddTodo = () =>{
+const AddTodo = ({onInsert}) =>{
 
     const [text,setText] = useState('');
 
@@ -14,6 +14,7 @@ const AddTodo = () =>{
     )
 
     const onPress = () => {
+        onInsert(text);
         setText('');
         Keyboard.dismiss();
     }
