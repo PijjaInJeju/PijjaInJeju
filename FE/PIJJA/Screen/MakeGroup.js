@@ -11,6 +11,7 @@ const MakeGroup = ({ navigation }) => {
   const [b_res, setBtnRes] = useState(0);
   return (
     <View style={styles.container}>
+      <Text>그룹 생성</Text>
       {/* <Button
         title="go_to_Main"
         onPress={() => navigation.navigate('Main')}

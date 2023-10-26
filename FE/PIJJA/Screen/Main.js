@@ -1,10 +1,12 @@
+import 'react-native-gesture-handler'; // 파일의 가장 최상단에 위치해야함
 import React from 'react';
 import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import Button from '../components/Button.js';
-
 import { StyleSheet, Text, View, Image, SafeAreaView } from 'react-native';
+import MakeGroup from './MakeGroup.js';
 
 import {
   Colors,
@@ -14,14 +16,33 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
+//const appDrawer = createDrawerNavigator();
+//const appDrawer = createNativeStackNavigator();
+
+// const drawerMain = ({ navigation }) => {
+//   return (
+//     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+
+//     </View>
+//   );
+// };
+
 const Main = ({ navigation }) => {
   //let b_res = 0;
   return (
     <View style={styles.container}>
-      <View style={styles.logoWrapper}>
-        {/* 로고 */}
+      {/* <appDrawer.Navigator initialRouteName="Main">
+        <appDrawer.Screen name="Main" component={Main} />
+        <appDrawer.Screen name="MakeGroup" component={MakeGroup} />
+      </appDrawer.Navigator> */}
+
+      <Button
+        onPress={() => navigation.navigate('MakeGroup')}
+        title="goToMakeGroup"
+      />
+
+      {/* <View style={styles.logoWrapper}>
         <Image style={styles.logoImage} source={require('../Image/Logo.png')} />
-        {/* 여행 리스트 */}
       </View>
       <View style={styles.travelWrapper}>
         <View style={styles.travelGroup}>
@@ -93,7 +114,7 @@ const Main = ({ navigation }) => {
             />
           </View>
         </View>
-      </View>
+      </View> */}
     </View>
   );
 };
@@ -127,10 +148,10 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     marginTop: 16,
     paddingVertical: 15,
-    borderWidth: 2.4,
-    borderColor: '#E3E3E3',
-    backgroundColor: '#E3EFFD',
-    borderRadius: 5,
+    borderWidth: 3.2,
+    borderColor: '#f77f00',
+    backgroundColor: '#fcbf49',
+    borderRadius: 8,
   },
   travelSpot: {
     paddingHorizontal: 8,
