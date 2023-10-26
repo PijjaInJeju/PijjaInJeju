@@ -1,4 +1,4 @@
-package com.pijja.pijja;
+package com.A605.pijja;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
