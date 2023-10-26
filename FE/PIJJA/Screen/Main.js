@@ -16,7 +16,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-//const appDrawer = createDrawerNavigator();
+const Drawer = createDrawerNavigator();
 //const appDrawer = createNativeStackNavigator();
 
 // const drawerMain = ({ navigation }) => {
@@ -31,17 +31,11 @@ const Main = ({ navigation }) => {
   //let b_res = 0;
   return (
     <View style={styles.container}>
-      {/* <appDrawer.Navigator initialRouteName="Main">
-        <appDrawer.Screen name="Main" component={Main} />
-        <appDrawer.Screen name="MakeGroup" component={MakeGroup} />
-      </appDrawer.Navigator> */}
-
-      <Button
-        onPress={() => navigation.navigate('MakeGroup')}
-        title="goToMakeGroup"
-      />
-
-      {/* <View style={styles.logoWrapper}>
+      <Drawer.Navigator initialRouteName="Main">
+        {/* <Drawer.Screen name="Main" component={Main} /> */}
+        <Drawer.Screen name="MakeGroup" component={MakeGroup} />
+      </Drawer.Navigator>
+      <View style={styles.logoWrapper}>
         <Image style={styles.logoImage} source={require('../Image/Logo.png')} />
       </View>
       <View style={styles.travelWrapper}>
@@ -114,7 +108,7 @@ const Main = ({ navigation }) => {
             />
           </View>
         </View>
-      </View> */}
+      </View>
     </View>
   );
 };

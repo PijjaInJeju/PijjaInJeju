@@ -18,22 +18,22 @@ import { createDrawerNavigator } from '@react-navigation/drawer';
 
 import { SafeAreaView, StyleSheet, Text, View } from 'react-native';
 
-//const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
 
 const App = ({ navigation }) => {
   const [b_res, setBtnRes] = useState(0);
   return (
     <NavigationContainer>
-      {/* <Stack.Navigator initialRoutName="Login">
+      <Stack.Navigator initialRoutName="Login">
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen name="MakeGroup" component={MakeGroup} />
-        <Stack.Screen name="Main" component={Main} />
-      </Stack.Navigator> */}
-      <Drawer.Navigator initialRouteName="Main">
-        <Drawer.Screen name="Main" component={Main} />
-        <Drawer.Screen name="MakeGroup" component={MakeGroup} />
-      </Drawer.Navigator>
+        {/* <Stack.Screen name="MakeGroup" component={MakeGroup} /> */}
+        <Stack.Screen
+          name="Main"
+          component={Main}
+          options={{ headerShown: false }}
+        />
+      </Stack.Navigator>
     </NavigationContainer>
   );
 };
