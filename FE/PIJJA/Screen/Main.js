@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import Button from '../components/Button.js';
+import Button from '../component/Button.js';
 import { StyleSheet, Text, View, Image, SafeAreaView } from 'react-native';
 import MakeGroup from './MakeGroup.js';
 
