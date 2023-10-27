@@ -7,10 +7,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor
 public class Companion{
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -31,5 +30,16 @@ public class Companion{
 
     private LocalDateTime endTime;
 
+    @Builder
+    public Companion(String name, String code, Boolean isStart, Boolean isEnd, String tendency, String mate, LocalDateTime startTime, LocalDateTime endTime) {
+        this.name = name;
+        this.code = code;
+        this.isStart = isStart;
+        this.isEnd = isEnd;
+        this.tendency = tendency;
+        this.mate = mate;
+        this.startTime = startTime;
+        this.endTime = endTime;
+    }
 
 }
