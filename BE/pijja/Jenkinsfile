@@ -31,7 +31,7 @@ pipeline {
         // Git Clone 진행
         stage('git clone') {
             steps {
-                checkout scmGit(branches: [[name: 'feature/cicd']], extensions: [], userRemoteConfigs: [[credentialsId: 'GitLab', url: 'https://lab.ssafy.com/s09-fintech-finance-sub2/S09P22A109.git']])
+                checkout scmGit(branches: [[name: 'feature/cicd']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlab-token', url: 'https://lab.ssafy.com/s09-final/S09P31A605.git']])
             }
         }
 
