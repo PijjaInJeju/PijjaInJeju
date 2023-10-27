@@ -1,15 +1,24 @@
 package com.A605.pijja.domain.member.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Data
-@AllArgsConstructor
 @Builder
-@NoArgsConstructor
 public class CompanionDto {
+    private String name;
+
+    private Boolean isStart;
+
+    private Boolean isEnd;
+
     private String mate;
+
     private String tendency;
+
+    private LocalDateTime startTime;
+    
+    private LocalDateTime endTime;
 }
