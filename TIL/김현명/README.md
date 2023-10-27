@@ -28,3 +28,9 @@
 
 - component, pressed 공부
 
+### [개발] React Native Navigation 기능(10-24 화)
+
+- Navigation 기능 구축 중 오류 발생
+- Amulator 버전 업그레이드 시도
+- Android Gradle 버전 다운그레이드 시도
+
