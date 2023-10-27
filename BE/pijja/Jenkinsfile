@@ -15,7 +15,7 @@ pipeline {
 
         // 젠킨스가 접속할 서버 정보 (ec2)
         releaseServerAccount = 'ubuntu'
-        releaseServerUri = '43.201.248.189'
+        releaseServerUri = '54.180.132.135'
         springReleasePort = '8080'
     }
 
