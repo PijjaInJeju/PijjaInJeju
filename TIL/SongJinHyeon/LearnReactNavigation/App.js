@@ -6,6 +6,8 @@ import DetailScreen from "./Screens/DetailScreen";
 import { View, Text, TouchableOpacity } from "react-native";
 import HeaderLessScreen from "./Screens/HeaderlessScreen";
 
+import Pre from "../../../FE/PIJJA/component/pre";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -42,21 +44,9 @@ function App() {
               {
                 animation:"fade",
                 title: `상세 정보 - ${route.params.id}`,
-                headerLeft: ( {onPress}) => (
-                  <TouchableOpacity onPress={onPress}>
-                    <Text>Left</Text>
-                  </TouchableOpacity>
-                ),
-                headerTitle: ({children}) => (
-                  <View>
-                    <Text>{children}</Text>
-                  </View>
-                ),
-                headerRight: () => (
-                  <View>
-                    <Text>Right</Text>
-                  </View>
-                ),
+                headerLeft: Pre,
+                headerTitle: "제목입니다.",
+                headerRight: undefined,
                 //뒤로가기 버튼 제거.
                 headerBackVisible: false,
               }
