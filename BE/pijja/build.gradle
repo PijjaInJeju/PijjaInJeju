@@ -31,6 +31,10 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	//webclient 사용을 위한 webflux dependency 추가
+	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	
 	//시큐리티&oauth 주석처리
 //	testImplementation 'org.springframework.security:spring-security-test'
 
