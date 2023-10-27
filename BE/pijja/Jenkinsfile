@@ -41,9 +41,9 @@ pipeline {
                 withCredentials(
 //                 [file(credentialsId: 'application-oauth.properties', variable: 'oauth'),
 //                                 file(credentialsId: 'application-jwt.properties', variable: 'jwt'),
-                                file(credentialsId: 'application-rds', variable: 'rds'))
+                                [file(credentialsId: 'application-rds', variable: 'rds')])
 //                                 file(credentialsId: 'application-aws-credentials.properties', variable: 'aws')])
-                                {
+                              {
                     script {
 //                         sh 'cp $aws BE/pijja/src/main/resources/application-aws-credentials.properties'
 //                         sh 'cp $oauth BE/pijja/src/main/resources/application-oauth.properties'
