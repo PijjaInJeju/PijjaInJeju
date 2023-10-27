@@ -11,12 +11,13 @@ const AppSetting = ({ navigation }) => {
   const [b_res, setBtnRes] = useState(0);
   return (
     <View style={styles.container}>
-      <Text>그룹 생성</Text>
-      {/* <Button
-        title="go_to_Main"
-        onPress={() => navigation.navigate('Main')}
-        buttonStyle={{ width: 100, height: 100 }}
-      ></Button> */}
+      <Text>그룹의 성향은?</Text>
+      <View>
+        <Text>그룹 생성</Text>
+        <View style={styles.travelStyleWrapper}>
+          <Button>"하이"</Button>
+        </View>
+      </View>
     </View>
   );
 };

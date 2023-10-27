@@ -12,6 +12,7 @@ import TripPlanCheck from './TripPlanCheck.js';
 import TripPlanMake from './TripPlanMake.js';
 import Gallery from './Gallery.js';
 import AppSetting from './AppSetting.js';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const Drawer = createDrawerNavigator();
 //const appDrawer = createNativeStackNavigator();
@@ -100,7 +101,29 @@ const MainScreen = ({ navigation }) => {
 const Main = ({ navigation }) => {
   //let b_res = 0;
   return (
-    <Drawer.Navigator initialRouteName="Main">
+    <Drawer.Navigator
+      screenOptions={{
+        drawerStyle: {
+          backgroundColor: '#eae2b7',
+        },
+        drawerLabelStyle: {
+          fontsize: 6,
+          color: 'black',
+          backgroundcolor: '#fcbf49',
+        },
+        drawerItemStyle: {
+          borderColor: '#f77f00',
+          borderWidth: 3,
+          // backgroundcolor: '#aaaaaa',
+        },
+        drawerInactiveBackgroundColor: '#fcbf49',
+
+        // drawerLabelStyle: {
+        //   color:
+        // },
+      }}
+      initialRouteName="Main"
+    >
       <Drawer.Screen name="PIJJA" component={MainScreen} />
       <Drawer.Screen name="여행계획 만들기" component={TripPlanMake} />
       <Drawer.Screen name="여행계획 보기" component={TripPlanCheck} />
