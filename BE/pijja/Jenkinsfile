@@ -4,9 +4,9 @@ pipeline {
 
     // 사용할 플러그인 명시
     tools {
-        gradle 'gradle-8.2.1'
-        dockerTool 'docker'
-        jdk 'JDK-17'
+        gradle 'gradle-8.1.1'
+        dockerTool 'Docker'
+        jdk 'JDK-17.0.8'
     }
 
      environment {
