@@ -40,3 +40,17 @@ dependencies {
 tasks.named('test') {
 	useJUnitPlatform()
 }
+//queryDSL 빌드옵션
+def querydslDir = "$buildDir/generated/querydsl"
+
+sourceSets {
+	main.java.srcDirs += [ querydslDir ]
+}
+
+tasks.withType(JavaCompile) {
+	options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir)
+}
+
+clean.doLast {
+	file(querydslDir).deleteDir()
+}
