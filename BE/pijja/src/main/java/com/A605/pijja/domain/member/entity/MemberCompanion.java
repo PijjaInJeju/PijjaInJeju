@@ -23,5 +23,4 @@ public class MemberCompanion {
 
     @Enumerated(value=EnumType.STRING)
     private Role role;
-
 }
