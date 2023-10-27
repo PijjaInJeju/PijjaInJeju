@@ -6,7 +6,7 @@ import { StyleSheet, Text, View } from 'react-native';
 
 import Button from '../components/Button.js';
 
-const MakeGroup = ({ navigation }) => {
+const TripPlanCheck = ({ navigation }) => {
   //let b_res = 0;
   const [b_res, setBtnRes] = useState(0);
   return (
@@ -30,4 +30,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MakeGroup;
+export default TripPlanCheck;

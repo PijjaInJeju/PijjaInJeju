@@ -4,37 +4,21 @@ import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import Button from '../components/Button.js';
 import { StyleSheet, Text, View, Image, SafeAreaView } from 'react-native';
-import MakeGroup from './MakeGroup.js';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import Button from '../components/Button.js';
+import MakeGroup from './MakeGroup.js';
+import TripPlanCheck from './TripPlanCheck.js';
+import TripPlanMake from './TripPlanMake.js';
+import Gallery from './Gallery.js';
+import AppSetting from './AppSetting.js';
 
 const Drawer = createDrawerNavigator();
 //const appDrawer = createNativeStackNavigator();
 
-// const drawerMain = ({ navigation }) => {
-//   return (
-//     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-
-//     </View>
-//   );
-// };
-
-const Main = ({ navigation }) => {
-  //let b_res = 0;
+const MainScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
-      <Drawer.Navigator initialRouteName="Main">
-        {/* <Drawer.Screen name="Main" component={Main} /> */}
-        <Drawer.Screen name="MakeGroup" component={MakeGroup} />
-      </Drawer.Navigator>
       <View style={styles.logoWrapper}>
         <Image style={styles.logoImage} source={require('../Image/Logo.png')} />
       </View>
@@ -110,6 +94,19 @@ const Main = ({ navigation }) => {
         </View>
       </View>
     </View>
+  );
+};
+
+const Main = ({ navigation }) => {
+  //let b_res = 0;
+  return (
+    <Drawer.Navigator initialRouteName="Main">
+      <Drawer.Screen name="PIJJA" component={MainScreen} />
+      <Drawer.Screen name="여행계획 만들기" component={TripPlanMake} />
+      <Drawer.Screen name="여행계획 보기" component={TripPlanCheck} />
+      <Drawer.Screen name="갤러리" component={Gallery} />
+      <Drawer.Screen name="설정" component={AppSetting} />
+    </Drawer.Navigator>
   );
 };
 

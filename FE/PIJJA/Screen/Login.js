@@ -2,18 +2,10 @@ import React from 'react';
 import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import Button from '../components/Button.js';
 import Main from './Main.js';
-
 import { StyleSheet, Text, View } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import Button from '../components/Button.js';
 
 const Login = ({ navigation }) => {
   //let b_res = 0;
