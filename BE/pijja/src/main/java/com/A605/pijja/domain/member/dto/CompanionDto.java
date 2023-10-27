@@ -19,6 +19,6 @@ public class CompanionDto {
     private String tendency;
 
     private LocalDateTime startTime;
-    
+
     private LocalDateTime endTime;
 }
