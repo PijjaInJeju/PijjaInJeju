@@ -4,6 +4,12 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+application-rds.properties
+application-redis.properties
+
+
+
+
 
 ### STS ###
 .apt_generated
