@@ -9,5 +9,5 @@ public interface PlaceService {
 
     List<AllPlacesResponseDto> allPlaces();
 
-    List<PlaceDetailResponseDto> detailPlace(Long placeId);
+    PlaceDetailResponseDto detailPlace(Long placeId);
 }
