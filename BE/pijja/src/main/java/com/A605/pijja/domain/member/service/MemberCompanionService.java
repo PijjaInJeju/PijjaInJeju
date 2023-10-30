@@ -6,10 +6,10 @@ import com.A605.pijja.domain.member.entity.Member;
 import com.A605.pijja.domain.member.entity.MemberCompanion;
 import com.A605.pijja.domain.member.repository.CompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberCompanionRepository;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +25,8 @@ public class MemberCompanionService {
 
     public List<Member> getMemberOfCompanion(MemberCompanionListDto memberCompanionListDto) {
         Long companionId = memberCompanionListDto.getCompanionId();
-        Companion companion = companionRepository.findById(companionId).orElse(null);
+        Companion companion = companionRepository.findById(companionId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 그룹입니다."));
 
         if(companion != null) {
             List<Member> members = new ArrayList<>();

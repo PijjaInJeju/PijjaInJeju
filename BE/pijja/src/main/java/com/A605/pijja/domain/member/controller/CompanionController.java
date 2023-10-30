@@ -17,8 +17,8 @@ public class CompanionController {
     private final MemberCompanionService memberCompanionService;
 
     @PostMapping
-    public void saveCompanion(@RequestBody CompanionRegistDto companionRegistDto) {
-        companionService.saveCompanion(companionRegistDto);
+    public void saveCompanion(@RequestBody CompanionRegistDto companionRegistDto, Long memberId) {
+        companionService.registCompanion(companionRegistDto, memberId);
     }
 
     @GetMapping("/{companionId}")
