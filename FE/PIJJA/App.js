@@ -9,47 +9,28 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import Login from './Screen/Login.js';
-import MakeGroup  from './Screen/MakeGroup.js'
-import Pre from './component/pre.js';
+import MakeGroup from './Screen/MakeGroup.js';
+import Main from './Screen/Main.js';
+import Pre from './component/Pre.js';
 
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 
 const Stack = createNativeStackNavigator();
-
-
-const Logo = require('./Image/Logo.png');
+const Drawer = createDrawerNavigator();
 
 const App = () => {
   return (
     <NavigationContainer>
-      <Stack.Navigator 
-        initialRouteName="MakeGroup"
-        screenOptions={
-            {
-              animation:"fade",
-              headerLeft: ({onPress}) => (
-                <TouchableOpacity onPress={onPress}>
-                  <Image
-                    style={styles.logo} 
-                    source={Logo}
-                  /> 
-                </TouchableOpacity>
-              ),
-              headerTitle: () => (
-                <View>
-                </View>
-              ),
-              headerRight: undefined,
-              
-            }
-        }
-      >
+      {/* // 최근 프로젝트 */}
+      <Stack.Navigator initialRoutName="Login">
         <Stack.Screen name="Login" component={Login} />
-        <Stack.Screen 
-          name='MakeGroup' 
-          component={MakeGroup}
+        {/* <Stack.Screen name="MakeGroup" component={MakeGroup} /> */}
+        <Stack.Screen
+          name="Main"
+          component={Main}
+          options={{ headerShown: false }}
         />
       </Stack.Navigator>
     </NavigationContainer>
@@ -65,7 +46,7 @@ const styles = StyleSheet.create({
   logo: {
     height: 50,
     width: 50,
-  }
+  },
 });
 
 export default App;
