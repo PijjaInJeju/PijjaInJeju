@@ -4,8 +4,6 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, Text, View } from 'react-native';
 
-import Button from '../components/Button.js';
-
 const Gallery = ({ navigation }) => {
   //let b_res = 0;
   const [b_res, setBtnRes] = useState(0);

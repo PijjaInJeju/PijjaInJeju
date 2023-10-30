@@ -6,10 +6,9 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { StyleSheet, Text, View, Image, SafeAreaView } from 'react-native';
 
-import Button from '../components/Button.js';
 import MakeGroup from './MakeGroup.js';
 import TripPlanCheck from './TripPlanCheck.js';
-import TripPlanMake from './TripPlanMake.js';
+// import TripPlanMMakake from './TripPlanMake.js';
 import Gallery from './Gallery.js';
 import AppSetting from './AppSetting.js';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -21,7 +20,10 @@ const MainScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <View style={styles.logoWrapper}>
-        <Image style={styles.logoImage} source={require('../Image/Logo.png')} />
+        <Image
+          style={styles.logoImage}
+          source={require('../Image/k_Logo.png')}
+        />
       </View>
       <View style={styles.travelWrapper}>
         <View style={styles.travelGroup}>
@@ -29,21 +31,21 @@ const MainScreen = ({ navigation }) => {
             <Text>가이드1</Text>
             <Image
               style={styles.travelSpotImg}
-              source={require('../Image/guideimg1.jpg')}
+              source={require('../Image/k_guideimg1.jpg')}
             />
           </View>
           <View style={styles.travelSpot}>
             <Text>가이드2</Text>
             <Image
               style={styles.travelSpotImg}
-              source={require('../Image/guideimg2.jpg')}
+              source={require('../Image/k_guideimg2.jpg')}
             />
           </View>
           <View style={styles.travelSpot}>
             <Text>가이드3</Text>
             <Image
               style={styles.travelSpotImg}
-              source={require('../Image/guideimg3.jpg')}
+              source={require('../Image/k_guideimg3.jpg')}
             />
           </View>
         </View>
@@ -52,21 +54,21 @@ const MainScreen = ({ navigation }) => {
             <Text>맛집1</Text>
             <Image
               style={styles.travelSpotImg}
-              source={require('../Image/storeimg1.jpg')}
+              source={require('../Image/k_storeimg1.jpg')}
             />
           </View>
           <View style={styles.travelSpot}>
             <Text>맛집2</Text>
             <Image
               style={styles.travelSpotImg}
-              source={require('../Image/storeimg2.jpg')}
+              source={require('../Image/k_storeimg2.jpg')}
             />
           </View>
           <View style={styles.travelSpot}>
             <Text>맛집3</Text>
             <Image
               style={styles.travelSpotImg}
-              source={require('../Image/storeimg3.jpg')}
+              source={require('../Image/k_storeimg3.jpg')}
             />
           </View>
         </View>
@@ -75,21 +77,21 @@ const MainScreen = ({ navigation }) => {
             <Text>산책1</Text>
             <Image
               style={styles.travelSpotImg}
-              source={require('../Image/hikingimg1.jpg')}
+              source={require('../Image/k_hikingimg1.jpg')}
             />
           </View>
           <View style={styles.travelSpot}>
             <Text>산책2</Text>
             <Image
               style={styles.travelSpotImg}
-              source={require('../Image/hikingimg2.jpg')}
+              source={require('../Image/k_hikingimg2.jpg')}
             />
           </View>
           <View style={styles.travelSpot}>
             <Text>산책3</Text>
             <Image
               style={styles.travelSpotImg}
-              source={require('../Image/hikingimg3.jpg')}
+              source={require('../Image/k_hikingimg3.jpg')}
             />
           </View>
         </View>
@@ -125,7 +127,23 @@ const Main = ({ navigation }) => {
       initialRouteName="Main"
     >
       <Drawer.Screen name="PIJJA" component={MainScreen} />
-      <Drawer.Screen name="여행계획 만들기" component={TripPlanMake} />
+      <Drawer.Screen
+        name="여행계획 만들기"
+        component={MakeGroup}
+        screenOptions={{
+          animation: 'fade',
+          headerLeft: ({ onPress }) => (
+            <TouchableOpacity onPress={onPress}>
+              <Image
+                style={styles.logo}
+                source={require('../Image/k_Logo.png')}
+              />
+            </TouchableOpacity>
+          ),
+          headerTitle: () => <View></View>,
+          headerRight: undefined,
+        }}
+      />
       <Drawer.Screen name="여행계획 보기" component={TripPlanCheck} />
       <Drawer.Screen name="갤러리" component={Gallery} />
       <Drawer.Screen name="설정" component={AppSetting} />
