@@ -17,12 +17,17 @@ public class CompanionController {
     private final MemberCompanionService memberCompanionService;
 
     @PostMapping
-    public void saveCompanion(@RequestBody CompanionRegistDto companionRegistDto, Long memberId) {
-        companionService.registCompanion(companionRegistDto, memberId);
+    public void saveCompanion(@RequestBody CompanionRegistDto companionRegistDto) {
+        companionService.registCompanion(companionRegistDto);
     }
 
     @GetMapping("/{companionId}")
     public void getMemberOfCompanion(@RequestBody MemberCompanionListDto memberCompanionListDto) {
         memberCompanionService.getMemberOfCompanion(memberCompanionListDto);
+    }
+
+    @GetMapping
+    public void getMyCompanions(@RequestBody MemberCompanionListDto memberCompanionListDto) {
+        companionService.getAllCompanion(memberCompanionListDto);
     }
 }

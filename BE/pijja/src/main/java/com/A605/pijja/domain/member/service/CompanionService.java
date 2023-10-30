@@ -41,8 +41,8 @@ public class CompanionService {
     }
 
     @Transactional
-    public void registCompanion(CompanionRegistDto companionRegistDto, Long memberId) {
-        Member member = memberRepository.findById(memberId)
+    public void registCompanion(CompanionRegistDto companionRegistDto) {
+        Member member = memberRepository.findById(companionRegistDto.getMemberId())
                 .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
         Companion companion = Companion.builder()

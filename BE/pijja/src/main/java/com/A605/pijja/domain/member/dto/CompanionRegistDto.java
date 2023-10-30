@@ -21,4 +21,6 @@ public class CompanionRegistDto {
     private LocalDateTime startTime;
 
     private LocalDateTime endTime;
+
+    private Long memberId;
 }

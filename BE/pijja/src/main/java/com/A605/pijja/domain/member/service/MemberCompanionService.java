@@ -28,16 +28,12 @@ public class MemberCompanionService {
         Companion companion = companionRepository.findById(companionId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 그룹입니다."));
 
-        if(companion != null) {
-            List<Member> members = new ArrayList<>();
-            List<MemberCompanion> memberCompanions = memberCompanionRepository.findByCompanion(companion);
+        List<Member> members = new ArrayList<>();
+        List<MemberCompanion> memberCompanions = memberCompanionRepository.findByCompanion(companion);
 
-            for(MemberCompanion memberCompanion : memberCompanions) {
-                members.add(memberCompanion.getMember());
-            }
-            return members;
-        } else {
-            return Collections.emptyList();
+        for(MemberCompanion memberCompanion : memberCompanions) {
+            members.add(memberCompanion.getMember());
         }
+        return members;
     }
 }
