@@ -11,9 +11,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
     private final JPAQueryFactory queryFactory;
+    private QPlace place = new QPlace("place");
 
     @Override
     public List<Place> allPlaces() {
-        return null;
+        List<Place> placeList = queryFactory
+                .selectFrom(place)
+                .where(place)
+                .fetch();
+        return placeList;
     }
 }
