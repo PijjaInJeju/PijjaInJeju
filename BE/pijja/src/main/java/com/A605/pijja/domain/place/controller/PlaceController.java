@@ -19,5 +19,5 @@ public class PlaceController {
     public List<AllPlacesResponseDto> allPlaces(){
         return placeService.allPlaces();
     }
-    
+
 }

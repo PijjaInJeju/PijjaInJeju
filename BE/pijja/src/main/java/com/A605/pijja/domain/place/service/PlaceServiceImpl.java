@@ -1,6 +1,7 @@
 package com.A605.pijja.domain.place.service;
 
 import com.A605.pijja.domain.place.dto.response.AllPlacesResponseDto;
+import com.A605.pijja.domain.place.dto.response.PlaceDetailResponseDto;
 import com.A605.pijja.domain.place.entity.Place;
 import com.A605.pijja.domain.place.repository.PlaceRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,11 @@ public class PlaceServiceImpl implements PlaceService {
                 )
                 .collect(Collectors.toList());
         return responseDtoList;
+    }
+
+    @Override
+    public List<PlaceDetailResponseDto> detailPlace(Long placeId) {
+
+        return null;
     }
 }
