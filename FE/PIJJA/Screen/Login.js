@@ -8,7 +8,7 @@ import {
   Dimensions,
 } from 'react-native';
 
-const Login = () => {
+const Login = ({ navigation }) => {
   const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
   const pixelRatio = PixelRatio.get();
 
@@ -44,7 +44,7 @@ const Login = () => {
         onPress={() => {
           alert('You tapped the button!');
           // 로그인 버튼 누를 시 동작되는 부분입니다.
-          //navigation.navigate('Main');
+          navigation.navigate('Main');
         }}
         style={[
           styles.login,
