@@ -7,6 +7,25 @@ import {
   PixelRatio,
   Dimensions,
 } from 'react-native';
+import * as KakaoLogin from '@react-native-seoul/kakao-login';
+
+const kakaoLogin = ({ navigation }) => {
+  KakaoLogin.login()
+    .then(result => {
+      console.log('로그인 성공', JSON.stringify(result));
+      navigation.navigate('Main');
+    })
+    .catch(error => {
+      if (error.code === 'E_CANCELLED_OPERATION') {
+        console.log('로그인 취소', error.message);
+      } else {
+        console.log(`로그인 실패(code:${error.code})`, error.message);
+      }
+    });
+  // KakaoLogin.getProfile().then(result => {
+  //   console.log('data', JSON.stringify(result));
+  // });
+};
 
 const Login = ({ navigation }) => {
   const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -42,9 +61,7 @@ const Login = ({ navigation }) => {
       />
       <TouchableOpacity
         onPress={() => {
-          alert('You tapped the button!');
-          // 로그인 버튼 누를 시 동작되는 부분입니다.
-          navigation.navigate('Main');
+          kakaoLogin({ navigation });
         }}
         style={[
           styles.login,
@@ -61,7 +78,7 @@ const Login = ({ navigation }) => {
         style={[
           styles.img,
           {
-            top: screenHeight * 0.1,
+            top: screenHeight * 0.08,
           },
         ]}
       />

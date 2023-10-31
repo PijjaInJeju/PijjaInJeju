@@ -2,7 +2,14 @@ import React from 'react';
 import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+  Pressable,
+} from 'react-native';
 
 const GroupSetting = ({ navigation }) => {
   //let b_res = 0;
@@ -12,15 +19,17 @@ const GroupSetting = ({ navigation }) => {
       <View>
         <Text style={styles.titleTravel}>여행 그룹의 성향은?</Text>
         <View style={styles.travelStyleWrapper}>
-          <TouchableOpacity style={styles.buttonFollower}>
-            <Text style={styles.tasteButton}>성향 1</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonFollower}>
-            <Text style={styles.tasteButton}>성향 1</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.buttonFollower}>
-            <Text style={styles.tasteButton}>성향 1</Text>
-          </TouchableOpacity>
+          <ScrollView horizontal={true}>
+            <Pressable
+              style={({ pressed }) => [
+                { backgroundColor: '#aaaaaa' },
+                pressed && { backgroundColor: '#ffffff' },
+                styles.tasteButton,
+              ]}
+            >
+              <Text>힐링</Text>
+            </Pressable>
+          </ScrollView>
         </View>
       </View>
     </View>
@@ -50,12 +59,14 @@ const styles = StyleSheet.create({
   tasteButton: {
     width: 100,
     height: 60,
-    backgroundColor: '#fcbf49',
     borderRadius: 24,
     marginTop: 20,
     marginHorizontal: 14,
     paddingVertical: 20,
     paddingHorizontal: 30,
+  },
+  scrollStyle: {
+    horizontal,
   },
 });
 
