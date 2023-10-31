@@ -49,6 +49,9 @@ dependencies {
 	annotationProcessor "jakarta.annotation:jakarta.annotation-api"
 	annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 
+	//AWS S3
+	implementation("com.amazonaws:aws-java-sdk-s3:1.12.445")
+
 }
 
 tasks.named('test') {
