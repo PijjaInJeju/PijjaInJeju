@@ -5,6 +5,9 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class MemberCompanionListDto {
-    private Long companionId;
+public class MemberAddDto {
+
+    private String nickname;
+
+    private String email;
 }

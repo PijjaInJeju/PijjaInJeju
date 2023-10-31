@@ -9,5 +9,6 @@ import java.util.List;
 
 @Repository
 public interface MemberCompanionRepository extends JpaRepository<MemberCompanion, Long> {
+
     List<MemberCompanion> findByCompanion(Companion companion);
 }

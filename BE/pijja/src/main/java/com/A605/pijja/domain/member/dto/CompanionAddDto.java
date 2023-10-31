@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class CompanionRegistDto {
+public class CompanionAddDto {
     private String name;
 
     private Boolean isStart;

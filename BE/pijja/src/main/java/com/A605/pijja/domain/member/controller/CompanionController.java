@@ -1,9 +1,9 @@
 package com.A605.pijja.domain.member.controller;
 
-import com.A605.pijja.domain.member.dto.MemberCompanionListDto;
-import com.A605.pijja.domain.member.dto.CompanionRegistDto;
-import com.A605.pijja.domain.member.service.CompanionService;
-import com.A605.pijja.domain.member.service.MemberCompanionService;
+import com.A605.pijja.domain.member.dto.CompanionMemberListDto;
+import com.A605.pijja.domain.member.dto.CompanionAddDto;
+import com.A605.pijja.domain.member.service.CompanionRegistService;
+import com.A605.pijja.domain.member.service.CompanionsMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,22 +12,22 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class CompanionController {
 
-    private final CompanionService companionService;
+    private final CompanionRegistService companionRegistService;
 
-    private final MemberCompanionService memberCompanionService;
+    private final CompanionsMemberService companionsMemberService;
 
     @PostMapping
-    public void saveCompanion(@RequestBody CompanionRegistDto companionRegistDto) {
-        companionService.registCompanion(companionRegistDto);
+    public void companionAdd(@RequestBody CompanionAddDto companionAddDto) {
+        companionRegistService.registCompanion(companionAddDto);
     }
 
     @GetMapping("/{companionId}")
-    public void getMemberOfCompanion(@RequestBody MemberCompanionListDto memberCompanionListDto) {
-        memberCompanionService.getMemberOfCompanion(memberCompanionListDto);
+    public void companionMemberDetails(@RequestBody CompanionMemberListDto memberCompanionListDto) {
+        companionsMemberService.getMemberOfCompanion(memberCompanionListDto);
     }
 
     @GetMapping
-    public void getMyCompanions(@RequestBody MemberCompanionListDto memberCompanionListDto) {
-        companionService.getAllCompanion(memberCompanionListDto);
+    public void getMyCompanions(@RequestBody CompanionMemberListDto memberCompanionListDto) {
+        companionRegistService.getAllCompanion(memberCompanionListDto);
     }
 }

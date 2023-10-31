@@ -1,6 +1,6 @@
 package com.A605.pijja.domain.member.service;
 
-import com.A605.pijja.domain.member.dto.CompanionRegistDto;
+import com.A605.pijja.domain.member.dto.CompanionAddDto;
 import com.A605.pijja.domain.member.entity.Companion;
 import com.A605.pijja.domain.member.entity.Member;
 import com.A605.pijja.domain.member.entity.MemberCompanion;
@@ -9,16 +9,15 @@ import com.A605.pijja.domain.member.repository.CompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberCompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Random;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-public class CompanionService {
+public class CompanionRegistService {
 
     private final CompanionRepository companionRepository;
 
@@ -41,19 +40,19 @@ public class CompanionService {
     }
 
     @Transactional
-    public void registCompanion(CompanionRegistDto companionRegistDto) {
-        Member member = memberRepository.findById(companionRegistDto.getMemberId())
+    public void registCompanion(CompanionAddDto companionAddDto) {
+        Member member = memberRepository.findById(companionAddDto.getMemberId())
                 .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
         Companion companion = Companion.builder()
-                .name(companionRegistDto.getName())
+                .name(companionAddDto.getName())
                 .code(generateRandomCode())
-                .isStart(companionRegistDto.getIsStart())
-                .isEnd(companionRegistDto.getIsEnd())
-                .tendency(companionRegistDto.getTendency())
-                .mate(companionRegistDto.getMate())
-                .startTime(companionRegistDto.getStartTime())
-                .endTime(companionRegistDto.getEndTime())
+                .isStart(companionAddDto.getIsStart())
+                .isEnd(companionAddDto.getIsEnd())
+                .tendency(companionAddDto.getTendency())
+                .mate(companionAddDto.getMate())
+                .startTime(companionAddDto.getStartTime())
+                .endTime(companionAddDto.getEndTime())
                 .build();
 
         companionRepository.save(companion);
@@ -65,9 +64,5 @@ public class CompanionService {
                 .build();
 
         memberCompanionRepository.save(memberCompanion);
-    }
-
-    public void getAllCompanion() {
-        companionRepository.findAll();
     }
 }
