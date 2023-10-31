@@ -169,6 +169,11 @@ const styles = StyleSheet.create({
     left: 26,
     marginTop: 12,
   },
+  logo: {
+    width: 30,
+    height: 30,
+    resizeMode: 'stretch',
+  },
   logoImage: {
     width: 220,
     height: 180,

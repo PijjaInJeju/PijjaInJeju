@@ -14,6 +14,8 @@ import Login from './Screen/Login.js';
 import MakeGroup from './Screen/MakeGroup.js';
 import Main from './Screen/Main.js';
 import Pre from './component/Pre.js';
+import InviteMember from './Screen/InviteMember.js';
+import GroupSetting from './Screen/GroupSetting.js';
 
 import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
 
@@ -32,6 +34,8 @@ const App = () => {
           component={Main}
           options={{ headerShown: false }}
         />
+        <Stack.Screen name="InviteMember" component={InviteMember} />
+        <Stack.Screen name="GroupSetting" component={GroupSetting} />
       </Stack.Navigator>
     </NavigationContainer>
   );
