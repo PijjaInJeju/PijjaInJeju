@@ -11,8 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -43,11 +42,6 @@ public class PlaceServiceImpl implements PlaceService {
     public PlaceDetailResponseDto detailPlace(Long placeId) {
         Place place = placeRepository.findById(placeId).get();
         Visit visit = place.getVisit();
-        int visitFamily=visit.getFamily();
-        int visitAlone=visit.getAlone();
-        int visitFriend=visit.getFriend();
-        int visitCouple=visit.getCouple();
-        int visitKid=visit.getKid();
 
         class Node1{
             String type;
@@ -58,17 +52,33 @@ public class PlaceServiceImpl implements PlaceService {
             }
         }
 
-        enum Node2 {
-            FAMILY("가족"), ALONE("혼자"), FRIEND("친구"), COUPLE("커플"), KID("아이");
+//        Node1 visitFamily= new Node1("가족", visit.getFamily());
+//        Node1 visitAlone= new Node1("혼자", visit.getAlone());
+//        Node1 visitFriend= new Node1("친구", visit.getFriend());
+//        Node1 visitCouple= new Node1("커플", visit.getCouple());
+//        Node1 visitKid= new Node1("아이", visit.getKid());
 
-            @Getter
-            private String type;
+//        PriorityQueue<Node1> q = new PriorityQueue<>((o1, o2) -> {
+////            if(o1.value == o2.value){
+////                //뭔가를 하기
+////            }
+//            return o2.value - o1.value;
+//        });
 
-            Node2 (String type){
-                this.type = type;
+        ArrayList<Node1> list = new ArrayList<>();
+        list.add( new Node1("가족", visit.getFamily()));
+        list.add( new Node1("혼자", visit.getAlone()));
+        list.add( new Node1("친구", visit.getFriend()));
+        list.add( new Node1("커플", visit.getCouple()));
+        list.add( new Node1("아이", visit.getKid()));
+
+
+        Collections.sort(list, new Comparator<Node1>() {
+            @Override
+            public int compare(Node1 o1, Node1 o2) {
+                return o2.value - o1.value;
             }
-        }
-
+        });
 
 
 
@@ -81,6 +91,8 @@ public class PlaceServiceImpl implements PlaceService {
                 .phoneNumber(place.getPhoneNumber())
                 .address(place.getAddress())
                 .image(place.getImage())
+                .type1(list.get(0).type)
+                .type2(list.get(1).type)
                 .build();
         return responseDto;
     }

@@ -30,4 +30,7 @@ public class PlaceDetailResponseDto {
         private int couple;
         private int kid;
     }
+
+    private String type1;
+    private String type2;
 }
