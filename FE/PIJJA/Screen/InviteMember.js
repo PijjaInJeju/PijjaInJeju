@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconFont6 from 'react-native-vector-icons/FontAwesome6';
-import GroupSetting from './Screen/GroupSetting.js';
+import GroupSetting from './GroupSetting.js';
 
 //const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const pixelRatio = PixelRatio.get();
