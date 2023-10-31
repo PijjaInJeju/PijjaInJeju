@@ -6,8 +6,8 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class GetPositionInfoFromTmapResponseDto {
+public class SearchPlaceFromTmapResponseDto {
     private String name;
-    private String lat;
-    private String lon;
+    private Float lat;
+    private Float lon;
 }
