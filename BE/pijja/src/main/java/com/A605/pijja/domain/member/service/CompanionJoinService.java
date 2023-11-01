@@ -23,6 +23,7 @@ public class CompanionJoinService {
 
     private final CompanionRepository companionRepository;
 
+    @Transactional
     public ResponseEntity joinCompanion(CompanionJoinRequestDto companionJoinRequestDto) {
         Optional<Member> memberOptional = memberRepository.findMemberByEmail(
                 companionJoinRequestDto.getEmail());

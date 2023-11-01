@@ -6,6 +6,7 @@ import com.A605.pijja.domain.member.dto.request.CompanionInviteRequestDto;
 import com.A605.pijja.domain.member.dto.request.CompanionJoinRequestDto;
 import com.A605.pijja.domain.member.service.CompanionInviteService;
 import com.A605.pijja.domain.member.service.CompanionJoinService;
+import com.A605.pijja.domain.member.service.CompanionListService;
 import com.A605.pijja.domain.member.service.CompanionRegistService;
 import com.A605.pijja.domain.member.service.CompanionsMemberService;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,8 @@ public class CompanionController {
     private final CompanionInviteService companionInviteService;
 
     private final CompanionJoinService companionJoinService;
+
+    private final CompanionListService companionListService;
 
     //그룹 만들기
     @PostMapping
@@ -52,5 +55,10 @@ public class CompanionController {
     public ResponseEntity companionMemberJoin(
             @RequestBody CompanionJoinRequestDto companionJoinRequestDto) {
         return companionJoinService.joinCompanion(companionJoinRequestDto);
+    }
+
+    @GetMapping
+    public ResponseEntity companions() {
+        return companionListService.getAllCompanions();
     }
 }
