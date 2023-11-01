@@ -25,7 +25,7 @@ const Drawer = createDrawerNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      {/* // 최근 프로젝트 */}
+      {/* // 최근 프로젝트 git test*/}
       <Stack.Navigator initialRoutName="Login">
         <Stack.Screen name="Login" component={Login} />
         {/* <Stack.Screen name="MakeGroup" component={MakeGroup} /> */}
