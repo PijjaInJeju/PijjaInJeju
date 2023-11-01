@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { StyleSheet, Text, View, Image, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, Image, SafeAreaView, Button } from 'react-native';
 
 import MakeGroup from './MakeGroup.js';
 import TripPlanCheck from './TripPlanCheck.js';
@@ -96,6 +96,10 @@ const MainScreen = ({ navigation }) => {
           </View>
         </View>
       </View>
+      <Button title='fdsfsafas' onPress={ () => {
+        navigation.navigate('CreateScheduleMap');
+      }}/>
+
     </View>
   );
 };
@@ -168,6 +172,11 @@ const styles = StyleSheet.create({
     top: 220,
     left: 26,
     marginTop: 12,
+  },
+  logo: {
+    width: 30,
+    height: 30,
+    resizeMode: 'stretch',
   },
   logoImage: {
     width: 220,

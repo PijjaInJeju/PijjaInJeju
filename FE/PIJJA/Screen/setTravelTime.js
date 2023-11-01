@@ -4,7 +4,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, Text, View } from 'react-native';
 
-const AppSetting = ({ navigation }) => {
+const setTravelTime = ({ navigation }) => {
   //let b_res = 0;
   const [b_res, setBtnRes] = useState(0);
   return (
@@ -27,4 +27,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AppSetting;
+export default setTravelTime;
