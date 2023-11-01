@@ -11,13 +11,18 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Login from './Screen/Login.js';
+
 import MakeGroup from './Screen/MakeGroup.js';
 import Main from './Screen/Main.js';
-import Pre from './component/Pre.js';
 import InviteMember from './Screen/InviteMember.js';
-import GroupSetting from './Screen/GroupSetting.js';
+import GroupSetting from './Screen/GroupSetting.js';\
 
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import CreateScheduleMap from './Screen/CreateScheduleMap.js';
+import RecommendSchedule from './Screen/RecommendSchedule.js';
+
+
+import { StyleSheet, View, TouchableOpacity, Image, Text } from 'react-native';
+import { Console } from 'console';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -25,17 +30,49 @@ const Drawer = createDrawerNavigator();
 const App = () => {
   return (
     <NavigationContainer>
-      {/* // 최근 프로젝트 git test*/}
-      <Stack.Navigator initialRoutName="Login">
+      <Stack.Navigator 
+        initialRouteName="Login"
+        screenOptions={
+            {
+              animation:"fade",
+              headerLeft: ({onPress}) => (
+                <TouchableOpacity onPress={onPress}>
+                  <Image
+                    style={styles.logo} 
+                    source={Logo}
+                  />
+                </TouchableOpacity>
+              ),
+              headerTitle: () => (
+                <View style={{
+                  flex: 1,
+                }}>
+                  <Text
+                    style={{
+                      color: 'black',
+                      textAlign: 'center',
+                    }}
+                  >
+                    제목입니다.
+                  </Text>
+                </View>
+              ),
+              headerRight: undefined,
+              
+            }
+        }
+      >
         <Stack.Screen name="Login" component={Login} />
-        {/* <Stack.Screen name="MakeGroup" component={MakeGroup} /> */}
         <Stack.Screen
           name="Main"
           component={Main}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="InviteMember" component={InviteMember} />
         <Stack.Screen name="GroupSetting" component={GroupSetting} />
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name='MakeGroup' component={MakeGroup}/>
+        <Stack.Screen name='CreateScheduleMap' component={CreateScheduleMap}/>
+        <Stack.Screen name='RecommendSchedule' component={RecommendSchedule} />
       </Stack.Navigator>
     </NavigationContainer>
   );
