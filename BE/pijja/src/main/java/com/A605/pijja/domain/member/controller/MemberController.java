@@ -15,9 +15,10 @@ public class MemberController {
 
     private final MemberRegistService memberRegistService;
 
-    // 카카오 회원 등록
+    // 회원 가입 엔드포인트
     @PostMapping("sign-up")
     public ResponseEntity memberAdd(MemberRegistRequestDto memberRegistRequestDto) {
+        // MemberRegistService를 사용하여 새로운 회원을 가입시키고 결과를 반환합니다.
         return memberRegistService.registMember(memberRegistRequestDto);
     }
 }

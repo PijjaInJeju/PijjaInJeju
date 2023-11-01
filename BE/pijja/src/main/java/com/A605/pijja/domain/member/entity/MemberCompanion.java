@@ -3,6 +3,7 @@ package com.A605.pijja.domain.member.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -28,11 +29,11 @@ public class MemberCompanion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id; // 회원-동반자 관계 엔티티의 고유 식별자
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "MEMBER_ID")
     private Member member; // 회원
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "COMPANION_ID")
     private Companion companion; // 그룹
 

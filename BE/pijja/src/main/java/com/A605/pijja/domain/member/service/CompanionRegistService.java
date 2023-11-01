@@ -19,15 +19,18 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-//그룹 만들기
+// 그룹 만들기를 위한 서비스
 public class CompanionRegistService {
 
     private final CompanionRepository companionRepository;
-
     private final MemberCompanionRepository memberCompanionRepository;
-
     private final MemberRepository memberRepository;
 
+    /**
+     * 랜덤 그룹 초대 코드 생성 메서드
+     *
+     * @return 6자리 랜덤 문자열 형태의 그룹 초대 코드
+     */
     public String generateRandomCode() {
         String str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -42,6 +45,12 @@ public class CompanionRegistService {
         return randomString.toString();
     }
 
+    /**
+     * 그룹 등록을 처리하는 메서드
+     *
+     * @param companionAddRequestDto 그룹 등록 요청 DTO
+     * @return ResponseEntity 객체를 반환하여 등록 성공 또는 실패 응답을 전송
+     */
     @Transactional
     public ResponseEntity registCompanion(CompanionAddRequestDto companionAddRequestDto) {
         Member member = memberRepository.findById(companionAddRequestDto.getMemberId())
@@ -68,6 +77,7 @@ public class CompanionRegistService {
 
         memberCompanionRepository.save(memberCompanion);
 
+        // 등록 성공 응답을 생성하고 반환
         return ResponseEntity.ok()
                 .body(new SuccessResponseDto(true, "그룹 등록이 완료되었습니다.", companion));
     }
