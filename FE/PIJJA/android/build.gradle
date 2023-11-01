@@ -53,10 +53,7 @@ allprojects {
         }
         google()
         maven { url 'https://www.jitpack.io' }
-<<<<<<< HEAD
-=======
         mavenCentral()
->>>>>>> bc1d90d9285c99393b482668a98f7c305fbdfc18
         maven { url 'https://devrepo.kakao.com/nexus/content/groups/public/'}
     }
 }
