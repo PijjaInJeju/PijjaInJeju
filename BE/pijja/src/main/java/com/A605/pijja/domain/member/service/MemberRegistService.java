@@ -1,8 +1,8 @@
 package com.A605.pijja.domain.member.service;
 
 import com.A605.pijja.domain.member.dto.FailResponseDto;
-import com.A605.pijja.domain.member.dto.MemberRegistDto;
 import com.A605.pijja.domain.member.dto.SuccessResponseDto;
+import com.A605.pijja.domain.member.dto.request.MemberRegistRequestDto;
 import com.A605.pijja.domain.member.entity.Member;
 import com.A605.pijja.domain.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -13,18 +13,20 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+// 카카오 회원 등록
 public class MemberRegistService {
 
     private final MemberRepository memberRepository;
 
-    public ResponseEntity memberRegist(MemberRegistDto memberRegistDto) {
-        if (memberRepository.findMemberByEmail(memberRegistDto.getEmail()) != null) {
+    @Transactional
+    public ResponseEntity registMember(MemberRegistRequestDto memberRegistRequestDto) {
+        if (memberRepository.findMemberByEmail(memberRegistRequestDto.getEmail()).isPresent()) {
             return ResponseEntity.status(409)
                     .body(new FailResponseDto(false, "이미 존재하는 이메일입니다.", 409));
         } else {
             Member member = Member.builder()
-                    .nickname(memberRegistDto.getNickname())
-                    .email(memberRegistDto.getEmail())
+                    .nickname(memberRegistRequestDto.getNickname())
+                    .email(memberRegistRequestDto.getEmail())
                     .build();
 
             memberRepository.save(member);

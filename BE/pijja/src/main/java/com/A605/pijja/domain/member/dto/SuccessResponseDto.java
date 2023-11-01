@@ -14,5 +14,5 @@ public class SuccessResponseDto {
     private boolean success;
     private String message;
     private Object data;
-    
+
 }

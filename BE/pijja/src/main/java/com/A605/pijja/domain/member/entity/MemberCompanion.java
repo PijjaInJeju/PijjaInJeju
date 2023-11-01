@@ -1,7 +1,18 @@
 package com.A605.pijja.domain.member.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -19,11 +30,11 @@ public class MemberCompanion {
 
     @ManyToOne
     @JoinColumn(name = "MEMBER_ID")
-    private Member member; // 회원과의 관계
+    private Member member; // 회원
 
     @ManyToOne
     @JoinColumn(name = "COMPANION_ID")
-    private Companion companion; // 동반자와의 관계
+    private Companion companion; // 그룹
 
     @Enumerated(value = EnumType.STRING)
     private Role role; // 회원-동반자 관계 역할 (예: 리더, 구성원)

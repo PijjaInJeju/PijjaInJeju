@@ -1,7 +1,7 @@
 package com.A605.pijja.domain.member.service;
 
-import com.A605.pijja.domain.member.dto.CompanionAddDto;
 import com.A605.pijja.domain.member.dto.SuccessResponseDto;
+import com.A605.pijja.domain.member.dto.request.CompanionAddRequestDto;
 import com.A605.pijja.domain.member.entity.Companion;
 import com.A605.pijja.domain.member.entity.Member;
 import com.A605.pijja.domain.member.entity.MemberCompanion;
@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+//그룹 만들기
 public class CompanionRegistService {
 
     private final CompanionRepository companionRepository;
@@ -42,19 +43,19 @@ public class CompanionRegistService {
     }
 
     @Transactional
-    public ResponseEntity registCompanion(CompanionAddDto companionAddDto) {
-        Member member = memberRepository.findById(companionAddDto.getMemberId())
+    public ResponseEntity registCompanion(CompanionAddRequestDto companionAddRequestDto) {
+        Member member = memberRepository.findById(companionAddRequestDto.getMemberId())
                 .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
         Companion companion = Companion.builder()
-                .name(companionAddDto.getName())
+                .name(companionAddRequestDto.getName())
                 .code(generateRandomCode())
-                .isStart(companionAddDto.getIsStart())
-                .isEnd(companionAddDto.getIsEnd())
-                .tendency(companionAddDto.getTendency())
-                .mate(companionAddDto.getMate())
-                .startTime(companionAddDto.getStartTime())
-                .endTime(companionAddDto.getEndTime())
+                .isStart(companionAddRequestDto.getIsStart())
+                .isEnd(companionAddRequestDto.getIsEnd())
+                .tendency(companionAddRequestDto.getTendency())
+                .mate(companionAddRequestDto.getMate())
+                .startTime(companionAddRequestDto.getStartTime())
+                .endTime(companionAddRequestDto.getEndTime())
                 .build();
 
         companionRepository.save(companion);

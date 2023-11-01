@@ -1,13 +1,13 @@
-package com.A605.pijja.domain.member.dto;
+package com.A605.pijja.domain.member.dto.request;
 
+import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
-
 @Getter
 @Builder
-public class CompanionAddDto {
+public class CompanionAddRequestDto {
+
     private String name;
 
     private Boolean isStart;
