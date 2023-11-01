@@ -10,4 +10,6 @@ public class SearchPlaceFromTmapResponseDto {
     private String name;
     private Float lat;
     private Float lon;
+    private String middleAddrName;
+    private String lowerAddrName;
 }
