@@ -1,6 +1,7 @@
 package com.A605.pijja.domain.member.service;
 
 import com.A605.pijja.domain.member.dto.CompanionMemberListDto;
+import com.A605.pijja.domain.member.dto.SuccessResponseDto;
 import com.A605.pijja.domain.member.entity.Companion;
 import com.A605.pijja.domain.member.entity.Member;
 import com.A605.pijja.domain.member.entity.MemberCompanion;
@@ -10,6 +11,7 @@ import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,7 +24,7 @@ public class CompanionsMemberService {
 
     private final MemberCompanionRepository memberCompanionRepository;
 
-    public List<Member> getMemberOfCompanion(CompanionMemberListDto memberCompanionListDto) {
+    public ResponseEntity getMemberOfCompanion(CompanionMemberListDto memberCompanionListDto) {
         Long companionId = memberCompanionListDto.getCompanionId();
         Companion companion = companionRepository.findById(companionId)
                 .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 그룹입니다."));
@@ -35,6 +37,7 @@ public class CompanionsMemberService {
             members.add(memberCompanion.getMember());
         }
 
-        return members;
+        return ResponseEntity.ok()
+                .body(new SuccessResponseDto(true, "그룹에 소속된 멤버 리스트를 불러왔습니다.", members));
     }
 }

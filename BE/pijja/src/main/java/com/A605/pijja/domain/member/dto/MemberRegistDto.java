@@ -5,7 +5,7 @@ import lombok.Getter;
 
 @Getter
 @Builder
-public class MemberAddDto {
+public class MemberRegistDto {
 
     private String nickname;
 

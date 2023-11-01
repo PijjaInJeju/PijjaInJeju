@@ -1,6 +1,7 @@
 package com.A605.pijja.domain.member.service;
 
 import com.A605.pijja.domain.member.dto.CompanionAddDto;
+import com.A605.pijja.domain.member.dto.SuccessResponseDto;
 import com.A605.pijja.domain.member.entity.Companion;
 import com.A605.pijja.domain.member.entity.Member;
 import com.A605.pijja.domain.member.entity.MemberCompanion;
@@ -11,6 +12,7 @@ import com.A605.pijja.domain.member.repository.MemberRepository;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,7 +42,7 @@ public class CompanionRegistService {
     }
 
     @Transactional
-    public void registCompanion(CompanionAddDto companionAddDto) {
+    public ResponseEntity registCompanion(CompanionAddDto companionAddDto) {
         Member member = memberRepository.findById(companionAddDto.getMemberId())
                 .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
@@ -64,5 +66,8 @@ public class CompanionRegistService {
                 .build();
 
         memberCompanionRepository.save(memberCompanion);
+
+        return ResponseEntity.ok()
+                .body(new SuccessResponseDto(true, "그룹 등록이 완료되었습니다.", companion));
     }
 }
