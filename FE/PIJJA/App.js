@@ -60,7 +60,11 @@ const App = () => {
             }
         }
       >
-        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen 
+          name="Login" 
+          component={Login}
+          options={{ headerShown: false }}
+        />
         {/* <Stack.Screen name="MakeGroup" component={MakeGroup} /> */}
         <Stack.Screen
           name="Main"

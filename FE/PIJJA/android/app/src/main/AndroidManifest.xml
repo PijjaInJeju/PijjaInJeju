@@ -3,10 +3,12 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
 
-    <meta-data
-      android:name="com.naver.maps.map.CLIENT_ID"
-      android:value="j9mc1cqyry" 
-    />
+    <application>
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="j9mc1cqyry"
+        />
+    </application>
 
     <application
       android:name=".MainApplication"
@@ -14,7 +16,8 @@
       android:icon="@mipmap/ic_launcher"
       android:roundIcon="@mipmap/ic_launcher_round"
       android:allowBackup="false"
-      android:theme="@style/AppTheme">
+      android:theme="@style/AppTheme"
+    >
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
@@ -38,6 +41,6 @@
                 android:host="oauth"
                 android:scheme="kakao7dfcdc39eb2827347e8d8e3d6987af30" />
         </intent-filter>
-    </activity>
+      </activity>
     </application>
 </manifest>

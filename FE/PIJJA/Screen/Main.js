@@ -1,24 +1,31 @@
 import 'react-native-gesture-handler'; // 파일의 가장 최상단에 위치해야함
-import React from 'react';
-import { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React,{ useState } from 'react';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import { StyleSheet, Text, View, Image, SafeAreaView, Button } from 'react-native';
+import { StyleSheet, Text, View, Image, Button } from 'react-native';
+
 
 import MakeGroup from './MakeGroup.js';
 import TripPlanCheck from './TripPlanCheck.js';
 // import TripPlanMMakake from './TripPlanMake.js';
 import Gallery from './Gallery.js';
 import AppSetting from './AppSetting.js';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+
+import Icon from 'react-native-vector-icons/Entypo'; 
+import Header from '../component/Header.js';
+
 
 const Drawer = createDrawerNavigator();
 //const appDrawer = createNativeStackNavigator();
 
+const Logo = require('../Image/k_Logo.png');
+
+
+
 const MainScreen = ({ navigation }) => {
   return (
     <View style={styles.container}>
+      <Header navigation={navigation} title={"제목입니다."}/> 
       <View style={styles.logoWrapper}>
         <Image
           style={styles.logoImage}
@@ -96,15 +103,11 @@ const MainScreen = ({ navigation }) => {
           </View>
         </View>
       </View>
-      <Button title='fdsfsafas' onPress={ () => {
-        navigation.navigate('CreateScheduleMap');
-      }}/>
-
     </View>
   );
 };
 
-const Main = ({ navigation }) => {
+const Main = () => {
   //let b_res = 0;
   return (
     <Drawer.Navigator
@@ -123,10 +126,18 @@ const Main = ({ navigation }) => {
           // backgroundcolor: '#aaaaaa',
         },
         drawerInactiveBackgroundColor: '#fcbf49',
-
+        
+        headerRight: () => (
+          <Icon 
+            name='menu' 
+            size={30} 
+            color='#000000'
+          />
+        ),
         // drawerLabelStyle: {
         //   color:
         // },
+        headerShown: false,
       }}
       initialRouteName="Main"
     >
@@ -136,14 +147,6 @@ const Main = ({ navigation }) => {
         component={MakeGroup}
         screenOptions={{
           animation: 'fade',
-          headerLeft: ({ onPress }) => (
-            <TouchableOpacity onPress={onPress}>
-              <Image
-                style={styles.logo}
-                source={require('../Image/k_Logo.png')}
-              />
-            </TouchableOpacity>
-          ),
           headerTitle: () => <View></View>,
           headerRight: undefined,
         }}
@@ -155,7 +158,7 @@ const Main = ({ navigation }) => {
   );
 };
 
-const styles = StyleSheet.create({
+const styles = StyleSheet.create({                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                          
   container: {
     flex: 1,
     flexDirection: 'column',
@@ -172,11 +175,6 @@ const styles = StyleSheet.create({
     top: 220,
     left: 26,
     marginTop: 12,
-  },
-  logo: {
-    width: 30,
-    height: 30,
-    resizeMode: 'stretch',
   },
   logoImage: {
     width: 220,
