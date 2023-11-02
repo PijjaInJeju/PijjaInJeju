@@ -16,7 +16,7 @@ import java.util.List;
 public class RecommendController {
     private final RecommendService recommendService;
 
-    @GetMapping("/{tag}&{mate}")
+    @GetMapping("/{tag}/{mate}")
     public List<RecommendResponseDto> recommendPlaces(@PathVariable String tag, @PathVariable String mate){
         return recommendService.recommendPlace(tag, mate);
     }
