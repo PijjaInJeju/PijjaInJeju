@@ -26,6 +26,7 @@ public class PlaceTestServiceImpl implements PlaceTestService {
     }
 
     @Override
+    @Transactional
     public void addPlace(SearchPlaceFromTmapResponseDto requestDto) {
         PlaceTest place= PlaceTest.builder()
                 .name(requestDto.getName())
@@ -35,6 +36,7 @@ public class PlaceTestServiceImpl implements PlaceTestService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public PlaceTest searchPlace(String name) {
         return placeTestRepository.findByName(name);
     }
