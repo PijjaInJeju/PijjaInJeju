@@ -33,71 +33,6 @@ public class PlanController {
     private final PlaceTestService placeTestService;
     private final PathService pathService;
 
-    @PostMapping("test")
-    public List<SearchPlaceFromTmapResponseDto> searchPlaceFromTmap2(@RequestBody SearchPlaceFromTmapRequestDto requestDto) throws JsonProcessingException {
-        List<SearchPlaceFromTmapResponseDto> responseDto=new ArrayList<>();
-        String tmapApiKey=tmapConfig.getTmapApiKey();
-        String tmapUrl=tmapConfig.getTmapUrl();
-        DefaultUriBuilderFactory factory=new DefaultUriBuilderFactory(tmapUrl);
-        factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
-
-        WebClient wc= WebClient.builder()
-                .uriBuilderFactory(factory)
-                .baseUrl(tmapUrl)
-                .build();
-
-        String encodedPlace=URLEncoder.encode(requestDto.getPlace(),StandardCharsets.UTF_8);
-        //tmap api 호출
-        ResponseEntity<String> result=wc.get()
-                .uri(uriBuilder -> uriBuilder.path("/tmap/pois")
-                                .queryParam("searchKeyword",encodedPlace)
-                                .queryParam("appKey",tmapApiKey)
-                        .build())
-                .retrieve()
-                .toEntity(String.class)
-                .block();
-
-        // JSON 응답 문자열
-        String jsonResponse=result.getBody();
-
-        // Jackson ObjectMapper를 사용하여 JSON 파싱
-        ObjectMapper objectMapper = new ObjectMapper();
-        try{
-            JsonNode jsonNode=objectMapper.readTree(jsonResponse);
-            JsonNode poiArray=jsonNode.at("/searchPoiInfo/pois/poi");
-            int poiSize=poiArray.size();
-            for(int i=0;i<poiSize;i++){
-                JsonNode nameNode=jsonNode.at("/searchPoiInfo/pois/poi/"+i+"/name");
-                JsonNode frontLatNode=jsonNode.at("/searchPoiInfo/pois/poi/"+i+"/frontLat");
-                JsonNode frontLonNode=jsonNode.at("/searchPoiInfo/pois/poi/"+i+"/frontLon");
-                JsonNode upperAddrNameNode=jsonNode.at("/searchPoiInfo/pois/poi/"+i+"/upperAddrName");
-                JsonNode middleAddrNameNode=jsonNode.at("/searchPoiInfo/pois/poi/"+i+"/middleAddrName");
-                JsonNode lowerAddrNameNode=jsonNode.at("/searchPoiInfo/pois/poi/"+i+"/lowerAddrName");
-                if(upperAddrNameNode.asText().equals("제주")) {
-                    String name = nameNode.asText();
-                    float lat = Float.parseFloat(frontLatNode.asText());
-                    float lon = Float.parseFloat(frontLonNode.asText());
-                    String middleAddr=middleAddrNameNode.asText();
-                    String lowerAddr=lowerAddrNameNode.asText();
-
-                    SearchPlaceFromTmapResponseDto response=SearchPlaceFromTmapResponseDto.builder()
-                            .name(name)
-                            .lat(lat)
-                            .lon(lon)
-                            .middleAddrName(middleAddr)
-                            .lowerAddrName(lowerAddr)
-                            .build();
-                    responseDto.add(response);
-                }
-
-            }
-            return responseDto;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-
     @PostMapping("")
     public SearchPlaceFromTmapResponseDto searchPlaceFromTmap(@RequestBody SearchPlaceFromTmapRequestDto requestDto) throws JsonProcessingException {
         List<SearchPlaceFromTmapResponseDto> responseDto=new ArrayList<>();
@@ -174,7 +109,7 @@ public class PlanController {
                 .lat(placeTestResult.getLat())
                 .lon(placeTestResult.getLon()).build();
     }
-    
+
 
     @PostMapping("/getroute")
     public void getRouteTmap3(@RequestBody List<GetRouteTmapRequestDto> requestDto){
