@@ -11,12 +11,12 @@ import {
   Dimensions,
 } from 'react-native';
 
-//screenWidth = Dimensions.get('window').width;
-//screenHeight = Dimensions.get('window').height;
-const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+screenWidth = Dimensions.get('window').width;
+screenHeight = Dimensions.get('window').height;
+// const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const pixelRatio = PixelRatio.get();
 
-const SetTravelTime = ({ navigation }) => {
+const SetTravelPlan = ({ navigation }) => {
   const logo = require('../Image/k_Logo.png');
 
   //let b_res = 0;
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   outerRectangle: {
-    position: 'absoulte',
+    position: 'absolute',
     top: '0%',
     width: screenWidth,
     height: screenHeight * 0.35,
@@ -63,4 +63,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SetTravelTime;
+export default SetTravelPlan;

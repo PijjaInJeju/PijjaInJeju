@@ -18,6 +18,8 @@ import InviteMember from './Screen/InviteMember.js';
 import GroupSetting from './Screen/GroupSetting.js';
 import CreateScheduleMap from './Screen/CreateScheduleMap.js';
 import RecommendSchedule from './Screen/RecommendSchedule.js';
+import SetTravelPlan from './Screen/SetTravelPlan.js';
+import Gallery from './Screen/Gallery.js';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -28,37 +30,33 @@ const App = () => {
   return (
     <NavigationContainer>
       {/* // 최근 프로젝트 */}
-      <Stack.Navigator 
+      <Stack.Navigator
         initialRouteName="Login"
-        screenOptions={
-            {
-              animation:"fade",
-              headerLeft: ({onPress}) => (
-                <TouchableOpacity onPress={onPress}>
-                  <Image
-                    style={styles.logo} 
-                    source={Logo}
-                  />
-                </TouchableOpacity>
-              ),
-              headerTitle: () => (
-                <View style={{
-                  flex: 1,
-                }}>
-                  <Text
-                    style={{
-                      color: 'black',
-                      textAlign: 'center',
-                    }}
-                  >
-                    제목입니다.
-                  </Text>
-                </View>
-              ),
-              headerRight: undefined,
-              
-            }
-        }
+        // // screenOptions={{
+        // //   animation: 'fade',
+        // //   headerLeft: ({ onPress }) => (
+        // //     <TouchableOpacity onPress={onPress}>
+        // //       <Image style={styles.logo} source={Logo} />
+        // //     </TouchableOpacity>
+        // //   ),
+        // //   headerTitle: () => (
+        // //     <View
+        // //       style={{
+        // //         flex: 1,
+        // //       }}
+        // //     >
+        // //       <Text
+        // //         style={{
+        // //           color: 'black',
+        // //           textAlign: 'center',
+        // //         }}
+        // //       >
+        // //         제목입니다.
+        // //       </Text>
+        // //     </View>
+        // //   ),
+        //   headerRight: undefined,
+        // }}
       >
         <Stack.Screen name="Login" component={Login} />
         {/* <Stack.Screen name="MakeGroup" component={MakeGroup} /> */}
@@ -69,8 +67,10 @@ const App = () => {
         />
         <Stack.Screen name="InviteMember" component={InviteMember} />
         <Stack.Screen name="GroupSetting" component={GroupSetting} />
-        <Stack.Screen name='CreateScheduleMap' component={CreateScheduleMap}/>
-        <Stack.Screen name='RecommendSchedule' component={RecommendSchedule} />
+        <Stack.Screen name="Gallery" component={Gallery} />
+        <Stack.Screen name="CreateScheduleMap" component={CreateScheduleMap} />
+        <Stack.Screen name="RecommendSchedule" component={RecommendSchedule} />
+        <Stack.Screen name="SetTravelPlan" component={SetTravelPlan} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -11,6 +11,9 @@ import {
   Pressable,
 } from 'react-native';
 
+import SetTravelPlan from './SetTravelPlan.js';
+import Gallery from './Gallery.js';
+
 const GroupSetting = ({ navigation }) => {
   //let b_res = 0;
   //let b_pressed = 0;
@@ -264,7 +267,12 @@ const GroupSetting = ({ navigation }) => {
       <View>
         <TouchableOpacity></TouchableOpacity>
       </View>
-      <TouchableOpacity style={styles.buttonNext}>
+      <TouchableOpacity
+        style={styles.buttonNext}
+        onPress={() => {
+          navigation.navigate('CreateScheduleMap');
+        }}
+      >
         <Text>다음</Text>
       </TouchableOpacity>
     </View>
