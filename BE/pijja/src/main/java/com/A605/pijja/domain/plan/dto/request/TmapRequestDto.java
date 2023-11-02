@@ -7,8 +7,8 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class TmapRequestDto {
-    private float endX;
-    private float endY;
+    private float endX; //lon이 X
+    private float endY; //lat이 Y
     private float startX;
     private float startY;
 }
