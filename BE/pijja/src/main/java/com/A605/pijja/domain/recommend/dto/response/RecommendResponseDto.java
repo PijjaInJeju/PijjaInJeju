@@ -12,20 +12,8 @@ public class RecommendResponseDto {
     private String title;
     private Double latitude;
     private Double longitude;
+    private String tag;
     private String image;
-
-    @Getter
-    @Builder
-    @NoArgsConstructor(access = AccessLevel.PROTECTED)
-    @AllArgsConstructor
-    public static class VisitDto{
-        private Long id;
-        private int family;
-        private int alone;
-        private int friend;
-        private int couple;
-        private int kid;
-    }
 
     @Getter
     @Builder
