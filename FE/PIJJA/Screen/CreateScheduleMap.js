@@ -19,7 +19,7 @@ console.log('Screen Height: ', screenHeight);
 
 
 
-const CreateScheduleMap = () => {
+const CreateScheduleMap = ({ navigation }) => {
     const P0 = {latitude: 37.564362, longitude: 126.977011};
     const P1 = {latitude: 37.565051, longitude: 126.978567};
     const P2 = {latitude: 37.565383, longitude: 126.976292};
@@ -92,23 +92,22 @@ const CreateScheduleMap = () => {
                     size={5 * pixelRatio}
                     onPress={ () => {
                         console.log(item.title,"을 삭제 시도중")
-                        let newScheduleList = searchList.map(
-                            (entity) =>{
-                                if(item.id !== entity.id){
-                                    return entity;
-                                }
-                            }
+                        let newScheduleList = scheduleList.filter(
+                            (entity) => (item.id !== entity.id)
                         );
                         let newSearchList = searchList.map(
                             (entity) =>{
                                 if(item.id === entity.id){
-                                    entity.select = ! entity.select;
+                                    entity.select = !entity.select;
                                 }
                                 return entity;
                             }
                         )
                         setSearchList(newSearchList);
+                        
                         setScheduleList(newScheduleList);
+
+                        console.log(scheduleList);
                     }}
                 />
                 :
@@ -158,6 +157,25 @@ const CreateScheduleMap = () => {
                 </Text>
                 <Icon4
                     name='close'
+                    onPress={
+                        () => {
+                            console.log(item,"을 삭제 시도중")
+                            let newScheduleList = scheduleList.filter(
+                                (entity) => (item.id !== entity.id)
+                            );
+                            let newSearchList = searchList.map(
+                                (entity) =>{
+                                    if(item.id === entity.id){
+                                        entity.select = false;
+                                    }
+                                    return entity;
+                                }
+                            )
+                            setSearchList(newSearchList);
+                            setScheduleList(newScheduleList);
+                            console.log(scheduleList);
+                        }
+                    }
                 />
             </View>
         );
@@ -198,15 +216,17 @@ const CreateScheduleMap = () => {
                         alignSelf: 'flex-end',
                         backgroundColor: "#FFFFFF",
                     }}
-                    onPress={ () => console.log("스케쥴 만들기")}
+                    onPress={ 
+                        () => {
+                            console.log("스케쥴 만들기")
+                            navigation.push('RecommendSchedule',{scheduleList: scheduleList});
+                        }
+                    }
                 >
                     <Icon
                         name="calendar" 
                         size={30} 
                         color="#000000" 
-                        onPress={ 
-                            () => console.log("추천해주세요")
-                        } 
                     />
 
                     <Text
