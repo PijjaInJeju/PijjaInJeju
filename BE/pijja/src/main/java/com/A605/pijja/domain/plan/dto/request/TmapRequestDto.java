@@ -6,8 +6,9 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class GetRouteTmapRequestDto {
-    private Long id;
-    private float lat;
-    private float lon;
+public class TmapRequestDto {
+    private float endX;
+    private float endY;
+    private float startX;
+    private float startY;
 }

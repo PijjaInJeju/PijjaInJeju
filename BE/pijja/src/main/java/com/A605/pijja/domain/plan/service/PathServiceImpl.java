@@ -1,6 +1,7 @@
 package com.A605.pijja.domain.plan.service;
 
 import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
+import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto2;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
 import com.A605.pijja.domain.plan.entity.Path;
 import com.A605.pijja.domain.plan.entity.PlaceTest;
@@ -21,12 +22,14 @@ public class PathServiceImpl implements PathService {
 
     @Override
     @Transactional(readOnly = true)
-    public GetRouteTmapResponseDto searchRoute(List<Long> requestDto) {
-        PlaceTest startPlace=placeTestRepository.findById(requestDto.get(0)).get();
-        PlaceTest endPlace=placeTestRepository.findById(requestDto.get(1)).get();
+    public GetRouteTmapResponseDto searchRoute(List<GetRouteTmapRequestDto> requestDto) {
+        PlaceTest startPlace=placeTestRepository.findById(requestDto.get(0).getId()).get();
+        PlaceTest endPlace=placeTestRepository.findById(requestDto.get(1).getId()).get();
 
         Path path=pathRepository.findByStartPlaceAndEndPlace(startPlace.getId(), endPlace.getId());
-
+        if(path==null){
+            return null;
+        }
         return GetRouteTmapResponseDto.builder()
                 .distance(path.getDistance())
                 .time(path.getTime())
@@ -35,7 +38,7 @@ public class PathServiceImpl implements PathService {
 
     @Override
     @Transactional
-    public void addPath(GetRouteTmapRequestDto requestDto) {
+    public void addPath(GetRouteTmapRequestDto2 requestDto) {
         PlaceTest startPlace=placeTestRepository.findById(requestDto.getStartPlaceId()).get();
         PlaceTest endPlace=placeTestRepository.findById(requestDto.getEndPlaceId()).get();
         Path newPath=Path.builder()

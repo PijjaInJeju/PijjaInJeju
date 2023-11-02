@@ -1,7 +1,9 @@
 package com.A605.pijja.domain.plan.controller;
 
 import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
+import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto2;
 import com.A605.pijja.domain.plan.dto.request.SearchPlaceFromTmapRequestDto;
+import com.A605.pijja.domain.plan.dto.request.TmapRequestDto;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
 import com.A605.pijja.domain.plan.dto.response.SearchPlaceFromTmapResponseDto;
 import com.A605.pijja.domain.plan.entity.PlaceTest;
@@ -173,8 +175,8 @@ public class PlanController {
                 .lon(placeTestResult.getLon()).build();
     }
 
-    @PostMapping("/getroute2")
-    public ResponseEntity<String> getRouteTmap2(@RequestBody Long requestDto){
+    @PostMapping("/getroutetest")
+    public ResponseEntity<String> getRouteTmap2(@RequestBody TmapRequestDto requestDto){
         String tmapApiKey=tmapConfig.getTmapApiKey();
         String tmapUrl=tmapConfig.getTmapUrl();
         DefaultUriBuilderFactory factory=new DefaultUriBuilderFactory(tmapUrl);
@@ -194,13 +196,13 @@ public class PlanController {
                 .toEntity(String.class)
                 .block();
 
-
+        System.out.println(response);
 
         return response;
     }
 
     @PostMapping("/getroute")
-    public GetRouteTmapResponseDto getRouteTmap(@RequestBody List<Long> requestDto){
+    public GetRouteTmapResponseDto getRouteTmap(@RequestBody List<GetRouteTmapRequestDto> requestDto){
         String tmapApiKey=tmapConfig.getTmapApiKey();
         String tmapUrl=tmapConfig.getTmapUrl();
         DefaultUriBuilderFactory factory=new DefaultUriBuilderFactory(tmapUrl);
@@ -214,11 +216,16 @@ public class PlanController {
                     .baseUrl(tmapUrl)
                     .build();
 
+            TmapRequestDto requesstTmapDto= TmapRequestDto.builder()
+                    .endY(requestDto.get(1).getLat())
+                    .endX(requestDto.get(1).getLon())
+                    .startY(requestDto.get(0).getLat())
+                    .startX(requestDto.get(0).getLon()).build();
             ResponseEntity<String> result=wc.post()
                 .uri(uriBuilder -> uriBuilder.path("/tmap/routes")
                         .build())
                 .header("appKey",tmapApiKey)
-                .bodyValue(requestDto)
+                .bodyValue(requesstTmapDto)
                 .retrieve()
                 .toEntity(String.class)
                 .block();
@@ -228,15 +235,16 @@ public class PlanController {
             // Jackson ObjectMapper를 사용하여 JSON 파싱
             ObjectMapper objectMapper = new ObjectMapper();
             try {
+                System.out.println("API호출!!!!!!!!!!!!!!!!!!!!!!!!");
                 JsonNode jsonNode = objectMapper.readTree(jsonResponse);
                 JsonNode totalDistance=jsonNode.at("/features/0/properties/totalDistance");
                 JsonNode totalTime=jsonNode.at("/features/0/properties/totalTime");
 
-                GetRouteTmapRequestDto request= GetRouteTmapRequestDto.builder()
-                        .startPlaceId(requestDto.get(0))
-                        .endPlaceId(requestDto.get(1))
+                GetRouteTmapRequestDto2 request= GetRouteTmapRequestDto2.builder()
+                        .startPlaceId(requestDto.get(0).getId())
+                        .endPlaceId(requestDto.get(1).getId())
                         .distance(totalDistance.floatValue())
-                        .time(totalDistance.floatValue()).build();
+                        .time(totalTime.floatValue()).build();
                 pathService.addPath(request);
                 response=pathService.searchRoute(requestDto);
 
