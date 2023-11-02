@@ -108,7 +108,7 @@ public class PlanController {
                     .uriBuilderFactory(factory)
                     .baseUrl(tmapUrl)
                     .build();
-
+    
             String placeName= requestDto.getPlace().replaceAll(" ","");
 
             String encodedPlace = URLEncoder.encode(placeName, StandardCharsets.UTF_8);
