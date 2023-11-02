@@ -75,6 +75,6 @@ public class CompanionInviteService {
                 companion);
 
         // 회원이 그룹 리더인지 확인합니다.
-        return memberCompanion.getRole() == Role.LEARDER;
+        return memberCompanion.getRole() == Role.LEADER;
     }
 }

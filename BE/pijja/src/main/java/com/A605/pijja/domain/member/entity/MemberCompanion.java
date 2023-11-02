@@ -30,11 +30,11 @@ public class MemberCompanion {
     private Long id; // 회원-동반자 관계 엔티티의 고유 식별자
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "MEMBER_ID")
+    @JoinColumn(name = "member_id")
     private Member member; // 회원
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "COMPANION_ID")
+    @JoinColumn(name = "companion_id")
     private Companion companion; // 그룹
 
     @Enumerated(value = EnumType.STRING)

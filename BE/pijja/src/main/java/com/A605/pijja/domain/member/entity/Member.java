@@ -1,6 +1,5 @@
 package com.A605.pijja.domain.member.entity;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,6 +33,10 @@ public class Member {
 
     private String nickname; // 회원의 사용자명
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
+    private String snsType; // 소셜 로그인 종류
+
+    private String originalId; // 고유 아이디
+
+    @OneToMany(mappedBy = "member")
     private List<MemberCompanion> myCompanions = new ArrayList<>();
 }

@@ -9,6 +9,7 @@ import com.A605.pijja.domain.member.entity.Role;
 import com.A605.pijja.domain.member.repository.CompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberCompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberRepository;
+import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +26,7 @@ public class CompanionRegistService {
     private final CompanionRepository companionRepository;
     private final MemberCompanionRepository memberCompanionRepository;
     private final MemberRepository memberRepository;
+    private final EntityManager em;
 
     /**
      * 랜덤 그룹 초대 코드 생성 메서드
@@ -69,13 +71,16 @@ public class CompanionRegistService {
 
         companionRepository.save(companion);
 
+        // MemberCompanion 엔티티를 생성
         MemberCompanion memberCompanion = MemberCompanion.builder()
                 .member(member)
                 .companion(companion)
-                .role(Role.LEARDER)
+                .role(Role.LEADER)
                 .build();
 
         memberCompanionRepository.save(memberCompanion);
+
+        em.flush();
 
         // 등록 성공 응답을 생성하고 반환
         return ResponseEntity.ok()

@@ -1,10 +1,18 @@
 package com.A605.pijja.domain.member.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -36,6 +44,6 @@ public class Companion {
 
     private LocalDateTime endTime; // 동반 여행의 종료 시간
 
-    @OneToMany(mappedBy = "companion", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "companion")
     private List<MemberCompanion> companionMembers = new ArrayList<>();
 }
