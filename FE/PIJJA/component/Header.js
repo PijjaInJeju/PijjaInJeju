@@ -21,6 +21,7 @@ const Header = ({ navigation, title }) => {
                 alignItems: 'center',
                 flexDirection: 'row',
                 width: screenWidth,
+                height: '5%'
             }}
         >
             <TouchableOpacity
