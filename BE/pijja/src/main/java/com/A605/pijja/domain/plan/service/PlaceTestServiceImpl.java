@@ -16,7 +16,7 @@ public class PlaceTestServiceImpl implements PlaceTestService {
 
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true) //해당 place가 placetest db에 있는지
     public boolean isPlace(SearchPlaceFromTmapRequestDto requestDto) {
         String placeName= requestDto.getPlace().replaceAll(" ","");
 
@@ -27,7 +27,7 @@ public class PlaceTestServiceImpl implements PlaceTestService {
     }
 
     @Override
-    @Transactional
+    @Transactional //해당 place를 placetest db에 삽입
     public void addPlace(SearchPlaceFromTmapResponseDto requestDto) {
         PlaceTest place= PlaceTest.builder()
                 .name(requestDto.getName())
@@ -37,7 +37,7 @@ public class PlaceTestServiceImpl implements PlaceTestService {
     }
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true) //place search
     public PlaceTest searchPlace(String name) {
         return placeTestRepository.findByName(name);
     }

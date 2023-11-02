@@ -1,7 +1,6 @@
 package com.A605.pijja.domain.plan.controller;
 
 import com.A605.pijja.domain.plan.dto.request.SearchPlaceFromTmapRequestDto;
-import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
 import com.A605.pijja.domain.plan.dto.response.SearchPlaceFromTmapResponseDto;
 import com.A605.pijja.domain.plan.entity.PlaceTest;
 import com.A605.pijja.domain.plan.service.PlaceTestService;
@@ -108,7 +107,7 @@ public class PlanController {
                     .uriBuilderFactory(factory)
                     .baseUrl(tmapUrl)
                     .build();
-    
+
             String placeName= requestDto.getPlace().replaceAll(" ","");
 
             String encodedPlace = URLEncoder.encode(placeName, StandardCharsets.UTF_8);
@@ -170,8 +169,8 @@ public class PlanController {
                 .lon(placeTestResult.getLon()).build();
     }
 
-    @PostMapping("/getroute")
-    public ResponseEntity<String> getRouteTmap(@RequestBody GetRouteTmapRequestDto requestDto){
+    @PostMapping("/getroute2")
+    public ResponseEntity<String> getRouteTmap2(@RequestBody Long requestDto){
         String tmapApiKey=tmapConfig.getTmapApiKey();
         String tmapUrl=tmapConfig.getTmapUrl();
         DefaultUriBuilderFactory factory=new DefaultUriBuilderFactory(tmapUrl);
@@ -195,5 +194,38 @@ public class PlanController {
 
         return response;
     }
+
+    @PostMapping("/getroute")
+    public ResponseEntity<String> getRouteTmap(@RequestBody List<Long> requestDto){
+        String tmapApiKey=tmapConfig.getTmapApiKey();
+        String tmapUrl=tmapConfig.getTmapUrl();
+        DefaultUriBuilderFactory factory=new DefaultUriBuilderFactory(tmapUrl);
+        factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
+
+        WebClient wc= WebClient.builder()
+                .uriBuilderFactory(factory)
+                .baseUrl(tmapUrl)
+                .build();
+
+
+
+
+
+
+//        ResponseEntity<String> response=wc.post()
+//                .uri(uriBuilder -> uriBuilder.path("/tmap/routes")
+//                        .build())
+//                .header("appKey",tmapApiKey)
+//                .bodyValue(requestDto)
+//                .retrieve()
+//                .toEntity(String.class)
+//                .block();
+
+
+
+        return null;
+    }
+
+
 
 }
