@@ -12,6 +12,7 @@ import {
 import IconMaterial from 'react-native-vector-icons/MaterialCommunityIcons';
 import IconFont6 from 'react-native-vector-icons/FontAwesome6';
 import InviteMember from './InviteMember.js';
+import Header from '../component/Header.js';
 
 //const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 const pixelRatio = PixelRatio.get();
@@ -21,6 +22,7 @@ const MakeGroup = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[styles.container]}>
+      <Header navigation={navigation} title={"그룹 만들기"}/> 
       <Image source={MakeGroupImage} style={[styles.img]} />
       <View style={styles.buttonWrapper}>
         <Text style={styles.groupText}>당신은 누구인가요?</Text>
