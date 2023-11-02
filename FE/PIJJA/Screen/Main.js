@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
   },
   travelSpotImg: {
     width: screenWidth * 0.25,
-    height: 110,
+    height: screenHeight * 0.17,
     resizeMode: 'stretch',
     borderRadius: 3,
   },

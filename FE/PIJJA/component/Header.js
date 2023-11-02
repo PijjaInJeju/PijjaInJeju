@@ -26,7 +26,9 @@ const Header = ({ navigation, title }) => {
         >
             <TouchableOpacity
                 style={{
-                    width: '5%'
+                    width: '5%',
+                    paddingLeft: '1%',
+                    marginTop: '1%',
                 }}
                 onPress={
                     () => {
@@ -36,8 +38,8 @@ const Header = ({ navigation, title }) => {
                 >
                 <Image
                     style={{
-                        width: 30,
-                        height: 30,
+                        width: 15 * pixelRatio,
+                        height: 15 * pixelRatio,
                         resizeMode: 'stretch',
                     } }
                     source={Logo}
@@ -45,7 +47,8 @@ const Header = ({ navigation, title }) => {
             </TouchableOpacity>
             <View
                 style={{
-                    width: '90%',
+                    width: '88%',
+                    paddingLeft: 1,
                     alignItems: 'center',
                 }}
             >
@@ -59,7 +62,8 @@ const Header = ({ navigation, title }) => {
             </View>
             <Icon
                 style={{
-                    width: '5%'
+                    width: '5%',
+                    paddingRight: '1%',
                 }}
                 name='menu' 
                 size={30}
