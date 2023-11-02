@@ -18,7 +18,8 @@ public class PlaceTestServiceImpl implements PlaceTestService {
     @Override
     @Transactional(readOnly = true)
     public boolean isPlace(SearchPlaceFromTmapRequestDto requestDto) {
-        String placeName= requestDto.getPlace();
+        String placeName= requestDto.getPlace().replaceAll(" ","");
+
         if(placeTestRepository.findByName(placeName)==null){
             return false;
         }

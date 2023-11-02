@@ -109,7 +109,9 @@ public class PlanController {
                     .baseUrl(tmapUrl)
                     .build();
 
-            String encodedPlace = URLEncoder.encode(requestDto.getPlace(), StandardCharsets.UTF_8);
+            String placeName= requestDto.getPlace().replaceAll(" ","");
+
+            String encodedPlace = URLEncoder.encode(placeName, StandardCharsets.UTF_8);
             //tmap api 호출
             ResponseEntity<String> result = wc.get()
                     .uri(uriBuilder -> uriBuilder.path("/tmap/pois")
