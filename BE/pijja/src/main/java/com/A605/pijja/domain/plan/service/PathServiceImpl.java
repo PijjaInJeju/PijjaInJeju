@@ -2,6 +2,7 @@ package com.A605.pijja.domain.plan.service;
 
 import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
 import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto2;
+import com.A605.pijja.domain.plan.dto.response.CombinationListResponseDto;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
 import com.A605.pijja.domain.plan.entity.Path;
 import com.A605.pijja.domain.plan.entity.PlaceTest;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -51,19 +53,15 @@ public class PathServiceImpl implements PathService {
     }
 
 
-
-
-
-
-
-
-    public void combination(PlaceTest[] result,List<PlaceTest> placeList,int start,int cnt){
+    @Override
+    public void combination(int[] result,int start, int cnt,int size){
         if(cnt==2){
+            System.out.println(Arrays.toString(result));
             return ;
         }
-        for(int i=start;i<placeList.size();i++){
-            result[cnt]=placeList.get(i);
-            combination(result,placeList,i+1,cnt+1);
+        for(int i=start;i<size;i++){
+            result[cnt]=i;
+            combination(result,i+1,cnt+1,size);
         }
 
     }
