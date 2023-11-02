@@ -23,6 +23,6 @@ public class Path {
 
     private float distance;
 
-    private Long time;
+    private float time;
 
 }

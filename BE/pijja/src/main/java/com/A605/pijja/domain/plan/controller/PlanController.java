@@ -1,8 +1,11 @@
 package com.A605.pijja.domain.plan.controller;
 
+import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
 import com.A605.pijja.domain.plan.dto.request.SearchPlaceFromTmapRequestDto;
+import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
 import com.A605.pijja.domain.plan.dto.response.SearchPlaceFromTmapResponseDto;
 import com.A605.pijja.domain.plan.entity.PlaceTest;
+import com.A605.pijja.domain.plan.service.PathService;
 import com.A605.pijja.domain.plan.service.PlaceTestService;
 import com.A605.pijja.global.tmap.TmapConfig;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -26,6 +29,7 @@ import java.util.List;
 public class PlanController {
     private final TmapConfig tmapConfig;
     private final PlaceTestService placeTestService;
+    private final PathService pathService;
 
     @PostMapping("test")
     public List<SearchPlaceFromTmapResponseDto> searchPlaceFromTmap2(@RequestBody SearchPlaceFromTmapRequestDto requestDto) throws JsonProcessingException {
@@ -196,34 +200,54 @@ public class PlanController {
     }
 
     @PostMapping("/getroute")
-    public ResponseEntity<String> getRouteTmap(@RequestBody List<Long> requestDto){
+    public GetRouteTmapResponseDto getRouteTmap(@RequestBody List<Long> requestDto){
         String tmapApiKey=tmapConfig.getTmapApiKey();
         String tmapUrl=tmapConfig.getTmapUrl();
         DefaultUriBuilderFactory factory=new DefaultUriBuilderFactory(tmapUrl);
         factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
 
-        WebClient wc= WebClient.builder()
-                .uriBuilderFactory(factory)
-                .baseUrl(tmapUrl)
-                .build();
+        GetRouteTmapResponseDto response=pathService.searchRoute(requestDto);
 
+        if(response==null){
+            WebClient wc= WebClient.builder()
+                    .uriBuilderFactory(factory)
+                    .baseUrl(tmapUrl)
+                    .build();
 
+            ResponseEntity<String> result=wc.post()
+                .uri(uriBuilder -> uriBuilder.path("/tmap/routes")
+                        .build())
+                .header("appKey",tmapApiKey)
+                .bodyValue(requestDto)
+                .retrieve()
+                .toEntity(String.class)
+                .block();
+            // JSON 응답 문자열
+            String jsonResponse = result.getBody();
 
+            // Jackson ObjectMapper를 사용하여 JSON 파싱
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                JsonNode jsonNode = objectMapper.readTree(jsonResponse);
+                JsonNode totalDistance=jsonNode.at("/features/0/properties/totalDistance");
+                JsonNode totalTime=jsonNode.at("/features/0/properties/totalTime");
 
+                GetRouteTmapRequestDto request= GetRouteTmapRequestDto.builder()
+                        .startPlaceId(requestDto.get(0))
+                        .endPlaceId(requestDto.get(1))
+                        .distance(totalDistance.floatValue())
+                        .time(totalDistance.floatValue()).build();
+                pathService.addPath(request);
+                response=pathService.searchRoute(requestDto);
 
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
 
-//        ResponseEntity<String> response=wc.post()
-//                .uri(uriBuilder -> uriBuilder.path("/tmap/routes")
-//                        .build())
-//                .header("appKey",tmapApiKey)
-//                .bodyValue(requestDto)
-//                .retrieve()
-//                .toEntity(String.class)
-//                .block();
+        }
 
-
-
-        return null;
+        return response;
     }
 
 
