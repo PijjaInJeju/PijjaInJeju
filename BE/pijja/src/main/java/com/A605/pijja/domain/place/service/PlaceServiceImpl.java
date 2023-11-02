@@ -100,6 +100,10 @@ public class PlaceServiceImpl implements PlaceService {
                 .type1(list.get(0).type)
                 .type2(list.get(1).type)
                 .build();
+
+//        place.getMate1().replace(place.getMate1(), list.get(0).type);
+//        place.getMate2().replace(place.getMate2(), list.get(1).type);
+
         return responseDto;
     }
 }
