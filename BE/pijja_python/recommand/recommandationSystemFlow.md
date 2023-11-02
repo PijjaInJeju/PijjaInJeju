@@ -4,189 +4,20 @@
 <summary>DB에 저장된 여행 경로 데이터 예시</summary>
 <div markdown="1">
 
-```json
-    {
-        "type": "FeatureCollection",
-        "features": [
-            {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        127.03623707637095,
-                        37.5004967273559
-                    ]
-                },
-                "properties": {
-                    "totalDistance": 861,
-                    "totalTime": 244,
-                    "totalFare": 0,
-                    "taxiFare": 4800,
-                    "index": 0,
-                    "pointIndex": 0,
-                    "name": "",
-                    "description": "테헤란로 을 따라  방면으로 15m 이동",
-                    "nextRoadName": "테헤란로",
-                    "turnType": 200,
-                    "pointType": "S"
-                }
-            },
-            {
-                "type": "Feature",
-                "geometry": {
-                    "type": "LineString",
-                    "coordinates": [
-                        [
-                            127.03623707637095,
-                            37.5004967273559
-                        ],
-                        [
-                            127.03640094900861,
-                            37.50054394703577
-                        ]
-                    ]
-                },
-                "properties": {
-                    "index": 1,
-                    "lineIndex": 0,
-                    "name": "테헤란로",
-                    "description": "테헤란로, 15m",
-                    "distance": 15,
-                    "time": 75,
-                    "roadType": 5,
-                    "facilityType": 0
-                }
-            },
-            {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        127.03640094900861,
-                        37.50054394703577
-                    ]
-                },
-                "properties": {
-                    "index": 2,
-                    "pointIndex": 1,
-                    "name": "역삼역",
-                    "description": "역삼역 에서 U턴 후 테헤란로 을 따라 846m 이동 ",
-                    "nextRoadName": "테헤란로",
-                    "turnType": 14,
-                    "pointType": "N"
-                }
-            },
-            {
-                "type": "Feature",
-                "geometry": {
-                    "type": "LineString",
-                    "coordinates": [
-                        [
-                            127.03640094900861,
-                            37.50054394703577
-                        ],
-                        [
-                            127.0363231735163,
-                            37.50071337040164
-                        ],
-                        [
-                            127.03603431343353,
-                            37.500624486650466
-                        ],
-                        [
-                            127.03561213333066,
-                            37.50049393867847
-                        ],
-                        [
-                            127.0355899133666,
-                            37.50048560591409
-                        ],
-                        [
-                            127.03471500007178,
-                            37.50023561924247
-                        ],
-                        [
-                            127.03467889256143,
-                            37.50022450877363
-                        ],
-                        [
-                            127.03391230281892,
-                            37.499971746592585
-                        ],
-                        [
-                            127.03317071001534,
-                            37.49974675941213
-                        ],
-                        [
-                            127.0330346124702,
-                            37.49970509514167
-                        ],
-                        [
-                            127.03276241753704,
-                            37.499616211690565
-                        ],
-                        [
-                            127.03098481671779,
-                            37.49908013093717
-                        ],
-                        [
-                            127.0298571514778,
-                            37.498730151347296
-                        ],
-                        [
-                            127.02842673907917,
-                            37.49827184557418
-                        ],
-                        [
-                            127.02832397159786,
-                            37.49823851426796
-                        ],
-                        [
-                            127.02781846637353,
-                            37.498085745162186
-                        ],
-                        [
-                            127.02769347877101,
-                            37.49804963600205
-                        ],
-                        [
-                            127.02761570877878,
-                            37.49802463750997
-                        ]
-                    ]
-                },
-                "properties": {
-                    "index": 3,
-                    "lineIndex": 1,
-                    "name": "테헤란로",
-                    "description": "테헤란로, 846m",
-                    "distance": 846,
-                    "time": 169,
-                    "roadType": 7,
-                    "facilityType": 0
-                }
-            },
-            {
-                "type": "Feature",
-                "geometry": {
-                    "type": "Point",
-                    "coordinates": [
-                        127.02761570877878,
-                        37.49802463750997
-                    ]
-                },
-                "properties": {
-                    "index": 4,
-                    "pointIndex": 2,
-                    "name": "강남역",
-                    "description": "도착",
-                    "nextRoadName": "",
-                    "turnType": 201,
-                    "pointType": "E"
-                }
-            }
-        ]
-    }
+```java
+
+public class route{
+    int totalDistance;
+    position start, end;
+    ArraryList<position> movingPositionList;
+    
+}
+
+
+public class position{
+    int x, y;
+}
+
 ```
 
 </div>
