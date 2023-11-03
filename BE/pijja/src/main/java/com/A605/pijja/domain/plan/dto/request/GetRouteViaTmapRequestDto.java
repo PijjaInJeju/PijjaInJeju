@@ -10,11 +10,12 @@ import java.util.List;
 @AllArgsConstructor
 public class GetRouteViaTmapRequestDto {
     private String startName;
-    private float startX; //lon이 X
-    private float startY;  //lat이 Y
+    private String startX; //lon이 X
+    private String startY;  //lat이 Y
+    private String startTime;
     private String endName;
-    private float endX;
-    private float endY;
+    private String endX;
+    private String endY;
     private List<viaPointDto> viaPoints;
 
     @Getter
@@ -22,8 +23,9 @@ public class GetRouteViaTmapRequestDto {
     @NoArgsConstructor(access= AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class viaPointDto{
+        private String viaPointId;
         private String viaPointName;
-        private float viaX;
-        private float viaY;
+        private String viaX;
+        private String viaY;
     }
 }

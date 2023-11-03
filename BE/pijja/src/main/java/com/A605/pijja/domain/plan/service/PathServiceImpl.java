@@ -105,6 +105,7 @@ public class PathServiceImpl implements PathService {
                 .startName(encodedStartName)
                 .startX(requestDto.getStartX())
                 .startY(requestDto.getStartY())
+                .startTime(requestDto.getStartTime())
                 .endName(encodedEndName)
                 .endX(requestDto.getEndX())
                 .endY(requestDto.getEndY())

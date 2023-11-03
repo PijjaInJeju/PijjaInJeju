@@ -117,9 +117,9 @@ public class PlanController {
 
     @PostMapping("/getroutevia")
     public ResponseEntity<String> getRouteViaTmap(@RequestBody GetRouteViaTmapRequestDto requestDto){
+        System.out.println(requestDto);
+        return pathService.getRouteViaTmap(requestDto);
 
-        pathService.getRouteViaTmap(requestDto);
-        return null;
     }
 
 
