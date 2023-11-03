@@ -2,6 +2,7 @@ package com.A605.pijja.domain.plan.service;
 
 import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
 import com.A605.pijja.domain.plan.dto.request.AddRouteRequestDto;
+import com.A605.pijja.domain.plan.dto.request.GetRouteViaTmapRequestDto;
 import com.A605.pijja.domain.plan.dto.request.TmapRequestDto;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
 import com.A605.pijja.domain.plan.entity.Path;
@@ -19,6 +20,8 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -80,6 +83,42 @@ public class PathServiceImpl implements PathService {
             combination(request,result,i+1,cnt+1,size);
         }
 
+    }
+
+    @Override
+    public ResponseEntity<String> getRouteViaTmap(GetRouteViaTmapRequestDto requestDto) {
+        String tmapApiKey=tmapConfig.getTmapApiKey();
+        String tmapUrl=tmapConfig.getTmapUrl();
+        DefaultUriBuilderFactory factory=new DefaultUriBuilderFactory(tmapUrl);
+        factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
+
+        WebClient wc= WebClient.builder()
+                .uriBuilderFactory(factory)
+                .baseUrl(tmapUrl)
+                .build();
+
+        String encodedStartName= URLEncoder.encode(requestDto.getStartName(),StandardCharsets.UTF_8);
+        String encodedEndName=URLEncoder.encode(requestDto.getEndName(),StandardCharsets.UTF_8);
+
+
+        GetRouteViaTmapRequestDto tmapRequest=GetRouteViaTmapRequestDto.builder()
+                .startName(encodedStartName)
+                .startX(requestDto.getStartX())
+                .startY(requestDto.getStartY())
+                .endName(encodedEndName)
+                .endX(requestDto.getEndX())
+                .endY(requestDto.getEndY())
+                .viaPoints(requestDto.getViaPoints())
+                .build();
+        ResponseEntity<String> result=wc.post()
+                .uri(uriBuilder -> uriBuilder.path("/tmap/routes/routeOptimization10")
+                        .build())
+                .header("appKey",tmapApiKey)
+                .bodyValue(tmapRequest)
+                .retrieve()
+                .toEntity(String.class)
+                .block();
+        return result;
     }
 
     public void routeSearchTmap(List<GetRouteTmapRequestDto> request){

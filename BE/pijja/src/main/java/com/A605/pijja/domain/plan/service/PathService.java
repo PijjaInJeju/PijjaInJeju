@@ -2,7 +2,9 @@ package com.A605.pijja.domain.plan.service;
 
 import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
 import com.A605.pijja.domain.plan.dto.request.AddRouteRequestDto;
+import com.A605.pijja.domain.plan.dto.request.GetRouteViaTmapRequestDto;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -13,6 +15,6 @@ public interface PathService {
 
     void combination(List<GetRouteTmapRequestDto> request,int[] result,int start, int cnt,int size);
 
-
+    ResponseEntity<String> getRouteViaTmap(GetRouteViaTmapRequestDto requestDto);
 
 }
