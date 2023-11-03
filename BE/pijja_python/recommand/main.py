@@ -14,3 +14,9 @@ class routgetRequestCommandDto(BaseModel):
     
     end: position
     movingPositionList: List[position]
+
+@app.get("/check")
+def test2(data: routgetRequestCommandDto):
+ 
+
+    return data
