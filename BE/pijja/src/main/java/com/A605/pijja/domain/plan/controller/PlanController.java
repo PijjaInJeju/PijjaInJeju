@@ -112,7 +112,7 @@ public class PlanController {
 
 
     @PostMapping("/getroute")
-    public void getRouteTmap3(@RequestBody List<GetRouteTmapRequestDto> requestDto){
+    public void getRouteTmap(@RequestBody List<GetRouteTmapRequestDto> requestDto){
 
         pathService.combination(requestDto,new int[2],0,0, requestDto.size());
 
