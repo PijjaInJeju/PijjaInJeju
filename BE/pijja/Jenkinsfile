@@ -1,0 +1,117 @@
+pipeline {
+    // 환경 설정
+    agent any
+
+    // 사용할 플러그인 명시
+    tools {
+        gradle 'Gradle-8.1.1'
+        dockerTool 'Docker'
+        jdk 'JDK-17.0.8'
+    }
+
+     environment {
+        // 생성될 스프링 도커 이미지 이름
+        springImageName = "chelim/pijja-backend"
+
+        // 젠킨스가 접속할 서버 정보 (ec2)
+        releaseServerAccount = 'ubuntu'
+        releaseServerUri = '54.180.132.135'
+        springReleasePort = '8080'
+    }
+
+    stages {
+        //현 디렉토리의 모든 파일 삭제
+        stage('Clear current directory') {
+            steps {
+                sh'''
+                    rm -rf *
+                '''
+            }
+        }
+        // Git Clone 진행
+        stage('git clone') {
+            steps {
+                checkout scmGit(branches: [[name: 'master']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlabToken', url: 'https://lab.ssafy.com/s09-final/S09P31A605.git']])
+            }
+        }
+
+        //application.properties파일 적용하기
+        stage('Apply application files') {
+            steps {
+                withCredentials(
+//                 [file(credentialsId: 'application-oauth.properties', variable: 'oauth'),
+//                                 file(credentialsId: 'application-jwt.properties', variable: 'jwt'),
+                                [file(credentialsId: 'application-rds', variable: 'rds'),
+                                file(credentialsId: 'application-redis', variable: 'redis')])
+                              {
+                    script {
+//                         sh 'cp $aws BE/pijja/src/main/resources/application-aws-credentials.properties'
+//                         sh 'cp $oauth BE/pijja/src/main/resources/application-oauth.properties'
+                        sh 'cp $redis BE/pijja/src/main/resources/application-redis.properties'
+                        sh 'cp $rds BE/pijja/src/main/resources/application-rds.properties'
+                    }
+                }
+            }
+        }
+
+        // 백엔드 빌드 진행
+        stage('be-build') {
+            steps {
+                dir("BE/pijja") {
+//                     sh "pwd"
+//                     sh "ls -al"
+                    sh "chmod +x ./gradlew"
+                    sh "./gradlew clean build"
+                    sh "ls -al"
+                }
+            }
+        }
+
+        // 기존 docker service 중단 밎 이미지 삭제 (react, spring)
+        stage('Before Service Stop') {
+            steps {
+                sshagent(credentials:['ubuntu']) {
+                    // 백엔드 도커 이미지가 존재하는 경우, 기존 도커 이미지 컨테이너 중지 -> 도커 이미지 삭제 -> 도커 컨테이너 삭제
+                    sh '''
+                    if test "`ssh -o StrictHostKeyChecking=no $releaseServerAccount@$releaseServerUri "docker ps -aq --filter ancestor=$springImageName:latest"`"; then
+                    ssh -o StrictHostKeyChecking=no $releaseServerAccount@$releaseServerUri "docker stop $(docker ps -aq --filter ancestor=$springImageName:latest)"
+                    ssh -o StrictHostKeyChecking=no $releaseServerAccount@$releaseServerUri "docker rm -f $(docker ps -aq --filter ancestor=$springImageName:latest)"
+                    ssh -o StrictHostKeyChecking=no $releaseServerAccount@$releaseServerUri "docker rmi $springImageName:latest"
+                    fi
+                    '''
+                }
+            }
+        }
+
+        // 백엔드 빌드
+            //  백엔드 코드로 도커 이미지 빌드, 해당 이미지를 도커 허브에 푸시, 도커 허브 사용하지 않을 예정
+        stage('Spring Docker Build and Push') {
+            steps {
+                dir("BE/pijja") {
+                    script {
+                        // docker.withRegistry('', registryCredential) {
+                            sh "ls -al"
+                            sh "chmod +x Dockerfile"
+                            sh "docker build -t $springImageName:$BUILD_NUMBER -f Dockerfile ."
+                            // sh "docker push $springImageName:$BUILD_NUMBER"
+                            sh "docker tag $springImageName:$BUILD_NUMBER $springImageName:latest"
+                            // sh "docker push $springImageName:latest"
+                            sh "docker rmi $springImageName:$BUILD_NUMBER"
+                        // }
+                    }
+                }
+            }
+        }
+
+        // 서버 실행 (react, spring)
+        stage('Service Start') {
+            steps {
+                sshagent(credentials: ['ubuntu']) {
+                    sh '''
+                        ssh -o StrictHostKeyChecking=no $releaseServerAccount@$releaseServerUri "sudo docker run -i --network ubuntu_default  -e TZ=Asia/Seoul -v /home/ubuntu/backup:/backup --name spring -p $springReleasePort:$springReleasePort -d $springImageName:latest"
+                    '''
+                }
+            }
+        }
+    }
+}
