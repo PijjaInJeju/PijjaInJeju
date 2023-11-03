@@ -2,6 +2,7 @@ package com.A605.pijja.domain.member.service;
 
 import com.A605.pijja.domain.member.dto.SuccessResponseDto;
 import com.A605.pijja.domain.member.dto.request.CompanionAddRequestDto;
+import com.A605.pijja.domain.member.dto.response.CompanionAddMemberDto;
 import com.A605.pijja.domain.member.entity.Companion;
 import com.A605.pijja.domain.member.entity.Member;
 import com.A605.pijja.domain.member.entity.MemberCompanion;
@@ -11,6 +12,7 @@ import com.A605.pijja.domain.member.repository.MemberCompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberRepository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityNotFoundException;
+import java.util.ArrayList;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -67,9 +69,25 @@ public class CompanionRegistService {
                 .mate(companionAddRequestDto.getMate())
                 .startTime(companionAddRequestDto.getStartTime())
                 .endTime(companionAddRequestDto.getEndTime())
+                .companionMembers(new ArrayList<>())
                 .build();
 
         companionRepository.save(companion);
+
+        ArrayList<Long> list = new ArrayList<>();
+        for (MemberCompanion memberCompanion1 : companion.getCompanionMembers()) {
+            list.add(memberCompanion1.getId());
+        }
+
+        CompanionAddMemberDto test = CompanionAddMemberDto.builder()
+                .name(companion.getName())
+                .isStart(companion.getIsStart())
+                .endTime(companion.getEndTime())
+                .mate(companion.getMate())
+                .tendency(companion.getTendency())
+                .startTime(companion.getStartTime())
+                .memberId(list)
+                .build();
 
         // MemberCompanion 엔티티를 생성
         MemberCompanion memberCompanion = MemberCompanion.builder()
@@ -80,10 +98,13 @@ public class CompanionRegistService {
 
         memberCompanionRepository.save(memberCompanion);
 
-        em.flush();
-
-        // 등록 성공 응답을 생성하고 반환
+        // 가입 성공 응답을 생성하고 반환
         return ResponseEntity.ok()
-                .body(new SuccessResponseDto(true, "그룹 등록이 완료되었습니다.", companion));
+                .body(new SuccessResponseDto(true, "그룹에 참여되었습니다.", test));
+
+//
+//        // 등록 성공 응답을 생성하고 반환
+//        return ResponseEntity.ok()
+//                .body(new SuccessResponseDto(true, "그룹 등록이 완료되었습니다.", companion));
     }
 }

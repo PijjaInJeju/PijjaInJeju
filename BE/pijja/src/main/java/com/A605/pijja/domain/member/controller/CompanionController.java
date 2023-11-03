@@ -31,7 +31,7 @@ public class CompanionController {
     // 그룹 생성 엔드포인트
     @PostMapping
     public ResponseEntity companionAdd(@RequestBody CompanionAddRequestDto companionAddRequestDto) {
-        // CompanionRegistService를 사용하여 새로운 동반자 그룹을 생성하고 결과를 반환합니다.
+        // CompanionRegistService를 사용하여 새로운 여행 그룹을 생성하고 결과를 반환합니다.
         return companionRegistService.registCompanion(companionAddRequestDto);
     }
 
@@ -39,7 +39,7 @@ public class CompanionController {
     @GetMapping("/{companionId}")
     public ResponseEntity companionMemberDetails(
             @RequestBody CompanionIdRequestDto CompanionIdRequestDto) {
-        // CompanionsMemberService를 사용하여 특정 동반자 그룹의 멤버 목록을 조회하고 반환합니다.
+        // CompanionsMemberService를 사용하여 특정 여행 그룹 그룹의 멤버 목록을 조회하고 반환합니다.
         return companionsMemberService.getMemberOfCompanion(CompanionIdRequestDto);
     }
 
@@ -47,22 +47,22 @@ public class CompanionController {
     @PostMapping("/invite")
     public ResponseEntity companionMemberInvite(
             @RequestBody CompanionInviteRequestDto CompanionInviteRequestDto) {
-        // CompanionInviteService를 사용하여 멤버를 동반자 그룹에 초대하고 결과를 반환합니다.
+        // CompanionInviteService를 사용하여 멤버를 여행 그룹 그룹에 초대하고 결과를 반환합니다.
         return companionInviteService.inviteMember(CompanionInviteRequestDto);
     }
 
-    // 동반자 그룹 가입 엔드포인트
+    // 여행 그룹 그룹 가입 엔드포인트
     @PostMapping("/join")
     public ResponseEntity companionMemberJoin(
             @RequestBody CompanionJoinRequestDto companionJoinRequestDto) {
-        // CompanionJoinService를 사용하여 동반자 그룹에 가입하고 결과를 반환합니다.
+        // CompanionJoinService를 사용하여 여행 그룹 그룹에 가입하고 결과를 반환합니다.
         return companionJoinService.joinCompanion(companionJoinRequestDto);
     }
 
-    // 모든 동반자 그룹 목록 조회 엔드포인트
+    // 모든 여행 그룹 그룹 목록 조회 엔드포인트
     @GetMapping
     public ResponseEntity companions() {
-        // CompanionListService를 사용하여 모든 동반자 그룹의 목록을 조회하고 반환합니다.
+        // CompanionListService를 사용하여 모든 여행 그룹 그룹의 목록을 조회하고 반환합니다.
         return companionListService.getAllCompanions();
     }
 }

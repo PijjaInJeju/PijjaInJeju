@@ -21,8 +21,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class Member {
 
-    // Member 엔티티는 시스템 사용자를 나타내며, 동반자와의 다대다 관계를 허용합니다.
-    // 각 회원은 여러 개의 동반자와 연결될 수 있으며, 동반자 정보를 관리합니다.
+    // Member 엔티티는 사용자를 나타내며, 여행 그룹과의 다대다 관계를 허용합니다.
+    // 각 회원은 여러 개의 여행 그룹과 연결될 수 있으며, 여행 그룹 정보를 관리합니다.
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
