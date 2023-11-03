@@ -1,9 +1,6 @@
 package com.A605.pijja.domain.plan.controller;
 
-import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
-import com.A605.pijja.domain.plan.dto.request.AddRouteRequestDto;
-import com.A605.pijja.domain.plan.dto.request.SearchPlaceFromTmapRequestDto;
-import com.A605.pijja.domain.plan.dto.request.TmapRequestDto;
+import com.A605.pijja.domain.plan.dto.request.*;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
 import com.A605.pijja.domain.plan.dto.response.SearchPlaceFromTmapResponseDto;
 import com.A605.pijja.domain.plan.entity.PlaceTest;
@@ -20,6 +17,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
@@ -34,7 +32,7 @@ public class PlanController {
     private final PathService pathService;
 
     @PostMapping("")
-    public SearchPlaceFromTmapResponseDto searchPlaceFromTmap(@RequestBody SearchPlaceFromTmapRequestDto requestDto) throws JsonProcessingException {
+    public SearchPlaceFromTmapResponseDto searchPlaceFromTmap(@RequestBody SearchPlaceFromTmapRequestDto requestDto) throws JsonProcessingException, UnsupportedEncodingException {
         List<SearchPlaceFromTmapResponseDto> responseDto=new ArrayList<>();
         boolean isPlace=placeTestService.isPlace(requestDto);
         if(!isPlace){ //db저장 X
@@ -49,9 +47,8 @@ public class PlanController {
                     .baseUrl(tmapUrl)
                     .build();
 
-            String placeName= requestDto.getPlace().replaceAll(" ","");
+            String encodedPlace=URLEncoder.encode(requestDto.getPlace(),StandardCharsets.UTF_8);
 
-            String encodedPlace = URLEncoder.encode(placeName, StandardCharsets.UTF_8);
             //tmap api 호출
             ResponseEntity<String> result = wc.get()
                     .uri(uriBuilder -> uriBuilder.path("/tmap/pois")
@@ -116,6 +113,11 @@ public class PlanController {
 
         pathService.combination(requestDto,new int[2],0,0, requestDto.size());
 
+    }
+
+    @PostMapping("/getroutevia")
+    public ResponseEntity<String> getRouteViaTmap(@RequestBody GetRouteViaTmapRequestDto requestDto){
+        return null;
     }
 
 
