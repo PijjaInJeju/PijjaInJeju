@@ -8,4 +8,9 @@ class position(BaseModel):
     x: float
     y: float
 
-
+class routgetRequestCommandDto(BaseModel):
+    totalDistance: int
+    start: position
+    
+    end: position
+    movingPositionList: List[position]
