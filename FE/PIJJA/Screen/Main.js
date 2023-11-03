@@ -135,7 +135,7 @@ const MainScreen = ({ navigation }) => {
   };
   return (
     <SafeAreaView style={styles.container}>
-      <Header navigation={navigation} title={'메인화면'} />
+      <Header navigation={navigation} title={'메인화면'} menu={true} />
       <View style={styles.logoWrapper}>
         <Image
           style={styles.logoImage}
@@ -168,12 +168,6 @@ const MainScreen = ({ navigation }) => {
           />
         </View>
       </View>
-      <Button
-        title="fdsfsafas"
-        onPress={() => {
-          navigation.navigate('CreateScheduleMap');
-        }}
-      />
     </SafeAreaView>
   );
 };
@@ -203,10 +197,16 @@ const Main = () => {
         //   color:
         // },
         headerShown: false,
+        drawerPosition: "right"
       }}
       initialRouteName="Main"
+      
     >
-      <Drawer.Screen name="PIJJA" component={MainScreen} />
+      <Drawer.Screen 
+        name="MainScreen" 
+        component={MainScreen}
+        options={{ drawerLabel: 'MainScreen' }}
+      />
       <Drawer.Screen name="여행계획 만들기" component={MakeGroup} />
       <Drawer.Screen name="여행계획 보기" component={TripPlanCheck} />
       <Drawer.Screen name="갤러리" component={Gallery} />
