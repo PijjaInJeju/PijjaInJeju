@@ -1,8 +1,11 @@
 from fastapi import FastAPI
+from pydantic import BaseModel
+from typing import List
 
 app = FastAPI()
 
-@app.get("/test")
-def test():
-    return '테스트 완료'
+class position(BaseModel):
+    x: float
+    y: float
+
 
