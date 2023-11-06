@@ -1,9 +1,6 @@
 package com.A605.pijja.domain.plan.service;
 
-import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
-import com.A605.pijja.domain.plan.dto.request.AddRouteRequestDto;
-import com.A605.pijja.domain.plan.dto.request.GetRouteViaTmapRequestDto;
-import com.A605.pijja.domain.plan.dto.request.TmapRequestDto;
+import com.A605.pijja.domain.plan.dto.request.*;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
 import com.A605.pijja.domain.plan.entity.Path;
 import com.A605.pijja.domain.plan.entity.PlaceTest;
@@ -25,6 +22,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.PriorityQueue;
 
 @Service
 @RequiredArgsConstructor
@@ -62,10 +60,15 @@ public class PathServiceImpl implements PathService {
         pathRepository.save(newPath);
     }
 
+    @Override
+    public int kruskal(List<GetRouteTmapRequestDto> request){
+
+        return 0;
+    }
 
     @Override
     @Transactional
-    public void combination(List<GetRouteTmapRequestDto> request,int[] result,int start, int cnt,int size){
+    public PriorityQueue<KruskalRequestDto> combination(List<GetRouteTmapRequestDto> request, int[] result, int start, int cnt, int size,PriorityQueue<KruskalRequestDto> pq){
         if(cnt==2){
             List<GetRouteTmapRequestDto> requestTmapList=new ArrayList<>();
             requestTmapList.add(request.get(result[0]));
@@ -76,13 +79,17 @@ public class PathServiceImpl implements PathService {
                 routeSearchTmap(requestTmapList);
                 searchResult=searchRoute(request.get(result[0]).getId(),request.get(result[1]).getId());
             }
-            return ;
+            pq.add(KruskalRequestDto.builder()
+                    .place1(request.get(result[0]).getId())
+                    .place2(request.get(result[1]).getId())
+                    .dist(searchResult.getDistance()).build());
+            return pq;
         }
         for(int i=start;i<size;i++){
             result[cnt]=i;
-            combination(request,result,i+1,cnt+1,size);
+            combination(request,result,i+1,cnt+1,size,pq);
         }
-
+        return pq;
     }
 
     @Override
