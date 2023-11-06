@@ -1,5 +1,6 @@
 package com.A605.pijja.domain.member.service;
 
+import com.A605.pijja.domain.member.dto.FailResponseDto;
 import com.A605.pijja.domain.member.dto.SuccessResponseDto;
 import com.A605.pijja.domain.member.dto.request.MemberRegistRequestDto;
 import com.A605.pijja.domain.member.dto.response.MemberDetailDto;
@@ -38,7 +39,7 @@ public class MemberRegistService {
 
             // 이미 존재하는 이메일인 경우 실패 응답 반환
             return ResponseEntity.status(409)
-                    .body(new SuccessResponseDto(false, "이미 존재하는 이메일입니다.", 409));
+                    .body(new FailResponseDto(false, "이미 존재하는 이메일입니다.", 409));
         } else {
             // 회원 객체를 생성하여 저장
             Member member = Member.builder()

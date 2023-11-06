@@ -1,5 +1,6 @@
 package com.A605.pijja.domain.member.service;
 
+import com.A605.pijja.domain.member.dto.FailResponseDto;
 import com.A605.pijja.domain.member.dto.SuccessResponseDto;
 import com.A605.pijja.domain.member.dto.request.CompanionAddRequestDto;
 import com.A605.pijja.domain.member.dto.response.CompanionCreateDto;
@@ -11,7 +12,10 @@ import com.A605.pijja.domain.member.repository.CompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberCompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberRepository;
 import jakarta.persistence.EntityManager;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -60,6 +64,27 @@ public class CompanionRegistService {
                 .orElse(null);
 
         Long memberId = member.getId();
+
+        LocalDateTime startTime = companionAddRequestDto.getStartTime();
+
+        LocalDateTime endTime = companionAddRequestDto.getEndTime();
+
+        LocalDateTime currentTime = getCurrentLocalDateTime();
+
+        if (startTime.isBefore(currentTime)) {
+            return ResponseEntity.status(400)
+                    .body(new FailResponseDto(false, "시작 날짜가 현재 날짜보다 이전입니다.", 400));
+        }
+
+        if (endTime.isBefore(currentTime)) {
+            return ResponseEntity.status(400)
+                    .body(new FailResponseDto(false, "종료 날짜가 현재 날짜보다 이전입니다.", 400));
+        }
+
+        if (endTime.isBefore(startTime)) {
+            return ResponseEntity.status(400)
+                    .body(new FailResponseDto(false, "종료 날짜가 시작 날짜보다 이전입니다.", 400));
+        }
 
         Companion companion = Companion.builder()
                 .name(companionAddRequestDto.getName())
@@ -118,5 +143,10 @@ public class CompanionRegistService {
         companion.getCompanionMembers().add(memberCompanion);
         member.getMyCompanions().add(memberCompanion);
 
+    }
+
+    private LocalDateTime getCurrentLocalDateTime() {
+        Date date = new Date();
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 }
