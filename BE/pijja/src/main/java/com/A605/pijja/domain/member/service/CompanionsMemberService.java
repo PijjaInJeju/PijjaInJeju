@@ -2,9 +2,8 @@ package com.A605.pijja.domain.member.service;
 
 import com.A605.pijja.domain.member.dto.FailResponseDto;
 import com.A605.pijja.domain.member.dto.SuccessResponseDto;
-import com.A605.pijja.domain.member.dto.request.CompanionIdRequestDto;
+import com.A605.pijja.domain.member.dto.response.MemberListDto;
 import com.A605.pijja.domain.member.entity.Companion;
-import com.A605.pijja.domain.member.entity.Member;
 import com.A605.pijja.domain.member.entity.MemberCompanion;
 import com.A605.pijja.domain.member.repository.CompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberCompanionRepository;
@@ -27,11 +26,10 @@ public class CompanionsMemberService {
     /**
      * 특정 그룹의 멤버 목록을 반환하는 메서드입니다.
      *
-     * @param memberCompanionListDto 그룹 식별자를 가지고 있는 DTO
+     * @param companionId 그룹의 id값
      * @return ResponseEntity 객체를 반환하여 멤버 목록을 성공적으로 반환합니다.
      */
-    public ResponseEntity getMemberOfCompanion(CompanionIdRequestDto memberCompanionListDto) {
-        Long companionId = memberCompanionListDto.getCompanionId();
+    public ResponseEntity getMemberOfCompanion(Long companionId) {
         Optional<Companion> companionOptional = companionRepository.findById(companionId);
 
         // 그룹이 존재하지 않는 경우
@@ -45,9 +43,13 @@ public class CompanionsMemberService {
         List<MemberCompanion> memberCompanions = memberCompanionRepository.findByCompanion(
                 companion);
 
-        // 멤버 목록을 가져와 스트림을 사용해 변환합니다.
-        List<Member> members = memberCompanions.stream()
-                .map(MemberCompanion::getMember)
+        // 멤버 목록을 스트림을 사용해 변환
+        List<MemberListDto> members = memberCompanions.stream()
+                .map(memberCompanion -> MemberListDto.builder()
+                        .id(memberCompanion.getMember().getId())
+                        .email(memberCompanion.getMember().getEmail())
+                        .nickname(memberCompanion.getMember().getNickname())
+                        .build())
                 .collect(Collectors.toList());
 
         // 멤버 목록을 반환하는 성공 응답을 생성하고 반환

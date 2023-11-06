@@ -1,7 +1,6 @@
 package com.A605.pijja.domain.member.controller;
 
 import com.A605.pijja.domain.member.dto.request.CompanionAddRequestDto;
-import com.A605.pijja.domain.member.dto.request.CompanionIdRequestDto;
 import com.A605.pijja.domain.member.dto.request.CompanionInviteRequestDto;
 import com.A605.pijja.domain.member.dto.request.CompanionJoinRequestDto;
 import com.A605.pijja.domain.member.service.CompanionInviteService;
@@ -12,6 +11,7 @@ import com.A605.pijja.domain.member.service.CompanionsMemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,9 +38,9 @@ public class CompanionController {
     // 그룹 멤버 리스트 조회 엔드포인트
     @GetMapping("/{companionId}")
     public ResponseEntity companionMemberDetails(
-            @RequestBody CompanionIdRequestDto CompanionIdRequestDto) {
+            @PathVariable Long companionId) {
         // CompanionsMemberService를 사용하여 특정 여행 그룹 그룹의 멤버 목록을 조회하고 반환합니다.
-        return companionsMemberService.getMemberOfCompanion(CompanionIdRequestDto);
+        return companionsMemberService.getMemberOfCompanion(companionId);
     }
 
     // 멤버 초대 엔드포인트
