@@ -60,11 +60,16 @@ public class PathServiceImpl implements PathService {
     @Override
     public int kruskal(PriorityQueue<KruskalRequestDto> pq,List<GetRouteTmapRequestDto> requestDto){
         int answer=0;
+        ArrayList<Long> route=new ArrayList<>();
+        ArrayList<Integer>[] arr=new ArrayList[requestDto.size()];
         HashMap<Long,Integer> map=new HashMap<>(); //map<placeId,idx>
+        HashMap<Integer,Long> map2=new HashMap<>(); //map<placeId,idx>
         int[] parent=new int[requestDto.size()];
         for(int i=0;i<requestDto.size();i++){
+            arr[i]=new ArrayList<>();
             if(!map.containsKey(requestDto.get(i).getId())){
                 map.put(requestDto.get(i).getId(),i);
+                map2.put(i,requestDto.get(i).getId());
                 parent[i]=i;
             }
         }
@@ -72,13 +77,37 @@ public class PathServiceImpl implements PathService {
             KruskalRequestDto now=pq.poll();
             int place1=map.get(now.getPlace1());
             int place2=map.get(now.getPlace2());
+
             if(find(place1,parent)!=find(place2,parent)){
+                arr[place1].add(place2);
+                arr[place2].add(place1);
                 union(place1,place2,parent);
                 answer+=now.getDist();
             }
         }
+        int start=0;
+        ArrayDeque<Integer> q=new ArrayDeque<>();
+        int[] ch=new int[requestDto.size()];
+        for(int i=0;i<requestDto.size();i++){
+            if(arr[i].size()==1){
+                q.add(i);
+                break;
+            }
+        }
 
+        while(!q.isEmpty()){
+            int now=q.poll();
+            route.add(map2.get(now));
+            ch[now]=1;
+            for(int i=0;i<arr[now].size();i++){
+                int next=arr[now].get(i);
+                if(ch[next]==0){
+                    q.add(next);
+                }
+            }
+        }
 
+        System.out.println(route);
         return answer;
     }
     public int find(int x,int[] parent){
