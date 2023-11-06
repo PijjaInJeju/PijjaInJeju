@@ -233,6 +233,7 @@ public class PathServiceImpl implements PathService {
                                 .longitude(nodeList.get(0).floatValue())
                                 .build());
                     }
+                    System.out.println("FEFEF");
                 }
             }
             AddRouteRequestDto addRequest= AddRouteRequestDto.builder()
