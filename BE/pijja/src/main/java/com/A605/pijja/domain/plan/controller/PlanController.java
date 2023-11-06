@@ -111,8 +111,9 @@ public class PlanController {
 
     @PostMapping("/getroute")
     public void getRouteTmap(@RequestBody List<GetRouteTmapRequestDto> requestDto){
-        pathService.combination(requestDto,new int[2],0,0, requestDto.size(),new PriorityQueue<>());
-
+        PriorityQueue<KruskalRequestDto> pq=pathService.combination(requestDto,new int[2],0,0, requestDto.size(),new PriorityQueue<>());
+        int answer=pathService.kruskal(pq,requestDto);
+        System.out.println(answer);
     }
 
     @PostMapping("/getroutevia")

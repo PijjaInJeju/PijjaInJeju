@@ -19,10 +19,7 @@ import org.springframework.web.util.DefaultUriBuilderFactory;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -61,9 +58,47 @@ public class PathServiceImpl implements PathService {
     }
 
     @Override
-    public int kruskal(List<GetRouteTmapRequestDto> request){
+    public int kruskal(PriorityQueue<KruskalRequestDto> pq,List<GetRouteTmapRequestDto> requestDto){
+        int answer=0;
+        HashMap<Long,Integer> map=new HashMap<>(); //map<placeId,idx>
+        int[] parent=new int[requestDto.size()];
+        for(int i=0;i<requestDto.size();i++){
+            if(!map.containsKey(requestDto.get(i).getId())){
+                map.put(requestDto.get(i).getId(),i);
+                parent[i]=i;
+            }
+        }
+        while(!pq.isEmpty()){
+            KruskalRequestDto now=pq.poll();
+            int place1=map.get(now.getPlace1());
+            int place2=map.get(now.getPlace2());
+            if(find(place1,parent)!=find(place2,parent)){
+                union(place1,place2,parent);
+                answer+=now.getDist();
+            }
+        }
 
-        return 0;
+
+        return answer;
+    }
+    public int find(int x,int[] parent){
+        if(x==parent[x]){
+            return x;
+        }
+        parent[x]=find(parent[x],parent);
+        return parent[x];
+    }
+    public void union(int a,int b,int[] parent){
+        int parentA=find(a,parent);
+        int parentB=find(b,parent);
+        if(parentA==parentB){
+            return ;
+        }
+        if(parentA<parentB){
+            parent[b]=parentA;
+        }else{
+            parent[a]=parentB;
+        }
     }
 
     @Override
