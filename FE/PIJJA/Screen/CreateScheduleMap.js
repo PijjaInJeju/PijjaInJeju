@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,useCallback, useRef, useMemo} from 'react';
 import { SafeAreaView, Text, StyleSheet, PixelRatio, Dimensions, FlatList, Button, View, TouchableOpacity, TextInput } from "react-native";
 
 import NaverMapView, {Circle, Marker, Path, Polyline, Polygon} from "react-native-nmap";
@@ -8,6 +8,10 @@ import Icon2 from 'react-native-vector-icons/FontAwesome5';
 import Icon3 from 'react-native-vector-icons/FontAwesome6';
 import Icon4 from 'react-native-vector-icons/FontAwesome';
 import Header from '../component/Header';
+
+import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
+
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
 
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
@@ -120,31 +124,80 @@ const Data = {
 
 const CreateScheduleMap = ({ navigation }) => {
 
+    // hooks
+    const sheetRef = useRef(null);
+    const mapRef = useRef(null);
+
+    // variables
+    const data = useMemo(
+        () =>
+        Array(50)
+            .fill(0)
+            .map((_, index) => `index-${index}`),
+        []
+    );
+    const snapPoints = useMemo(() => ["3%","25%", "50%", "90%"], []);
+
+    // callbacks
+    const handleSheetChange = useCallback((index) => {
+        //console.log("handleSheetChange", index);
+        if( index === 0)
+            setMapHeight(97);
+        else if( index === 1)
+            setMapHeight(75);
+        else if( index === 2)
+            setMapHeight(50);
+        else if( index === 3)
+            setMapHeight(10);
+    }, []);
+    const handleSnapPress = useCallback((index) => {
+        sheetRef.current?.snapToIndex(index);
+    }, []);
+    const handleClosePress = useCallback(() => {
+        sheetRef.current?.close();
+    }, []);
+
+    // render
+    const renderItem = useCallback(
+        ({ item }) => (
+        <View style={styles.itemContainer}>
+            <Text>{item}</Text>
+        </View>
+        ),
+        []
+    );
+
     
     const Start = {latitude: 37.5004967273559, longitude: 127.03623707637095};
     const End   = {latitude: 37.49802463750997, longitude: 127.02761570877878};
-    
-    const Mid = { latitude: ( Start.latitude + End.latitude )/ 2, longitude: ( Start.longitude + End.longitude )/ 2}
 
     const loadData = Data.data;
+
+    const [mapCenter ,setMapCenter] = useState( { longitude:126.54916661,latitude:33.3616666} );
 
     const [searchList,setSearchList] = useState([
         {
             id: "1",
-            title: "호텔 케니 서귀포",
-            address: "제주 서귀포시 동문로 42 호텔케니 서귀포",
+            title: "제주국제공항",
+            address: "제주특별자치도 제주시 특별자치도, 공항로 2",
+            longitude: 126.4953097579903, 
+            latitude: 33.513385059278946,
             select: false,
         },
         {
             id: "2",
-            title: "기당미술관",
-            address: "제주 서귀포시 남성종로 153번길 15",
+            title: "제주곶자왈도립공원",
+            address: "제주특별자치도 서귀포시 대정읍 보성리 63",
+            longitude:126.277675549109,
+            latitude:33.2863073573362,
             select: false,
         },
         {
             id: "3",
-            title: "알 수 없는 곳",
-            address: "알 수 없는곳 주소",
+            title: "성산일출봉",
+            address: "서귀포시",
+            latitude: 33.46682752623681, 
+            longitude: 126.94126476857582,
             select: false,
         },
     ]);
@@ -152,6 +205,8 @@ const CreateScheduleMap = ({ navigation }) => {
     const [search, setSearch] = useState("");
 
     const [scheduleList,setScheduleList] = useState(new Array());
+
+    const [mapHeight, setMapHeight] = useState(97);
 
     const item = ({ item }) => (
         <View
@@ -175,12 +230,17 @@ const CreateScheduleMap = ({ navigation }) => {
                     name='location-dot'
                     size={10 * pixelRatio}
                 />
-                <View
+                <TouchableOpacity
                     style={{
                         flexDirection: 'column',
                         flex: 4,
                         paddingLeft: '1%',
                     }}
+                    onPress={
+                        () => {
+                            setMapCenter(item);
+                        }
+                    }
                 >
                     <Text
                         style={{
@@ -199,7 +259,7 @@ const CreateScheduleMap = ({ navigation }) => {
                     >
                         {item.address}
                     </Text>
-                </View>
+                </TouchableOpacity>
                 <View
                     style={{
                         alignSelf: 'center',
@@ -224,17 +284,17 @@ const CreateScheduleMap = ({ navigation }) => {
                             );
                             let newSearchList = searchList.map(
                                 (entity) =>{
-                                    if(item.id === entity.id){
-                                        entity.select = !entity.select;
-                                    }
-                                    return entity;
+                                    return {
+                                        ...entity,
+                                        select: item.id === entity.id ? !entity.select:  entity.select,
+                                    };
                                 }
                             )
                             setSearchList(newSearchList);
                             
                             setScheduleList(newScheduleList);
 
-                            console.log(scheduleList);
+                            //console.log(scheduleList);
                         }}
                     />
                     :
@@ -249,11 +309,12 @@ const CreateScheduleMap = ({ navigation }) => {
                             console.log(item.title,"을 추가 시도중")
                             let newScheduleList = [...scheduleList,item];
                             let newSearchList = searchList.map(
-                                (entity) =>{
-                                    if(item.id === entity.id){
-                                        entity.select = ! entity.select;
-                                    }
-                                    return entity;
+                                (entity) => {
+                                    return {
+                                        ...entity,
+                                        select: item.id === entity.id ? !entity.select:  entity.select,
+                                    };
+
                                 }
                             )
                             setSearchList(newSearchList);
@@ -289,6 +350,7 @@ const CreateScheduleMap = ({ navigation }) => {
                     paddingLeft : screenWidth * 0.01,
                     marginRight: screenWidth * 0.01,
                     backgroundColor: '#fcbf49',
+                    height: closeSize * 1.3,
                 }}
             >
                 <Text
@@ -311,15 +373,15 @@ const CreateScheduleMap = ({ navigation }) => {
                             );
                             let newSearchList = searchList.map(
                                 (entity) =>{
-                                    if(item.id === entity.id){
-                                        entity.select = false;
-                                    }
-                                    return entity;
+                                    return {
+                                        ...entity,
+                                        select: item.id === entity.id ? !entity.select:  entity.select,
+                                    };
                                 }
                             )
                             setSearchList(newSearchList);
                             setScheduleList(newScheduleList);
-                            console.log(scheduleList);
+                            //console.log(scheduleList);
                         }
                     }
                 />
@@ -330,145 +392,154 @@ const CreateScheduleMap = ({ navigation }) => {
 
 
     return (
-        <SafeAreaView style={styles.container}>
-            <Header navigation={navigation} title={"고정 여행지 설정"} />
-            <NaverMapView style={{
-                width: '100%', 
-                height: '50%'
-            }}
-                showsMyLocationButton={true}
-                center={{...Mid, zoom: 15}}
-                onTouch={e => console.log('onTouch', JSON.stringify(e.nativeEvent))}
-                onCameraChange={e => console.log('onCameraChange', JSON.stringify(e))}
-                onMapClick={e => console.log('onMapClick', JSON.stringify(e))}
-            >
-                <Marker coordinate={Start} pinColor="blue" onClick={() => console.warn('onClick! Start')} />
-                <Marker coordinate={End}   pinColor="red"  onClick={() => console.warn('onClick! End')} />
-                {
-                <Path coordinates={loadData} onClick={() => console.warn('onClick! path')} color='Red' width={4}/>
-                
-                //<Path coordinates={[P0, P1]} onClick={() => console.warn('onClick! path')} width={10}/>
-                //<Polyline coordinates={[P1, P2]} onClick={() => console.warn('onClick! polyline')}/>
-                //<Circle coordinate={P0} color={"rgba(255,0,0,0.3)"} radius={200} onClick={() => console.warn('onClick! circle')}/>
-                //<Polygon coordinates={[P0, P1, P2]} color={`rgba(0, 0, 0, 0.5)`} onClick={() => console.warn('onClick! polygon')}/>
-                }
-            </NaverMapView>
-            <View
-                style={{
-                    marginTop: '-7%',
-                    width: '100%',
-                    height: screenHeight * 0.11,
-                    borderWidth: 0,
-                    borderColor: 'gray',
-                    borderBottomWidth: 0,
-                    borderTopLeftRadius: 30,
-                    borderTopRightRadius: 30,
-                    borderBottomWidth: 1,
-                    backgroundColor: '#eae2b7', 
-                }}
-            >
-                <TouchableOpacity
+        <GestureHandlerRootView style={{ flex: 1 }}>
+            <SafeAreaView style={styles.container}>
+                <Header navigation={navigation} title={"고정 여행지 설정"} />
+                <NaverMapView
                     style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        alignSelf: 'flex-end',
-                        marginTop: '1%'
+                        width: '100%', 
+                        height: mapHeight + '%',
+                        alignSelf: 'flex-start',
                     }}
-                    onPress={ 
-                        () => {
-                            console.log("일정 만들기")
-                            navigation.push('RecommendSchedule',{scheduleList: scheduleList});
-                        }
-                    }
+                    ref={mapRef}
+                    showsMyLocationButton={true}
+                    center={{...mapCenter, zoom: 8.863083459663644}}
+                    onTouch={e => console.log('onTouch', JSON.stringify(e.nativeEvent))}
+                    onCameraChange={e => console.log('onCameraChange', JSON.stringify(e))}
+                    onMapClick={e => console.log('onMapClick', JSON.stringify(e))}
                 >
-                    <Icon
-                        name="calendar" 
-                        size={closeSize} 
-                        color="#f77f00" 
-                    />
 
-                    <Text
-                        style={{
-                            color: "#f77f00",
-                            marginRight: '5%'
-                        }}
-                    >
-                        일정 만들기
-                    </Text>
-                </TouchableOpacity>
+                    {
+                        searchList.map( (coordinate)=>{
+                            console.log(coordinate);
+                            return (
+                                <Marker coordinate={coordinate} pinColor="blue" onClick={() => console.warn('coordinate' , coordinate.title)} />
+                            );
+                        }
+                    )
+                    }
+                    {
+                    //<Marker coordinate={Start} pinColor="blue" onClick={() => console.warn('onClick! Start')} />
+                    //<Marker coordinate={End}   pinColor="red"  onClick={() => console.warn('onClick! End')} />
+                    //<Path coordinates={loadData} onClick={() => console.warn('onClick! path')} color='Red' width={4}/>
+                    
+                    //<Path coordinates={[P0, P1]} onClick={() => console.warn('onClick! path')} width={10}/>
+                    //<Polyline coordinates={[P1, P2]} onClick={() => console.warn('onClick! polyline')}/>
+                    //<Circle coordinate={P0} color={"rgba(255,0,0,0.3)"} radius={200} onClick={() => console.warn('onClick! circle')}/>
+                    //<Polygon coordinates={[P0, P1, P2]} color={`rgba(0, 0, 0, 0.5)`} onClick={() => console.warn('onClick! polygon')}/>
+                    }
+                </NaverMapView>
                 <View
                     style={{
-                        alignSelf: 'center',
-                        borderWidth: 1,
-                        borderRadius: 10,
-                        marginBottom: '1%',
-                        width: '50%',
-                        flexDirection: 'row',
-                        backgroundColor : '#FFFFFF'
+                        flex: 1,
                     }}
-                >
-                    <Icon2
+                />
+                <BottomSheet
+                    ref={sheetRef}
+                    snapPoints={snapPoints}
+                    onChange={handleSheetChange}
+                    backgroundStyle={{
+                        backgroundColor: '#eae2b7',
+                    }}
+                    >
+                    <TouchableOpacity
                         style={{
-                            alignSelf: 'center'
+                            flexDirection: 'row',
+                            alignSelf: 'flex-end',
+                            marginTop: '1%'
                         }}
-                        name='search'
-                        color='black'
-                        size={screenWidth * 0.04}
-                    />
-                    <TextInput
+                        onPress={ 
+                            () => {
+                                console.log("일정 만들기")
+                                navigation.push('RecommendSchedule',{scheduleList: scheduleList});
+                            }
+                        }
+                    >
+                        <Icon
+                            name="calendar" 
+                            size={closeSize} 
+                            color="#f77f00" 
+                        />
+
+                        <Text
+                            style={{
+                                color: "#f77f00",
+                                marginRight: '5%'
+                            }}
+                        >
+                            일정 만들기
+                        </Text>
+                    </TouchableOpacity>
+                    <View
                         style={{
-                            width: screenWidth * 0.45,
-                            padding: 0,
-                            color: "#000000",
-                        }}
-                        onChangeText={setSearch}
-                        value={search}
-                        placeholder="검색 할 장소를 입력하세요."
-                        placeholderTextColor={"#111111"}
-                    />
-                </View>
-                {
-                    scheduleList.length === 0
-                    ?
-                    <Text
-                        style={{
-                            flex: 1,
-                            width: screenWidth,
-                            textAlign: "center",
-                            color: '#d62828',
+                            alignSelf: 'center',
+                            borderWidth: 1,
+                            borderRadius: 10,
+                            marginBottom: '1%',
+                            width: '50%',
+                            flexDirection: 'row',
+                            backgroundColor : '#FFFFFF'
                         }}
                     >
-                        여행지를 추가해주세요
-                    </Text>
-                    :
+                        <Icon2
+                            style={{
+                                alignSelf: 'center'
+                            }}
+                            name='search'
+                            color='black'
+                            size={screenWidth * 0.04}
+                        />
+                        <TextInput
+                            style={{
+                                width: screenWidth * 0.45,
+                                padding: 0,
+                                color: "#000000",
+                            }}
+                            onChangeText={setSearch}
+                            value={search}
+                            placeholder="검색 할 장소를 입력하세요."
+                            placeholderTextColor={"#111111"}
+                        />
+                    </View>
+                    <View>
+                        {
+                        scheduleList.length === 0
+                        ?
+                        <Text
+                            style={{
+                                width: screenWidth,
+                                textAlign: "center",
+                                color: '#d62828',
+                            }}
+                        >
+                            여행지를 추가해주세요
+                        </Text>
+                        :
+                        <FlatList
+                        style={{
+                            width: '100%',
+                            paddingLeft: '1%',
+                        }}
+                        horizontal={true}
+                        data={scheduleList}
+                        renderItem={schedule}
+                        /> 
+                    }
+                    </View>
                     <FlatList
-                    style={{
-                        width: '100%',
-                        flex: 1,
-                        paddingLeft: '1%',
-                        marginBottom: '1%',
-                    }}
-                    horizontal={true}
-                    data={scheduleList}
-                    renderItem={schedule}
-                    /> 
-                }
-            </View>
-            <FlatList
-                style={{
-                    width: '100%',
-                    height: '45%',
-                    flex: 1,
-                    
-                    paddingLeft: '1%',
-                    marginTop: '1%',
-                }}
-                data={searchList}
-                renderItem={item}
-                keyExtractor={ (item) => item.id }
-            >
-            </FlatList>
-        </SafeAreaView>
+                        style={{
+                            width: '100%',
+                            flex: 1,
+                            backgroundColor: '#FFFFFF',
+                            paddingLeft: '1%',
+                        }}
+                        data={searchList}
+                        renderItem={item}
+                        keyExtractor={ (item) => item.id }
+                    />  
+                </BottomSheet>
+            </SafeAreaView>
+        </GestureHandlerRootView>
     );
 }
 
