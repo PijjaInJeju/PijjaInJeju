@@ -30,7 +30,7 @@ public class PathServiceImpl implements PathService {
     private final WebClient webClient;
 
     @Override
-    @Transactional(readOnly = true)
+    @Transactional(readOnly = true) // 두 여행지 사이의 path가 db에 있는지 없는지
     public GetRouteTmapResponseDto searchRoute(Long startPlaceId,Long endPlaceId) {
         Path path=pathRepository.findByStartPlaceAndEndPlace(startPlaceId, endPlaceId);
 
@@ -53,6 +53,7 @@ public class PathServiceImpl implements PathService {
                 .endPlace(endPlace)
                 .distance(requestDto.getDistance())
                 .time(requestDto.getTime())
+                .path(requestDto.getPathDto().toString())
                 .build();
         pathRepository.save(newPath);
     }
@@ -215,15 +216,31 @@ public class PathServiceImpl implements PathService {
 
         try {
             System.out.println("API호출!!!!!!!!!!!!!!!!!!!!!!!!");
+            ArrayList<AddRouteRequestDto.PathDto> pathDtoList=new ArrayList<>();
             JsonNode jsonNode = objectMapper.readTree(jsonResponse);
             JsonNode totalDistance=jsonNode.at("/features/0/properties/totalDistance");
             JsonNode totalTime=jsonNode.at("/features/0/properties/totalTime");
-            
+            JsonNode jsonNodeList=jsonNode.at("/features");
+            for(int i=0;i<jsonNodeList.size();i++) {
+                JsonNode type = jsonNode.at("/features/" + i + "/geometry/type");
+                if (type.asText().equals("LineString")) {
+                    JsonNode node=jsonNode.at("/features/" + i + "/geometry/coordinates");
+
+                    for (int j = 0; j < node.size(); j++) {
+                        JsonNode nodeList = jsonNode.at("/features/" + i + "/geometry/coordinates/" + j);
+                        pathDtoList.add(AddRouteRequestDto.PathDto.builder()
+                                .latitude(nodeList.get(0).floatValue())
+                                .longitude(nodeList.get(0).floatValue())
+                                .build());
+                    }
+                }
+            }
             AddRouteRequestDto addRequest= AddRouteRequestDto.builder()
                     .startPlaceId(request.get(0).getId())
                     .endPlaceId(request.get(1).getId())
                     .distance(totalDistance.floatValue())
                     .time(totalTime.floatValue())
+                    .pathDto(pathDtoList)
                     .build();
 
             addPath(addRequest);
@@ -262,14 +279,18 @@ public class PathServiceImpl implements PathService {
 
 
             JsonNode jsonNodeList=jsonNode.at("/features");
-            for(int i=0;i<jsonNodeList.size();i++){
-                JsonNode node=jsonNode.at("/features/"+i+"/geometry/coordinates");
-                for(int j=0;j<node.size();j++){
-                    JsonNode nodeList=jsonNode.at("/features/"+i+"/geometry/coordinates/"+j);
-                    System.out.println(nodeList);
+            for(int i=0;i<jsonNodeList.size();i++) {
+                JsonNode type = jsonNode.at("/features/" + i + "/geometry/type");
+                if (type.asText().equals("LineString")) {
+                    JsonNode node=jsonNode.at("/features/" + i + "/geometry/coordinates");
+                    for (int j = 0; j < node.size(); j++) {
+                        JsonNode nodeList = jsonNode.at("/features/" + i + "/geometry/coordinates/" + j);
+                        System.out.println("lon : "+ nodeList.get(0));
+                        System.out.println("lat : "+ nodeList.get(1));
+                        System.out.println(nodeList);
+                    }
+                    System.out.println("--------");
                 }
-                System.out.println(node.size());
-                System.out.println("--------");
             }
 
 
