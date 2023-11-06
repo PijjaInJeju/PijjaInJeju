@@ -35,23 +35,26 @@ public class CompanionInviteService {
         // 요청으로부터 전달된 이메일과 그룹 식별자를 추출하여 사용합니다.
         String email = companionInviteRequestDto.getEmail();
         Long companionId = companionInviteRequestDto.getCompanionId();
+        String nowEmail = companionInviteRequestDto.getNowEmail();
 
         // 이메일로 회원을 찾습니다.
         Optional<Member> memberOptional = memberRepository.findMemberByEmail(email);
         // 그룹을 식별자로 찾습니다.
         Optional<Companion> companionOptional = companionRepository.findById(companionId);
 
-        // 찾아낸 회원과 그룹을 변수에 할당합니다.
-        Member member = memberOptional.orElseThrow(
-                () -> new IllegalArgumentException("해당 이메일의 회원을 찾을 수 없습니다."));
-        Companion companion = companionOptional.orElseThrow(
-                () -> new IllegalArgumentException("해당 식별자의 그룹을 찾을 수 없습니다."));
+        Optional<Member> nowMemberOptional = memberRepository.findMemberByEmail(nowEmail);
 
-        // 그룹의 초대 코드를 가져옵니다.
-        String code = companion.getCode();
+        // 찾아낸 회원과 그룹을 변수에 할당합니다.
+        Member member = memberOptional.get();
+        Companion companion = companionOptional.get();
+        Member nowMember = nowMemberOptional.get();
 
         // 회원이 그룹의 리더인지 확인합니다.
-        if (isLeader(member, companion)) {
+        if (isLeader(nowMember, companion)) {
+
+            // 그룹의 초대 코드를 가져옵니다.
+            String code = companion.getCode();
+
             // 성공 응답을 생성하고 반환
             return ResponseEntity.ok()
                     .body(new SuccessResponseDto(true, "그룹 초대 코드를 보냅니다.", code));
@@ -74,7 +77,11 @@ public class CompanionInviteService {
         MemberCompanion memberCompanion = memberCompanionRepository.findByMemberAndCompanion(member,
                 companion);
 
+        if (memberCompanion != null) {
+            return memberCompanion.getRole() == Role.LEADER;
+        } else {
+            return false;
+        }
         // 회원이 그룹 리더인지 확인합니다.
-        return memberCompanion.getRole() == Role.LEADER;
     }
 }

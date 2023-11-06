@@ -10,4 +10,6 @@ public class CompanionInviteRequestDto {
     private Long companionId;
 
     private String email;
+
+    private String nowEmail;
 }
