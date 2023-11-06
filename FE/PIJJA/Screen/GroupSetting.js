@@ -22,21 +22,13 @@ const GroupSetting = ({ navigation }) => {
   // 누른 상태: 1, 안누른 상태:0
   // 그룹 성향
   const [tasteBtn, setTasteBtn] = useState([0, 0, 0, 0]);
-  //const [tasteBtn2, setTasteBtn] = useState(0);
-  // const [tasteBtn3, setTasteBtn3] = useState(0);
-  // const [tasteBtn4, setTasteBtn4] = useState(0);
 
   // // 좋아하는 음식 설정
   const [tasteFoodBtn, setFoodBtn] = useState([0, 0, 0, 0]);
-  // const [tasteFoodBtn2, setTasteBtn] = useState(0);
-  // const [tasteFoodBtn3, setTasteBtn] = useState(0);
-  // const [tasteFoodBtn4, setTasteBtn] = useState(0);
 
   // // 여행 메이트 설정하기
   const [tasteMateBtn, setMateBtn] = useState([0, 0, 0, 0]);
-  // const [tasteBtn, setTasteBtn] = useState(0);
-  // const [tasteBtn, setTasteBtn] = useState(0);
-  // const [tasteBtn, setTasteBtn] = useState(0);
+
   return (
     <View style={styles.container}>
       <View>
@@ -270,7 +262,8 @@ const GroupSetting = ({ navigation }) => {
       <TouchableOpacity
         style={styles.buttonNext}
         onPress={() => {
-          navigation.navigate('CreateScheduleMap');
+          //navigation.navigate('CreateScheduleMap');
+          navigation.navigate('SetTravelPlan');
         }}
       >
         <Text>다음</Text>
@@ -303,7 +296,7 @@ const styles = StyleSheet.create({
   tasteButton: {
     width: 128,
     height: 70,
-    borderRadius: 24,
+    borderRadius: 32,
     marginTop: 20,
     marginHorizontal: 14,
     paddingVertical: 26,

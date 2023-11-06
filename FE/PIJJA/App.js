@@ -20,6 +20,7 @@ import CreateScheduleMap from './Screen/CreateScheduleMap.js';
 import RecommendSchedule from './Screen/RecommendSchedule.js';
 import SetTravelPlan from './Screen/SetTravelPlan.js';
 import Gallery from './Screen/Gallery.js';
+import JoinGroup from './Screen/JoinGroup.js';
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -58,8 +59,8 @@ const App = () => {
         //   headerRight: undefined,
         // }}
       >
-        <Stack.Screen 
-          name="Login" 
+        <Stack.Screen
+          name="Login"
           component={Login}
           options={{ headerShown: false }}
         />
@@ -72,6 +73,7 @@ const App = () => {
         <Stack.Screen name="InviteMember" component={InviteMember} />
         <Stack.Screen name="GroupSetting" component={GroupSetting} />
         <Stack.Screen name="Gallery" component={Gallery} />
+        <Stack.Screen name="JoinGroup" component={JoinGroup} />
         <Stack.Screen name="CreateScheduleMap" component={CreateScheduleMap} />
         <Stack.Screen name="RecommendSchedule" component={RecommendSchedule} />
         <Stack.Screen name="SetTravelPlan" component={SetTravelPlan} />

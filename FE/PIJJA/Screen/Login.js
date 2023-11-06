@@ -61,7 +61,8 @@ const Login = ({ navigation }) => {
       />
       <TouchableOpacity
         onPress={() => {
-          kakaoLogin({ navigation });
+          // kakaoLogin({ navigation });
+          navigation.navigate('Main');
         }}
         style={[
           styles.login,
