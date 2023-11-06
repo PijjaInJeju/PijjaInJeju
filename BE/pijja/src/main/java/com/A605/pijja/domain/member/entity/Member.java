@@ -25,5 +25,5 @@ public class Member {
     private String nickname; // 회원의 사용자명
 
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Companion> myCompanions = new ArrayList<>();
+    private List<MemberCompanion> myCompanions = new ArrayList<>();
 }

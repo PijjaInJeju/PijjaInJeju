@@ -28,6 +28,6 @@ public class CompanionController {
 
     @GetMapping
     public void getMyCompanions(@RequestBody MemberCompanionListDto memberCompanionListDto) {
-        companionService.getAllCompanion(memberCompanionListDto);
+//        companionService.getAllCompanion(memberCompanionListDto);
     }
 }
