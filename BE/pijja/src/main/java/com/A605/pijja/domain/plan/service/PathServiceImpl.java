@@ -233,4 +233,49 @@ public class PathServiceImpl implements PathService {
         }
     }
 
+
+    @Override
+    public void tmap(TmapRequestDto request){
+        String tmapApiKey=tmapConfig.getTmapApiKey();
+        WebClient wc=webClient;
+
+        ResponseEntity<String> result=wc.post()
+                .uri(uriBuilder -> uriBuilder.path("/tmap/routes")
+                        .build())
+                .header("appKey",tmapApiKey)
+                .bodyValue(request)
+                .retrieve()
+                .toEntity(String.class)
+                .block();
+
+        // JSON 응답 문자열
+        String jsonResponse = result.getBody();
+
+        // Jackson ObjectMapper를 사용하여 JSON 파싱
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            System.out.println("API호출!!!!!!!!!!!!!!!!!!!!!!!!");
+            JsonNode jsonNode = objectMapper.readTree(jsonResponse);
+            JsonNode totalDistance=jsonNode.at("/features/0/properties/totalDistance");
+            JsonNode totalTime=jsonNode.at("/features/0/properties/totalTime");
+
+
+            JsonNode jsonNodeList=jsonNode.at("/features");
+            for(int i=0;i<jsonNodeList.size();i++){
+                JsonNode node=jsonNode.at("/features/"+i+"/geometry/coordinates");
+                for(int j=0;j<node.size();j++){
+                    JsonNode nodeList=jsonNode.at("/features/"+i+"/geometry/coordinates/"+j);
+                    System.out.println(nodeList);
+                }
+                System.out.println(node.size());
+                System.out.println("--------");
+            }
+
+
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }
