@@ -88,14 +88,6 @@ public class PathServiceImpl implements PathService {
     @Override
     public ResponseEntity<String> getRouteViaTmap(GetRouteViaTmapRequestDto requestDto) {
         String tmapApiKey=tmapConfig.getTmapApiKey();
-//        String tmapUrl=tmapConfig.getTmapUrl();
-//        DefaultUriBuilderFactory factory=new DefaultUriBuilderFactory(tmapUrl);
-//        factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
-//
-//        WebClient wc= WebClient.builder()
-//                .uriBuilderFactory(factory)
-//                .baseUrl(tmapUrl)
-//                .build();
 
         WebClient wc=webClient;
         String encodedStartName= URLEncoder.encode(requestDto.getStartName(),StandardCharsets.UTF_8);
@@ -126,14 +118,6 @@ public class PathServiceImpl implements PathService {
     public void routeSearchTmap(List<GetRouteTmapRequestDto> request){
         String tmapApiKey=tmapConfig.getTmapApiKey();
         WebClient wc=webClient;
-//        String tmapUrl=tmapConfig.getTmapUrl();
-//        DefaultUriBuilderFactory factory=new DefaultUriBuilderFactory(tmapUrl);
-//        factory.setEncodingMode(DefaultUriBuilderFactory.EncodingMode.VALUES_ONLY);
-//
-//        WebClient wc= WebClient.builder()
-//                .uriBuilderFactory(factory)
-//                .baseUrl(tmapUrl)
-//                .build();
         
         //TmapRequestDto 변환
         TmapRequestDto tmapRequest= TmapRequestDto.builder()
