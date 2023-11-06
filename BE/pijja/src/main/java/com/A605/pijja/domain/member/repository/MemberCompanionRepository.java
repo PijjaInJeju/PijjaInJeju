@@ -12,5 +12,7 @@ public interface MemberCompanionRepository extends JpaRepository<MemberCompanion
 
     List<MemberCompanion> findByCompanion(Companion companion);
 
+    List<MemberCompanion> findByMember(Member member);
+
     MemberCompanion findByMemberAndCompanion(Member member, Companion companion);
 }

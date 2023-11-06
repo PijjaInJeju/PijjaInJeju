@@ -1,18 +1,17 @@
 package com.A605.pijja.domain.member.dto.response;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.Setter;
 
 
 @Getter
-@Setter
 @Builder
-public class CompanionAddMemberDto {
+public class CompanionCreateDto {
 
     private String name;
+
+    private String code;
 
     private Boolean isStart;
 
@@ -26,5 +25,5 @@ public class CompanionAddMemberDto {
 
     private LocalDateTime endTime;
 
-    private ArrayList<Long> memberId;
+    private Long memberId;
 }

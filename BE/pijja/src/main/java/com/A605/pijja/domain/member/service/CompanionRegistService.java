@@ -2,7 +2,7 @@ package com.A605.pijja.domain.member.service;
 
 import com.A605.pijja.domain.member.dto.SuccessResponseDto;
 import com.A605.pijja.domain.member.dto.request.CompanionAddRequestDto;
-import com.A605.pijja.domain.member.dto.response.CompanionAddMemberDto;
+import com.A605.pijja.domain.member.dto.response.CompanionCreateDto;
 import com.A605.pijja.domain.member.entity.Companion;
 import com.A605.pijja.domain.member.entity.Member;
 import com.A605.pijja.domain.member.entity.MemberCompanion;
@@ -60,6 +60,8 @@ public class CompanionRegistService {
         Member member = memberRepository.findById(companionAddRequestDto.getMemberId())
                 .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
 
+        Long memberId = member.getId();
+
         Companion companion = Companion.builder()
                 .name(companionAddRequestDto.getName())
                 .code(generateRandomCode())
@@ -74,21 +76,6 @@ public class CompanionRegistService {
 
         companionRepository.save(companion);
 
-        ArrayList<Long> list = new ArrayList<>();
-        for (MemberCompanion memberCompanion1 : companion.getCompanionMembers()) {
-            list.add(memberCompanion1.getId());
-        }
-
-        CompanionAddMemberDto test = CompanionAddMemberDto.builder()
-                .name(companion.getName())
-                .isStart(companion.getIsStart())
-                .endTime(companion.getEndTime())
-                .mate(companion.getMate())
-                .tendency(companion.getTendency())
-                .startTime(companion.getStartTime())
-                .memberId(list)
-                .build();
-
         // MemberCompanion 엔티티를 생성
         MemberCompanion memberCompanion = MemberCompanion.builder()
                 .member(member)
@@ -98,13 +85,39 @@ public class CompanionRegistService {
 
         memberCompanionRepository.save(memberCompanion);
 
+        addMemberCompanion(companion, member, memberCompanion);
+
+        CompanionCreateDto create = CompanionCreateDto.builder()
+                .name(companion.getName())
+                .code(companion.getCode())
+                .isStart(companion.getIsStart())
+                .isEnd(companion.getIsEnd())
+                .mate(companion.getMate())
+                .tendency(companion.getTendency())
+                .startTime(companion.getStartTime())
+                .endTime(companion.getEndTime())
+                .memberId(memberId)
+                .build();
+
         // 가입 성공 응답을 생성하고 반환
         return ResponseEntity.ok()
-                .body(new SuccessResponseDto(true, "그룹에 참여되었습니다.", test));
+                .body(new SuccessResponseDto(true, "그룹에 참여되었습니다.", create));
 
-//
-//        // 등록 성공 응답을 생성하고 반환
-//        return ResponseEntity.ok()
-//                .body(new SuccessResponseDto(true, "그룹 등록이 완료되었습니다.", companion));
+    }
+
+    /**
+     * Companion와 Member를 연결하고 업데이트하는 메서드입니다.
+     *
+     * @param companion       그룹 객체
+     * @param member          회원 객체
+     * @param memberCompanion MemberCompanion 객체
+     */
+    @Transactional
+    public void addMemberCompanion(Companion companion, Member member,
+            MemberCompanion memberCompanion) {
+
+        companion.getCompanionMembers().add(memberCompanion);
+        member.getMyCompanions().add(memberCompanion);
+
     }
 }

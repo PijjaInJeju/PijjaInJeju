@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-// 카카오 회원 등록 서비스
 public class MemberRegistService {
 
     private final MemberRepository memberRepository;
@@ -27,15 +26,17 @@ public class MemberRegistService {
      */
     @Transactional
     public ResponseEntity registMember(MemberRegistRequestDto memberRegistRequestDto) {
-        if (memberRepository.findMemberByEmail(memberRegistRequestDto.getEmail()).isPresent()) {
-            Optional<Member> memberOptional = memberRepository.findMemberByEmail(
-                    memberRegistRequestDto.getEmail());
-            Member member = memberOptional.get();
+        // 이미 존재하는 이메일인지 확인
+        Optional<Member> existingMemberOptional = memberRepository.findMemberByEmail(
+                memberRegistRequestDto.getEmail());
 
+        if (existingMemberOptional.isPresent()) {
+            Member existingMember = existingMemberOptional.get();
             MemberDetailDto memberDetailDto = MemberDetailDto.builder()
-                    .id(member.getId())
+                    .id(existingMember.getId())
                     .build();
 
+            // 이미 존재하는 이메일인 경우 실패 응답 반환
             return ResponseEntity.ok()
                     .body(new SuccessResponseDto(false, "이미 존재하는 이메일입니다.", memberDetailDto));
         } else {
@@ -53,7 +54,7 @@ public class MemberRegistService {
                     .id(member.getId())
                     .build();
 
-            // 회원 등록 성공 응답을 생성하고 반환
+            // 회원 등록 성공 응답 반환
             return ResponseEntity.ok()
                     .body(new SuccessResponseDto(true, "회원 등록이 완료되었습니다.", memberDetailDto));
         }

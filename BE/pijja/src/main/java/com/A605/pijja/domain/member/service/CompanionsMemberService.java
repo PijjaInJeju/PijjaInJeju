@@ -8,9 +8,9 @@ import com.A605.pijja.domain.member.entity.Member;
 import com.A605.pijja.domain.member.entity.MemberCompanion;
 import com.A605.pijja.domain.member.repository.CompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberCompanionRepository;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -19,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
-// 그룹의 멤버 리스트를 조회하는 서비스
 public class CompanionsMemberService {
 
     private final CompanionRepository companionRepository;
@@ -43,14 +42,13 @@ public class CompanionsMemberService {
 
         Companion companion = companionOptional.get();
 
-        List<Member> members = new ArrayList<>();
         List<MemberCompanion> memberCompanions = memberCompanionRepository.findByCompanion(
                 companion);
 
-        // 그룹에 속한 멤버 목록을 가져옵니다.
-        for (MemberCompanion memberCompanion : memberCompanions) {
-            members.add(memberCompanion.getMember());
-        }
+        // 멤버 목록을 가져와 스트림을 사용해 변환합니다.
+        List<Member> members = memberCompanions.stream()
+                .map(MemberCompanion::getMember)
+                .collect(Collectors.toList());
 
         // 멤버 목록을 반환하는 성공 응답을 생성하고 반환
         return ResponseEntity.ok()
