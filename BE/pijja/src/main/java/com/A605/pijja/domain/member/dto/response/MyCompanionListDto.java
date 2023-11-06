@@ -4,11 +4,17 @@ import java.time.LocalDateTime;
 import lombok.Builder;
 import lombok.Getter;
 
-@Builder
 @Getter
-public class CompanionListDto {
+@Builder
+public class MyCompanionListDto {
+
+    private Long id; // 여행 그룹의 아이디
 
     private String name; // 여행 그룹의 이름
+
+    private Boolean isStart; // 동반 여행의 시작 여부
+
+    private Boolean isEnd; // 동반 여행의 종료 여부
 
     private String tendency; // 여행 그룹의 특성 정보
 

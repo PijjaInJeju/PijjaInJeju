@@ -11,11 +11,9 @@ import com.A605.pijja.domain.member.entity.Role;
 import com.A605.pijja.domain.member.repository.CompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberCompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberRepository;
-import jakarta.persistence.EntityManager;
+import com.A605.pijja.global.time.TimeUtil;
 import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -31,7 +29,7 @@ public class CompanionRegistService {
     private final CompanionRepository companionRepository;
     private final MemberCompanionRepository memberCompanionRepository;
     private final MemberRepository memberRepository;
-    private final EntityManager em;
+    private final TimeUtil timeUtil;
 
     /**
      * 랜덤 그룹 초대 코드 생성 메서드
@@ -69,7 +67,7 @@ public class CompanionRegistService {
 
         LocalDateTime endTime = companionAddRequestDto.getEndTime();
 
-        LocalDateTime currentTime = getCurrentLocalDateTime();
+        LocalDateTime currentTime = timeUtil.getCurrentLocalDateTime();
 
         if (startTime.isBefore(currentTime)) {
             return ResponseEntity.status(400)
@@ -86,11 +84,14 @@ public class CompanionRegistService {
                     .body(new FailResponseDto(false, "종료 날짜가 시작 날짜보다 이전입니다.", 400));
         }
 
+        Boolean isStart = startTime.isBefore(currentTime);
+        Boolean isEnd = endTime.isBefore(currentTime);
+
         Companion companion = Companion.builder()
                 .name(companionAddRequestDto.getName())
                 .code(generateRandomCode())
-                .isStart(companionAddRequestDto.getIsStart())
-                .isEnd(companionAddRequestDto.getIsEnd())
+                .isStart(isStart)
+                .isEnd(isEnd)
                 .tendency(companionAddRequestDto.getTendency())
                 .mate(companionAddRequestDto.getMate())
                 .startTime(companionAddRequestDto.getStartTime())
@@ -114,8 +115,8 @@ public class CompanionRegistService {
         CompanionCreateDto create = CompanionCreateDto.builder()
                 .name(companion.getName())
                 .code(companion.getCode())
-                .isStart(companion.getIsStart())
-                .isEnd(companion.getIsEnd())
+                .isStart(isStart)
+                .isEnd(isEnd)
                 .mate(companion.getMate())
                 .tendency(companion.getTendency())
                 .startTime(companion.getStartTime())
@@ -143,10 +144,5 @@ public class CompanionRegistService {
         companion.getCompanionMembers().add(memberCompanion);
         member.getMyCompanions().add(memberCompanion);
 
-    }
-
-    private LocalDateTime getCurrentLocalDateTime() {
-        Date date = new Date();
-        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
     }
 }
