@@ -34,8 +34,8 @@ public class CompanionsMemberService {
 
         // 그룹이 존재하지 않는 경우
         if (companionOptional.isEmpty()) {
-            return ResponseEntity.ok()
-                    .body(new FailResponseDto(false, "조회된 그룹이 없습니다.", 400));
+            return ResponseEntity.status(404)
+                    .body(new FailResponseDto(false, "조회된 그룹이 없습니다.", 404));
         }
 
         Companion companion = companionOptional.get();

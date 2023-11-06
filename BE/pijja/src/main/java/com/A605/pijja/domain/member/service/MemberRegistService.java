@@ -37,8 +37,8 @@ public class MemberRegistService {
                     .build();
 
             // 이미 존재하는 이메일인 경우 실패 응답 반환
-            return ResponseEntity.ok()
-                    .body(new SuccessResponseDto(false, "이미 존재하는 이메일입니다.", memberDetailDto));
+            return ResponseEntity.status(409)
+                    .body(new SuccessResponseDto(false, "이미 존재하는 이메일입니다.", 409));
         } else {
             // 회원 객체를 생성하여 저장
             Member member = Member.builder()

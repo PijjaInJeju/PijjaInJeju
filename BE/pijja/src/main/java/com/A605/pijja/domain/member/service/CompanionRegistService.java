@@ -11,7 +11,6 @@ import com.A605.pijja.domain.member.repository.CompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberCompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberRepository;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityNotFoundException;
 import java.util.ArrayList;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
@@ -58,7 +57,7 @@ public class CompanionRegistService {
     @Transactional
     public ResponseEntity registCompanion(CompanionAddRequestDto companionAddRequestDto) {
         Member member = memberRepository.findById(companionAddRequestDto.getMemberId())
-                .orElseThrow(() -> new EntityNotFoundException("회원을 찾을 수 없습니다."));
+                .orElse(null);
 
         Long memberId = member.getId();
 
@@ -101,7 +100,7 @@ public class CompanionRegistService {
 
         // 가입 성공 응답을 생성하고 반환
         return ResponseEntity.ok()
-                .body(new SuccessResponseDto(true, "그룹에 참여되었습니다.", create));
+                .body(new SuccessResponseDto(true, "그룹을 생성하셨습니다.", create));
 
     }
 

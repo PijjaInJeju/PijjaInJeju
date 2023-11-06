@@ -10,7 +10,6 @@ import com.A605.pijja.domain.member.entity.Role;
 import com.A605.pijja.domain.member.repository.CompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberCompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberRepository;
-import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,7 +27,7 @@ public class CompanionInviteService {
     /**
      * 회원을 그룹에 초대하는 메서드입니다.
      *
-     * @param companionInviteRequestDto 회원 초대 요청 DTO, 이메일과 그룹 식별자를 포함합니다.
+     * @param companionInviteRequestDto 회원 초대 요청 DTO, 초대 대상의 이메일과 그룹 식별자, 로그인한 회원 식별자를 포함합니다..
      * @return ResponseEntity 객체를 반환하여 성공 또는 실패 응답을 전송합니다.
      */
     public ResponseEntity inviteMember(CompanionInviteRequestDto companionInviteRequestDto) {
@@ -37,17 +36,19 @@ public class CompanionInviteService {
         Long companionId = companionInviteRequestDto.getCompanionId();
         String nowEmail = companionInviteRequestDto.getNowEmail();
 
-        // 이메일로 회원을 찾습니다.
-        Optional<Member> memberOptional = memberRepository.findMemberByEmail(email);
-        // 그룹을 식별자로 찾습니다.
-        Optional<Companion> companionOptional = companionRepository.findById(companionId);
+        Member member = memberRepository.findMemberByEmail(email)
+                .orElse(null);
 
-        Optional<Member> nowMemberOptional = memberRepository.findMemberByEmail(nowEmail);
+        Companion companion = companionRepository.findById(companionId)
+                .orElse(null);
 
-        // 찾아낸 회원과 그룹을 변수에 할당합니다.
-        Member member = memberOptional.get();
-        Companion companion = companionOptional.get();
-        Member nowMember = nowMemberOptional.get();
+        Member nowMember = memberRepository.findMemberByEmail(nowEmail)
+                .orElse(null);
+
+        if (member == null) {
+            return ResponseEntity.status(404)
+                    .body(new FailResponseDto(false, "존재하지 않는 유저 이메일입니다.", 404));
+        }
 
         // 회원이 그룹의 리더인지 확인합니다.
         if (isLeader(nowMember, companion)) {
@@ -60,7 +61,7 @@ public class CompanionInviteService {
                     .body(new SuccessResponseDto(true, "그룹 초대 코드를 보냅니다.", code));
         } else {
             // 실패 응답을 생성하고 반환
-            return ResponseEntity.ok()
+            return ResponseEntity.status(401)
                     .body(new FailResponseDto(false, "초대 권한이 없습니다.", 401));
         }
     }
@@ -77,11 +78,11 @@ public class CompanionInviteService {
         MemberCompanion memberCompanion = memberCompanionRepository.findByMemberAndCompanion(member,
                 companion);
 
+        // 회원이 그룹 리더인지 확인합니다.
         if (memberCompanion != null) {
             return memberCompanion.getRole() == Role.LEADER;
         } else {
             return false;
         }
-        // 회원이 그룹 리더인지 확인합니다.
     }
 }

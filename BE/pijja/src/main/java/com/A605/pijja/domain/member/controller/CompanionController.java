@@ -5,6 +5,7 @@ import com.A605.pijja.domain.member.dto.request.CompanionInviteRequestDto;
 import com.A605.pijja.domain.member.dto.request.CompanionJoinRequestDto;
 import com.A605.pijja.domain.member.service.CompanionInviteService;
 import com.A605.pijja.domain.member.service.CompanionJoinService;
+import com.A605.pijja.domain.member.service.CompanionJoinedListService;
 import com.A605.pijja.domain.member.service.CompanionListService;
 import com.A605.pijja.domain.member.service.CompanionRegistService;
 import com.A605.pijja.domain.member.service.CompanionsMemberService;
@@ -27,6 +28,7 @@ public class CompanionController {
     private final CompanionInviteService companionInviteService;
     private final CompanionJoinService companionJoinService;
     private final CompanionListService companionListService;
+    private final CompanionJoinedListService companionJoinedListService;
 
     // 그룹 생성 엔드포인트
     @PostMapping
@@ -36,7 +38,7 @@ public class CompanionController {
     }
 
     // 그룹 멤버 리스트 조회 엔드포인트
-    @GetMapping("/{companionId}")
+    @GetMapping("/detail/{companionId}")
     public ResponseEntity companionMemberDetails(
             @PathVariable Long companionId) {
         // CompanionsMemberService를 사용하여 특정 여행 그룹 그룹의 멤버 목록을 조회하고 반환합니다.
@@ -60,9 +62,14 @@ public class CompanionController {
     }
 
     // 모든 여행 그룹 그룹 목록 조회 엔드포인트
-    @GetMapping
+    @GetMapping("/list")
     public ResponseEntity companions() {
         // CompanionListService를 사용하여 모든 여행 그룹 그룹의 목록을 조회하고 반환합니다.
         return companionListService.getAllCompanions();
+    }
+
+    @GetMapping("/list/{memberId}")
+    public ResponseEntity getMyCompanions(@PathVariable Long memberId) {
+        return companionJoinedListService.getMyCompanions(memberId);
     }
 }

@@ -40,8 +40,8 @@ public class CompanionListService {
     // Companion 객체를 CompanionListDto로 변환하는 메서드
     private CompanionListDto convertToCompanionListDto(Companion companion) {
         return CompanionListDto.builder()
+                .id(companion.getId())
                 .name(companion.getName())
-                .code(companion.getCode())
                 .isStart(companion.getIsStart())
                 .isEnd(companion.getIsEnd())
                 .tendency(companion.getTendency())
