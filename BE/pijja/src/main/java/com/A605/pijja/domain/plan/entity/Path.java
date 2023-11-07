@@ -26,6 +26,6 @@ public class Path {
 
     private float time;
 
-    @Column(columnDefinition = "LONGTEXT")
+    @Lob
     private String path;
 }

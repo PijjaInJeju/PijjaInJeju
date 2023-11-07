@@ -4,10 +4,8 @@ import com.A605.pijja.domain.plan.dto.request.*;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
 import com.A605.pijja.domain.plan.entity.Path;
 import com.A605.pijja.domain.plan.entity.PlaceTest;
-import com.A605.pijja.domain.plan.entity.TestTable;
 import com.A605.pijja.domain.plan.repository.PathRepository;
 import com.A605.pijja.domain.plan.repository.PlaceTestRepository;
-import com.A605.pijja.domain.plan.repository.TestTableRepository;
 import com.A605.pijja.global.tmap.TmapConfig;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -16,7 +14,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.util.DefaultUriBuilderFactory;
 
 import java.io.IOException;
 import java.net.URLEncoder;
@@ -30,7 +27,6 @@ public class PathServiceImpl implements PathService {
     private final PathRepository pathRepository;
     private final PlaceTestRepository placeTestRepository;
     private final WebClient webClient;
-    private final TestTableRepository testTableRepository;
 
     @Override
     @Transactional(readOnly = true) // 두 여행지 사이의 path가 db에 있는지 없는지
@@ -56,7 +52,7 @@ public class PathServiceImpl implements PathService {
                 .endPlace(endPlace)
                 .distance(requestDto.getDistance())
                 .time(requestDto.getTime())
-                .path(requestDto.getPathDto().toString())
+                .path(requestDto.getPathDto())
                 .build();
         pathRepository.save(newPath);
     }
@@ -190,22 +186,9 @@ public class PathServiceImpl implements PathService {
         return result;
     }
 
-    @Override
-    public void jsonTest(GetRouteTmapRequestDto requestDto) {
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        try {
-            String jsonPath = objectMapper.writeValueAsString(requestDto);
-
-            testTableRepository.save(TestTable.builder()
-                    .path(jsonPath)
-                    .build());
-        } catch (Exception e) {
-            // 예외 처리
-        }
-    }
 
     public void routeSearchTmap(List<GetRouteTmapRequestDto> request){
+
         String tmapApiKey=tmapConfig.getTmapApiKey();
         WebClient wc=webClient;
         
@@ -235,10 +218,15 @@ public class PathServiceImpl implements PathService {
         try {
             System.out.println("API호출!!!!!!!!!!!!!!!!!!!!!!!!");
             ArrayList<AddRouteRequestDto.PathDto> pathDtoList=new ArrayList<>();
+
+
+
             JsonNode jsonNode = objectMapper.readTree(jsonResponse);
             JsonNode totalDistance=jsonNode.at("/features/0/properties/totalDistance");
             JsonNode totalTime=jsonNode.at("/features/0/properties/totalTime");
             JsonNode jsonNodeList=jsonNode.at("/features");
+
+            //path 좌표
             for(int i=0;i<jsonNodeList.size();i++) {
                 JsonNode type = jsonNode.at("/features/" + i + "/geometry/type");
                 if (type.asText().equals("LineString")) {
@@ -246,19 +234,24 @@ public class PathServiceImpl implements PathService {
 
                     for (int j = 0; j < node.size(); j++) {
                         JsonNode nodeList = jsonNode.at("/features/" + i + "/geometry/coordinates/" + j);
+
                         pathDtoList.add(AddRouteRequestDto.PathDto.builder()
                                 .latitude(nodeList.get(0).floatValue())
                                 .longitude(nodeList.get(0).floatValue())
                                 .build());
+
                     }
                 }
             }
+
+            String jsonPath = objectMapper.writeValueAsString(pathDtoList);
+
             AddRouteRequestDto addRequest= AddRouteRequestDto.builder()
                     .startPlaceId(request.get(0).getId())
                     .endPlaceId(request.get(1).getId())
                     .distance(totalDistance.floatValue())
                     .time(totalTime.floatValue())
-                    .pathDto(pathDtoList)
+                    .pathDto(jsonPath)
                     .build();
 
             addPath(addRequest);

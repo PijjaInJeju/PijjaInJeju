@@ -15,7 +15,7 @@ public class AddRouteRequestDto {
     private float distance;
     private float time;
 
-    private ArrayList<PathDto> pathDto;
+    private String pathDto;
 
     @Getter
     @Builder
