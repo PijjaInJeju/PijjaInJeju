@@ -12,9 +12,7 @@ const AppSetting = ({ navigation }) => {
       <Text>그룹의 성향은?</Text>
       <View>
         <Text>그룹 생성</Text>
-        <View style={styles.travelStyleWrapper}>
-          <Button>"하이"</Button>
-        </View>
+        <View style={styles.travelStyleWrapper}></View>
       </View>
     </View>
   );
