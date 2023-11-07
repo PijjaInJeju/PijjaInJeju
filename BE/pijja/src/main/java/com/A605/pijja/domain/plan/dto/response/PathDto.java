@@ -6,7 +6,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class CombinationListResponseDto {
-    int n1;
-    int n2;
+public class PathDto {
+    private float latitude;
+    private float longitude;
 }
