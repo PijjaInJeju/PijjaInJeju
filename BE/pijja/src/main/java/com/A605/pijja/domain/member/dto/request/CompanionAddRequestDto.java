@@ -10,10 +10,6 @@ public class CompanionAddRequestDto {
 
     private String name;
 
-    private Boolean isStart;
-
-    private Boolean isEnd;
-
     private String mate;
 
     private String tendency;
