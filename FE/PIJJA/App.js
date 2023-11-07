@@ -31,7 +31,7 @@ const App = () => {
     <NavigationContainer>
       {/* // 최근 프로젝트 */}
       <Stack.Navigator
-        initialRouteName="Login"
+        initialRouteName="CreateScheduleMap"
         screenOptions={{
           animation: 'fade',
           headerShown: false,
