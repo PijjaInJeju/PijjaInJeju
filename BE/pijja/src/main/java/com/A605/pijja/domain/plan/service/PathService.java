@@ -17,4 +17,5 @@ public interface PathService {
     int kruskal(PriorityQueue<KruskalRequestDto> pq,List<GetRouteTmapRequestDto> requestDto);
     ResponseEntity<String> getRouteViaTmap(GetRouteViaTmapRequestDto requestDto);
 
+    void jsonTest(GetRouteTmapRequestDto requestDto);
 }

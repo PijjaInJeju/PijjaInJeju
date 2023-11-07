@@ -108,7 +108,7 @@ public class PlanController {
                 .lon(placeTestResult.getLon()).build();
     }
 
-    @PostMapping("test")
+    @PostMapping("/test")
     public void getroutewithtmap(@RequestBody TmapRequestDto requestDto){
         pathService.tmap(requestDto);
 
@@ -128,5 +128,10 @@ public class PlanController {
 
     }
 
+    @PostMapping("/jsontest")
+    public void jsonTest(@RequestBody GetRouteTmapRequestDto requestDto){
+
+        pathService.jsonTest(requestDto);
+    }
 
 }

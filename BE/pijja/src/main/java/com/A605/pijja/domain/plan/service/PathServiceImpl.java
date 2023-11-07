@@ -4,8 +4,10 @@ import com.A605.pijja.domain.plan.dto.request.*;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
 import com.A605.pijja.domain.plan.entity.Path;
 import com.A605.pijja.domain.plan.entity.PlaceTest;
+import com.A605.pijja.domain.plan.entity.TestTable;
 import com.A605.pijja.domain.plan.repository.PathRepository;
 import com.A605.pijja.domain.plan.repository.PlaceTestRepository;
+import com.A605.pijja.domain.plan.repository.TestTableRepository;
 import com.A605.pijja.global.tmap.TmapConfig;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -28,6 +30,7 @@ public class PathServiceImpl implements PathService {
     private final PathRepository pathRepository;
     private final PlaceTestRepository placeTestRepository;
     private final WebClient webClient;
+    private final TestTableRepository testTableRepository;
 
     @Override
     @Transactional(readOnly = true) // 두 여행지 사이의 path가 db에 있는지 없는지
@@ -187,6 +190,21 @@ public class PathServiceImpl implements PathService {
         return result;
     }
 
+    @Override
+    public void jsonTest(GetRouteTmapRequestDto requestDto) {
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try {
+            String jsonPath = objectMapper.writeValueAsString(requestDto);
+
+            testTableRepository.save(TestTable.builder()
+                    .path(jsonPath)
+                    .build());
+        } catch (Exception e) {
+            // 예외 처리
+        }
+    }
+
     public void routeSearchTmap(List<GetRouteTmapRequestDto> request){
         String tmapApiKey=tmapConfig.getTmapApiKey();
         WebClient wc=webClient;
@@ -233,7 +251,6 @@ public class PathServiceImpl implements PathService {
                                 .longitude(nodeList.get(0).floatValue())
                                 .build());
                     }
-                    System.out.println("FEFEF");
                 }
             }
             AddRouteRequestDto addRequest= AddRouteRequestDto.builder()
