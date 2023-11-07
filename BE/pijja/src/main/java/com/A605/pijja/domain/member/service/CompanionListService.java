@@ -43,8 +43,8 @@ public class CompanionListService {
                 .name(companion.getName())
                 .tendency(companion.getTendency())
                 .mate(companion.getMate())
-                .startTime(companion.getStartTime())
-                .endTime(companion.getEndTime())
+                .startDay(companion.getStartDay())
+                .endDay(companion.getEndDay())
                 .build();
     }
 }

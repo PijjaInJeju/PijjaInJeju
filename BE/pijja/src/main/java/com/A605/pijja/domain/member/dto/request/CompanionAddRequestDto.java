@@ -1,6 +1,6 @@
 package com.A605.pijja.domain.member.dto.request;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,17 +10,13 @@ public class CompanionAddRequestDto {
 
     private String name;
 
-    private Boolean isStart;
-
-    private Boolean isEnd;
-
     private String mate;
 
     private String tendency;
 
-    private LocalDateTime startTime;
+    private LocalDate startDay;
 
-    private LocalDateTime endTime;
+    private LocalDate endDay;
 
     private Long memberId;
 }

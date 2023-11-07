@@ -7,7 +7,7 @@ import com.A605.pijja.domain.member.entity.Member;
 import com.A605.pijja.domain.member.repository.MemberCompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberRepository;
 import com.A605.pijja.global.time.TimeUtil;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -38,20 +38,20 @@ public class CompanionJoinedListService {
                             .name(companion.getName())
                             .tendency(companion.getTendency())
                             .mate(companion.getMate())
-                            .startTime(companion.getStartTime())
-                            .endTime(companion.getEndTime());
+                            .startDay(companion.getStartDay())
+                            .endDay(companion.getEndDay());
 
                     // 현재 시간을 가져옵니다.
-                    LocalDateTime currentTime = timeUtil.getCurrentLocalDateTime();
+                    LocalDate currentDay = timeUtil.getCurrentLocalDate();
 
                     // startTime과 endTime과 현재 시간을 비교하여 isStart 및 isEnd 값을 설정합니다.
-                    if (currentTime.isAfter(companion.getStartTime())) {
+                    if (currentDay.isAfter(companion.getStartDay())) {
                         builder.isStart(true);
                     } else {
                         builder.isStart(false);
                     }
 
-                    if (currentTime.isAfter(companion.getEndTime())) {
+                    if (currentDay.isAfter(companion.getEndDay())) {
                         builder.isEnd(true);
                     } else {
                         builder.isEnd(false);
