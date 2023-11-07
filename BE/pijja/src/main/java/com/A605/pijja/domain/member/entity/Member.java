@@ -1,9 +1,18 @@
 package com.A605.pijja.domain.member.entity;
 
-import jakarta.persistence.*;
-import lombok.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Getter
@@ -12,8 +21,8 @@ import java.util.List;
 @AllArgsConstructor
 public class Member {
 
-    // Member 엔티티는 시스템 사용자를 나타내며, 동반자와의 다대다 관계를 허용합니다.
-    // 각 회원은 여러 개의 동반자와 연결될 수 있으며, 동반자 정보를 관리합니다.
+    // Member 엔티티는 사용자를 나타내며, 여행 그룹과의 다대다 관계를 허용합니다.
+    // 각 회원은 여러 개의 여행 그룹과 연결될 수 있으며, 여행 그룹 정보를 관리합니다.
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +33,10 @@ public class Member {
 
     private String nickname; // 회원의 사용자명
 
-    @OneToMany(mappedBy = "member", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<Companion> myCompanions = new ArrayList<>();
+    private String snsType; // 소셜 로그인 종류
+
+    private String originalId; // 고유 아이디
+
+    @OneToMany(mappedBy = "member")
+    private List<MemberCompanion> myCompanions = new ArrayList<>();
 }
