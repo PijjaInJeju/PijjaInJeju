@@ -18,4 +18,6 @@ public interface PathService {
     GetRouteResponseDto kruskal(PriorityQueue<KruskalRequestDto> pq, List<GetRouteTmapRequestDto> requestDto);
     ResponseEntity<String> getRouteViaTmap(GetRouteViaTmapRequestDto requestDto);
 
+
+    void test(Long id);
 }

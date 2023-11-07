@@ -20,6 +20,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
+import java.sql.Blob;
 import java.util.*;
 
 @Service
@@ -321,5 +322,21 @@ public class PathServiceImpl implements PathService {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void test(Long id){
+        Path path=pathRepository.findById(id).get();
+        ObjectMapper objectMapper=new ObjectMapper();
+        try {
+            JsonNode pathJson = objectMapper.readTree(path.getPath());
+
+            float firstLatitude = pathJson.get(0).get("latitude").floatValue();
+            float firstLongitude = pathJson.get(0).get("longitude").floatValue();
+            System.out.println(firstLatitude+" "+firstLongitude+"!!!!!!!!!!!!");
+        } catch (Exception e) {
+            // JSON 파싱 오류 처리
+        }
+        System.out.println(path.getPath());
     }
 }

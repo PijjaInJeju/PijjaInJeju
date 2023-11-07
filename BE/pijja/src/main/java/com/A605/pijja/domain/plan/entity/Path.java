@@ -27,5 +27,6 @@ public class Path {
     private float time;
 
     @Lob
+    @Column(columnDefinition="BLOB")
     private String path;
 }
