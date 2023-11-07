@@ -364,22 +364,5 @@ public class PathServiceImpl implements PathService {
         }
     }
 
-    @Override
-    public void test(Long id){
-        Path path=pathRepository.findById(id).get();
-        Path path2=pathRepository.findById(5L).get();
 
-        ObjectMapper objectMapper=new ObjectMapper();
-        try {
-            JsonNode pathJson = objectMapper.readTree(path.getPath());
-            JsonNode pathJson2 = objectMapper.readTree(path2.getPath());
-            JsonNode lat=pathJson.at("/0/latitude");
-            System.out.println(lat+"!!@@@!!!");
-            System.out.println(pathJson);
-            System.out.println(pathJson2);
-        } catch (Exception e) {
-            System.out.println("파싱오류");
-            // JSON 파싱 오류 처리
-        }
-    }
 }
