@@ -71,6 +71,7 @@ public class PathServiceImpl implements PathService {
         ArrayList<PathDto> pathList=new ArrayList<>();
         HashMap<Long,Integer> map=new HashMap<>(); //map<placeId,idx>
         HashMap<Integer,Long> map2=new HashMap<>(); //map<placeId,idx>
+        ObjectMapper objectMapper=new ObjectMapper();
         int[] parent=new int[requestDto.size()];
         for(int i=0;i<requestDto.size();i++){
             arr[i]=new ArrayList<>();
@@ -84,22 +85,8 @@ public class PathServiceImpl implements PathService {
             KruskalRequestDto now=pq.poll();
             int place1=map.get(now.getPlace1());
             int place2=map.get(now.getPlace2());
-            ObjectMapper objectMapper=new ObjectMapper();
-            if(find(place1,parent)!=find(place2,parent)){
-                Path path=pathRepository.findByStartPlaceAndEndPlace(now.getPlace1(),now.getPlace2());
 
-                try {
-                    JsonNode pathJson = objectMapper.readTree(path.getPath());
-                    for(int i=0;i<pathJson.size();i++){
-                        float latitude=pathJson.at("/"+i+"/latitude").floatValue();
-                        float longitude=pathJson.at("/"+i+"/longitude").floatValue();
-                        pathList.add(PathDto.builder()
-                                .latitude(latitude)
-                                .longitude(longitude).build());
-                    }
-                } catch (Exception e) {
-                    // JSON 파싱 오류 처리
-                }
+            if(find(place1,parent)!=find(place2,parent)){
                 arr[place1].add(place2);
                 arr[place2].add(place1);
                 union(place1,place2,parent);
@@ -130,6 +117,35 @@ public class PathServiceImpl implements PathService {
                 if(ch[next]==0){
                     q.add(next);
                 }
+            }
+        }
+        for(int j=0;j<placeList.size()-1;j++){
+            Long startPlace=placeList.get(j).getId();
+            Long endPlace=placeList.get(j+1).getId();
+            Path path=pathRepository.findByStartPlaceAndEndPlace(startPlace,endPlace);
+            //시작place랑 endplace가 바뀌면 거꾸로
+
+            try {
+                JsonNode pathJson = objectMapper.readTree(path.getPath());
+                if(path.getStartPlace().getId()==endPlace){
+                    for (int i = pathJson.size()-1; i >= 0; i--) {
+                        float latitude = pathJson.at("/" + i + "/latitude").floatValue();
+                        float longitude = pathJson.at("/" + i + "/longitude").floatValue();
+                        pathList.add(PathDto.builder()
+                                .latitude(latitude)
+                                .longitude(longitude).build());
+                    }
+                }else {
+                    for (int i = 0; i < pathJson.size(); i++) {
+                        float latitude = pathJson.at("/" + i + "/latitude").floatValue();
+                        float longitude = pathJson.at("/" + i + "/longitude").floatValue();
+                        pathList.add(PathDto.builder()
+                                .latitude(latitude)
+                                .longitude(longitude).build());
+                    }
+                }
+            } catch (Exception e) {
+                // JSON 파싱 오류 처리
             }
         }
 
