@@ -289,8 +289,8 @@ public class PathServiceImpl implements PathService {
                         JsonNode nodeList = jsonNode.at("/features/" + i + "/geometry/coordinates/" + j);
 
                         pathDtoList.add(AddRouteRequestDto.PathDto.builder()
-                                .latitude(nodeList.get(0).floatValue())
-                                .longitude(nodeList.get(1).floatValue())
+                                .latitude(nodeList.get(1).floatValue())
+                                .longitude(nodeList.get(0).floatValue())
                                 .build());
 
                     }
