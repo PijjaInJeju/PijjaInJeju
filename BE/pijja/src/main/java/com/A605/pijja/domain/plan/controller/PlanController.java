@@ -128,8 +128,5 @@ public class PlanController {
 
     }
 
-    @GetMapping("/gettest")
-    public void getTest(@RequestParam Long id){
-        pathService.test(id);
-    }
+
 }
