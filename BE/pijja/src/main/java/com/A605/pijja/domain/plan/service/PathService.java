@@ -12,7 +12,6 @@ public interface PathService {
 
     GetRouteTmapResponseDto searchRoute(Long startPlaceId,Long endPlaceId);
     void addPath(AddRouteRequestDto requestDto);
-    void tmap(TmapRequestDto requestDto);
     PriorityQueue<KruskalRequestDto> combination(List<GetRouteTmapRequestDto> request, int[] result, int start, int cnt, int size,PriorityQueue<KruskalRequestDto> pq);
 
     GetRouteResponseDto kruskal(PriorityQueue<KruskalRequestDto> pq, List<GetRouteTmapRequestDto> requestDto);
