@@ -21,6 +21,9 @@ import RecommendSchedule from './Screen/RecommendSchedule.js';
 import SetTravelPlan from './Screen/SetTravelPlan.js';
 import Gallery from './Screen/Gallery.js';
 import JoinGroup from './Screen/JoinGroup.js';
+//import DeviceInfo from 'react-native-device-info';
+
+//DeviceInfo.setPreferredOrientations(['ko-KR']);
 
 const Stack = createNativeStackNavigator();
 const Drawer = createDrawerNavigator();

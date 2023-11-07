@@ -26,17 +26,25 @@ const pixelRatio = PixelRatio.get();
 const SetTravelPlan = ({ navigation }) => {
   const planLogo = require('../Image/k_setPlanLogo.png');
 
-  //let b_res = 0;
+  // 여행 제목
   const [titileText, setText] = useState(0);
-  const [dateSelected, setDateSelected] = useState([0, 0, 0]);
 
+  // 달력 설정
   const [dateModelShow1, setDateModel1] = useState(false);
   const [dateModelShow2, setDateModel2] = useState(false);
+
+  // 입력 시간
   const [travelStartData, setTravelStartData] = useState(false);
   const [travelEndData, setTravelEndData] = useState(false);
   const [travelStart, setTravelStart] = useState(false);
   const [travelEnd, setTravelEnd] = useState(false);
   const [elasedDay, setElasedDay] = useState(false);
+
+  // 입력 시간 text
+  const [startTextContent, setStartTextContent] = useState(false);
+  const [endTextContent, setEndTextContent] = useState(false);
+
+  // 입력 시간 검사
   const [nextOk, setNextOk] = useState(false);
 
   const nowDate = new Date();
@@ -78,12 +86,15 @@ const SetTravelPlan = ({ navigation }) => {
       date.getMonth(),
       date.getDate(),
     );
+
     setTravelStart(confirmDate.getTime());
+    setStartTextContent(date.getMonth() + '월 ' + date.getDate() + '일');
     // travelStart = confirmDate.getTime();
     // travelStart = confirmDate.console.warn(nowDate);
     // console.warn(nowDate.getDate());
     // console.warn(nowDate.getFullYear());
     // console.warn(fabDay);
+    console.log(startTextContent);
     dateModelCancle1();
   };
 
@@ -124,8 +135,9 @@ const SetTravelPlan = ({ navigation }) => {
     console.log('p day:', elasedDay);
     if (conNextOk === true) {
       setNextOk(true);
-    } else {
+      setEndTextContent(date.getMonth() + '월 ' + date.getDate() + '일');
       setElasedDay(elasedDay);
+    } else {
       setNextOk(false);
     }
     dateModelCancle2();
@@ -158,7 +170,9 @@ const SetTravelPlan = ({ navigation }) => {
             left: screenWidth * 0.1,
           },
         ]}
-      ></TouchableOpacity>
+      >
+        <Text>{startTextContent}</Text>
+      </TouchableOpacity>
 
       <TouchableOpacity
         onPress={showDatePicker2}
@@ -170,6 +184,7 @@ const SetTravelPlan = ({ navigation }) => {
           },
         ]}
       >
+        <Text>{endTextContent}</Text>
         {/* <TextInput
         // style={[
         //   styles.planContentText,
@@ -204,6 +219,7 @@ const SetTravelPlan = ({ navigation }) => {
         onConfirm={dateConfirm1}
         onCancel={dateModelCancle1}
         display="default"
+        locale="ko-KR"
       />
       <DateTimePickerModal
         isVisible={dateModelShow2}
