@@ -12,4 +12,5 @@ public class GetRouteResponseDto {
     private ArrayList<PlaceDto> placeList;
     private float totalDistance;
     private float totalTime;
+    private ArrayList<PathDto> pathList;
 }

@@ -8,6 +8,4 @@ import lombok.*;
 @AllArgsConstructor
 public class GetRouteTmapRequestDto {
     private Long id;
-    private float lat;
-    private float lon;
 }

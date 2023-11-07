@@ -3,6 +3,7 @@ package com.A605.pijja.domain.plan.service;
 import com.A605.pijja.domain.plan.dto.request.*;
 import com.A605.pijja.domain.plan.dto.response.GetRouteResponseDto;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
+import com.A605.pijja.domain.plan.dto.response.PathDto;
 import com.A605.pijja.domain.plan.dto.response.PlaceDto;
 import com.A605.pijja.domain.plan.entity.Path;
 import com.A605.pijja.domain.plan.entity.PlaceTest;
@@ -67,6 +68,7 @@ public class PathServiceImpl implements PathService {
         int totalTime=0;
         ArrayList<PlaceDto> placeList=new ArrayList<>();
         ArrayList<Integer>[] arr=new ArrayList[requestDto.size()];
+        ArrayList<PathDto> pathList=new ArrayList<>();
         HashMap<Long,Integer> map=new HashMap<>(); //map<placeId,idx>
         HashMap<Integer,Long> map2=new HashMap<>(); //map<placeId,idx>
         int[] parent=new int[requestDto.size()];
@@ -82,8 +84,22 @@ public class PathServiceImpl implements PathService {
             KruskalRequestDto now=pq.poll();
             int place1=map.get(now.getPlace1());
             int place2=map.get(now.getPlace2());
-
+            ObjectMapper objectMapper=new ObjectMapper();
             if(find(place1,parent)!=find(place2,parent)){
+                Path path=pathRepository.findByStartPlaceAndEndPlace(now.getPlace1(),now.getPlace2());
+
+                try {
+                    JsonNode pathJson = objectMapper.readTree(path.getPath());
+                    for(int i=0;i<pathJson.size();i++){
+                        float latitude=pathJson.at("/"+i+"/latitude").floatValue();
+                        float longitude=pathJson.at("/"+i+"/longitude").floatValue();
+                        pathList.add(PathDto.builder()
+                                .latitude(latitude)
+                                .longitude(longitude).build());
+                    }
+                } catch (Exception e) {
+                    // JSON 파싱 오류 처리
+                }
                 arr[place1].add(place2);
                 arr[place2].add(place1);
                 union(place1,place2,parent);
@@ -120,7 +136,8 @@ public class PathServiceImpl implements PathService {
         return GetRouteResponseDto.builder()
                 .placeList(placeList)
                 .totalTime(totalTime)
-                .totalDistance(totalDistance).build();
+                .totalDistance(totalDistance)
+                .pathList(pathList).build();
     }
     public int find(int x,int[] parent){
         if(x==parent[x]){
@@ -204,13 +221,20 @@ public class PathServiceImpl implements PathService {
 
         String tmapApiKey=tmapConfig.getTmapApiKey();
         WebClient wc=webClient;
+
+        PlaceTest startPlace=placeTestRepository.findById(request.get(0).getId()).get();
+        PlaceTest endPlace=placeTestRepository.findById(request.get(1).getId()).get();
+        float startY=startPlace.getLat();
+        float startX=startPlace.getLon();
+        float endY=endPlace.getLat();
+        float endX=endPlace.getLon();
         
         //TmapRequestDto 변환
         TmapRequestDto tmapRequest= TmapRequestDto.builder()
-                .startY(request.get(0).getLat())
-                .startX(request.get(0).getLon())
-                .endY(request.get(1).getLat())
-                .endX(request.get(1).getLon())
+                .startY(startY)
+                .startX(startX)
+                .endY(endY)
+                .endX(endX)
                 .build();
 
         ResponseEntity<String> result=wc.post()
@@ -327,16 +351,19 @@ public class PathServiceImpl implements PathService {
     @Override
     public void test(Long id){
         Path path=pathRepository.findById(id).get();
+        Path path2=pathRepository.findById(5L).get();
+
         ObjectMapper objectMapper=new ObjectMapper();
         try {
             JsonNode pathJson = objectMapper.readTree(path.getPath());
-
-            float firstLatitude = pathJson.get(0).get("latitude").floatValue();
-            float firstLongitude = pathJson.get(0).get("longitude").floatValue();
-            System.out.println(firstLatitude+" "+firstLongitude+"!!!!!!!!!!!!");
+            JsonNode pathJson2 = objectMapper.readTree(path2.getPath());
+            JsonNode lat=pathJson.at("/0/latitude");
+            System.out.println(lat+"!!@@@!!!");
+            System.out.println(pathJson);
+            System.out.println(pathJson2);
         } catch (Exception e) {
+            System.out.println("파싱오류");
             // JSON 파싱 오류 처리
         }
-        System.out.println(path.getPath());
     }
 }
