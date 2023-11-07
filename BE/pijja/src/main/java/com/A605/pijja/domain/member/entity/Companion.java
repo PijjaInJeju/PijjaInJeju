@@ -5,7 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -40,9 +40,9 @@ public class Companion {
 
     private String mate; // 여행 그룹에 대한 추가 정보
 
-    private LocalDateTime startTime; // 동반 여행의 시작 시간
+    private LocalDate startDay; // 동반 여행의 시작 날짜
 
-    private LocalDateTime endTime; // 동반 여행의 종료 시간
+    private LocalDate endDay; // 동반 여행의 종료 날짜
 
     @OneToMany(mappedBy = "companion")
     private List<MemberCompanion> companionMembers = new ArrayList<>();
