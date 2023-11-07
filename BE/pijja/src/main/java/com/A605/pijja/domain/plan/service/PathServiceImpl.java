@@ -1,7 +1,9 @@
 package com.A605.pijja.domain.plan.service;
 
 import com.A605.pijja.domain.plan.dto.request.*;
+import com.A605.pijja.domain.plan.dto.response.GetRouteResponseDto;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
+import com.A605.pijja.domain.plan.dto.response.PlaceDto;
 import com.A605.pijja.domain.plan.entity.Path;
 import com.A605.pijja.domain.plan.entity.PlaceTest;
 import com.A605.pijja.domain.plan.repository.PathRepository;
@@ -58,9 +60,11 @@ public class PathServiceImpl implements PathService {
     }
 
     @Override
-    public int kruskal(PriorityQueue<KruskalRequestDto> pq,List<GetRouteTmapRequestDto> requestDto){
-        int answer=0;
-        ArrayList<Long> route=new ArrayList<>();
+    @Transactional
+    public GetRouteResponseDto kruskal(PriorityQueue<KruskalRequestDto> pq,List<GetRouteTmapRequestDto> requestDto){
+        int totalDistance=0;
+        int totalTime=0;
+        ArrayList<PlaceDto> placeList=new ArrayList<>();
         ArrayList<Integer>[] arr=new ArrayList[requestDto.size()];
         HashMap<Long,Integer> map=new HashMap<>(); //map<placeId,idx>
         HashMap<Integer,Long> map2=new HashMap<>(); //map<placeId,idx>
@@ -82,10 +86,11 @@ public class PathServiceImpl implements PathService {
                 arr[place1].add(place2);
                 arr[place2].add(place1);
                 union(place1,place2,parent);
-                answer+=now.getDist();
+                totalDistance+=now.getDist();
+                totalTime+=now.getTime();
             }
         }
-        int start=0;
+
         ArrayDeque<Integer> q=new ArrayDeque<>();
         int[] ch=new int[requestDto.size()];
         for(int i=0;i<requestDto.size();i++){
@@ -97,7 +102,11 @@ public class PathServiceImpl implements PathService {
 
         while(!q.isEmpty()){
             int now=q.poll();
-            route.add(map2.get(now));
+            PlaceTest place =placeTestRepository.findById(map2.get(now)).get();
+            placeList.add(PlaceDto.builder()
+                    .id(place.getId())
+                    .name(place.getName()).build());
+
             ch[now]=1;
             for(int i=0;i<arr[now].size();i++){
                 int next=arr[now].get(i);
@@ -107,8 +116,10 @@ public class PathServiceImpl implements PathService {
             }
         }
 
-        System.out.println(route);
-        return answer;
+        return GetRouteResponseDto.builder()
+                .placeList(placeList)
+                .totalTime(totalTime)
+                .totalDistance(totalDistance).build();
     }
     public int find(int x,int[] parent){
         if(x==parent[x]){
@@ -146,7 +157,8 @@ public class PathServiceImpl implements PathService {
             pq.add(KruskalRequestDto.builder()
                     .place1(request.get(result[0]).getId())
                     .place2(request.get(result[1]).getId())
-                    .dist(searchResult.getDistance()).build());
+                    .dist(searchResult.getDistance())
+                    .time(searchResult.getTime()).build());
             return pq;
         }
         for(int i=start;i<size;i++){
@@ -237,7 +249,7 @@ public class PathServiceImpl implements PathService {
 
                         pathDtoList.add(AddRouteRequestDto.PathDto.builder()
                                 .latitude(nodeList.get(0).floatValue())
-                                .longitude(nodeList.get(0).floatValue())
+                                .longitude(nodeList.get(1).floatValue())
                                 .build());
 
                     }

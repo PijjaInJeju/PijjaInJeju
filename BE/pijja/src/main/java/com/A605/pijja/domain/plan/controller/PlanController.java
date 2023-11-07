@@ -1,6 +1,7 @@
 package com.A605.pijja.domain.plan.controller;
 
 import com.A605.pijja.domain.plan.dto.request.*;
+import com.A605.pijja.domain.plan.dto.response.GetRouteResponseDto;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
 import com.A605.pijja.domain.plan.dto.response.SearchPlaceFromTmapResponseDto;
 import com.A605.pijja.domain.plan.entity.PlaceTest;
@@ -115,23 +116,17 @@ public class PlanController {
     }
 
     @PostMapping("/getroute")
-    public void getRouteTmap(@RequestBody List<GetRouteTmapRequestDto> requestDto){
+    public GetRouteResponseDto getRoute(@RequestBody List<GetRouteTmapRequestDto> requestDto){
         PriorityQueue<KruskalRequestDto> pq=pathService.combination(requestDto,new int[2],0,0, requestDto.size(),new PriorityQueue<>());
-        int answer=pathService.kruskal(pq,requestDto);
-        System.out.println(answer);
+        return pathService.kruskal(pq,requestDto);
     }
 
-    @PostMapping("/getroutevia")
+    @PostMapping("/getroutevia") //티맵 경유지 api 호출
     public ResponseEntity<String> getRouteViaTmap(@RequestBody GetRouteViaTmapRequestDto requestDto){
 
         return pathService.getRouteViaTmap(requestDto);
 
     }
 
-    @PostMapping("/jsontest")
-    public void jsonTest(@RequestBody GetRouteTmapRequestDto requestDto){
-
-        pathService.jsonTest(requestDto);
-    }
-
+    
 }

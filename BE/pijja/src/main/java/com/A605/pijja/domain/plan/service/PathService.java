@@ -1,6 +1,7 @@
 package com.A605.pijja.domain.plan.service;
 
 import com.A605.pijja.domain.plan.dto.request.*;
+import com.A605.pijja.domain.plan.dto.response.GetRouteResponseDto;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
 import org.springframework.http.ResponseEntity;
 
@@ -14,7 +15,7 @@ public interface PathService {
     void tmap(TmapRequestDto requestDto);
     PriorityQueue<KruskalRequestDto> combination(List<GetRouteTmapRequestDto> request, int[] result, int start, int cnt, int size,PriorityQueue<KruskalRequestDto> pq);
 
-    int kruskal(PriorityQueue<KruskalRequestDto> pq,List<GetRouteTmapRequestDto> requestDto);
+    GetRouteResponseDto kruskal(PriorityQueue<KruskalRequestDto> pq, List<GetRouteTmapRequestDto> requestDto);
     ResponseEntity<String> getRouteViaTmap(GetRouteViaTmapRequestDto requestDto);
 
 }
