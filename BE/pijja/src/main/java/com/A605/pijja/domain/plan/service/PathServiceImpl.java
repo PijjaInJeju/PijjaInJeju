@@ -109,7 +109,9 @@ public class PathServiceImpl implements PathService {
             PlaceTest place =placeTestRepository.findById(map2.get(now)).get();
             placeList.add(PlaceDto.builder()
                     .id(place.getId())
-                    .name(place.getName()).build());
+                    .name(place.getName())
+                    .latitude(place.getLat())
+                    .longitude(place.getLon()).build());
 
             ch[now]=1;
             for(int i=0;i<arr[now].size();i++){
