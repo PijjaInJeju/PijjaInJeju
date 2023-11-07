@@ -12,7 +12,7 @@ import com.A605.pijja.domain.member.repository.CompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberCompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberRepository;
 import com.A605.pijja.global.time.TimeUtil;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
@@ -63,11 +63,11 @@ public class CompanionRegistService {
 
         Long memberId = member.getId();
 
-        LocalDateTime startTime = companionAddRequestDto.getStartTime();
+        LocalDate startTime = companionAddRequestDto.getStartDay();
 
-        LocalDateTime endTime = companionAddRequestDto.getEndTime();
+        LocalDate endTime = companionAddRequestDto.getEndDay();
 
-        LocalDateTime currentTime = timeUtil.getCurrentLocalDateTime();
+        LocalDate currentTime = timeUtil.getCurrentLocalDate();
 
         if (startTime.isBefore(currentTime)) {
             return ResponseEntity.status(400)
@@ -94,8 +94,8 @@ public class CompanionRegistService {
                 .isEnd(isEnd)
                 .tendency(companionAddRequestDto.getTendency())
                 .mate(companionAddRequestDto.getMate())
-                .startTime(companionAddRequestDto.getStartTime())
-                .endTime(companionAddRequestDto.getEndTime())
+                .startDay(companionAddRequestDto.getStartDay())
+                .endDay(companionAddRequestDto.getEndDay())
                 .companionMembers(new ArrayList<>())
                 .build();
 
@@ -119,8 +119,8 @@ public class CompanionRegistService {
                 .isEnd(isEnd)
                 .mate(companion.getMate())
                 .tendency(companion.getTendency())
-                .startTime(companion.getStartTime())
-                .endTime(companion.getEndTime())
+                .startDay(companion.getStartDay())
+                .endDay(companion.getEndDay())
                 .memberId(memberId)
                 .build();
 
