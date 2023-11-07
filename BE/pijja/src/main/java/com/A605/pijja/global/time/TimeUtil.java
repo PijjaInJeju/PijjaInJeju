@@ -1,6 +1,6 @@
 package com.A605.pijja.global.time;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.Date;
 import lombok.Getter;
@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class TimeUtil {
 
-    public LocalDateTime getCurrentLocalDateTime() {
+    public LocalDate getCurrentLocalDate() {
         Date date = new Date();
-        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDateTime();
+        return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
     }
 }
