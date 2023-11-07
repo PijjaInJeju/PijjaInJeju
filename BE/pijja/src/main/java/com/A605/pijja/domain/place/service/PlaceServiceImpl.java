@@ -89,6 +89,7 @@ public class PlaceServiceImpl implements PlaceService {
 
 
         PlaceDetailResponseDto responseDto=PlaceDetailResponseDto.builder()
+                .id(placeId)
                 .title(place.getTitle())
                 .latitude(place.getLatitude())
                 .longitude(place.getLongitude())
