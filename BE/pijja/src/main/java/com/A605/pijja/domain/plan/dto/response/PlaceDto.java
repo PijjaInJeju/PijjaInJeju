@@ -1,4 +1,4 @@
-package com.A605.pijja.domain.plan.dto.request;
+package com.A605.pijja.domain.plan.dto.response;
 
 import lombok.*;
 
@@ -6,6 +6,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class GetRouteTmapRequestDto {
+public class PlaceDto {
     private Long id;
+    private String name;
 }

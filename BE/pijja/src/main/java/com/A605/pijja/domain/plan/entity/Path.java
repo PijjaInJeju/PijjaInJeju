@@ -1,5 +1,6 @@
 package com.A605.pijja.domain.plan.entity;
 
+import io.swagger.v3.core.util.Json;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -25,4 +26,7 @@ public class Path {
 
     private float time;
 
+    @Lob
+    @Column(columnDefinition="BLOB")
+    private String path;
 }
