@@ -22,9 +22,6 @@ const kakaoLogin = ({ navigation }) => {
         console.log(`로그인 실패(code:${error.code})`, error.message);
       }
     });
-  // KakaoLogin.getProfile().then(result => {
-  //   console.log('data', JSON.stringify(result));
-  // });
 };
 
 const Login = ({ navigation }) => {
@@ -61,8 +58,8 @@ const Login = ({ navigation }) => {
       />
       <TouchableOpacity
         onPress={() => {
-          // kakaoLogin({ navigation });
-          navigation.navigate('Main');
+          kakaoLogin({ navigation });
+          //navigation.navigate('Main');
         }}
         style={[
           styles.login,

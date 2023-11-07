@@ -20,11 +20,14 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 screenWidth = Dimensions.get('window').width;
 screenHeight = Dimensions.get('window').height;
-// const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
+
 const pixelRatio = PixelRatio.get();
 
-const SetTravelPlan = ({ navigation }) => {
+const SetTravelPlan = ({ route, navigation }) => {
   const planLogo = require('../Image/k_setPlanLogo.png');
+  const { groupStyles, travelMate } = route.params;
+  console.log(groupStyles);
+  console.log(travelMate);
 
   // 여행 제목
   const [titileText, setText] = useState(0);
@@ -51,19 +54,16 @@ const SetTravelPlan = ({ navigation }) => {
   //const daysOfMonth = [31, fabDay, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
   const showDatePicker1 = () => {
-    console.log('push button');
     setDateModel1(true);
     console.log(dateModelShow1);
   };
 
   const dateModelCancle1 = () => {
     setDateModel1(false);
-    console.log('close button1');
     console.log(dateModelShow1);
   };
 
   const showDatePicker2 = () => {
-    console.log('push button2');
     setDateModel2(true);
   };
 
@@ -75,12 +75,6 @@ const SetTravelPlan = ({ navigation }) => {
   const fabDay = new Date(nowDate.getFullYear(), 2, 0).getDate();
 
   const dateConfirm1 = date => {
-    //date = dateSelected;
-    //setDateModel1(date);
-    console.warn('A date has been picked: ', date);
-    console.warn('A date has been picked: ', date.getDate());
-    console.warn('A date has been picked: ', date.getHours());
-
     let confirmDate = new Date(
       date.getFullYear(),
       date.getMonth(),
@@ -89,21 +83,10 @@ const SetTravelPlan = ({ navigation }) => {
 
     setTravelStart(confirmDate.getTime());
     setStartTextContent(date.getMonth() + '월 ' + date.getDate() + '일');
-    // travelStart = confirmDate.getTime();
-    // travelStart = confirmDate.console.warn(nowDate);
-    // console.warn(nowDate.getDate());
-    // console.warn(nowDate.getFullYear());
-    // console.warn(fabDay);
-    console.log(startTextContent);
     dateModelCancle1();
   };
 
   const dateConfirm2 = date => {
-    //date = dateSelected;
-    //setDateSelected2(date);
-    console.warn('A date2 has been picked: ', date);
-    console.warn('A date2 has been picked: ', date.getDate());
-    console.warn('A date2 has been picked: ', date.getHours());
     let conNextOk = true;
     let confirmDate = new Date(
       date.getFullYear(),
@@ -117,7 +100,6 @@ const SetTravelPlan = ({ navigation }) => {
     let endDay = confirmDate.getTime() / (1000 * 60 * 60 * 24);
     let elasedDay = endDay - startDay + 1;
 
-    //console.log(travelStart);
     if (travelStart == 0) {
       Alert.alert('여행 시작일을 입력해주세요.');
       conNextOk = false;
@@ -126,13 +108,6 @@ const SetTravelPlan = ({ navigation }) => {
       conNextOk = false;
     }
 
-    // travelStart = confirmDate.console.warn(nowDate);
-    // console.warn(nowDate.getDate());
-    // console.warn(nowDate.getFullYear());
-    // console.warn(fabDay);
-    console.log('s day:', startDay);
-    console.log('E day:', endDay);
-    console.log('p day:', elasedDay);
     if (conNextOk === true) {
       setNextOk(true);
       setEndTextContent(date.getMonth() + '월 ' + date.getDate() + '일');
@@ -185,17 +160,6 @@ const SetTravelPlan = ({ navigation }) => {
         ]}
       >
         <Text>{endTextContent}</Text>
-        {/* <TextInput
-        // style={[
-        //   styles.planContentText,
-        //   {
-        //     top: screenHeight * 0.58,
-        //     left: screenWidth * 0.56,
-        //   },
-        // ]}
-        >
-          Test
-        </TextInput> */}
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.travelPlanButton}
@@ -212,14 +176,12 @@ const SetTravelPlan = ({ navigation }) => {
         <Text style={styles.travelPlanText}>다음</Text>
       </TouchableOpacity>
 
-      {/* picker modal */}
       <DateTimePickerModal
         isVisible={dateModelShow1}
         mode="datetime"
         onConfirm={dateConfirm1}
         onCancel={dateModelCancle1}
         display="default"
-        locale="ko-KR"
       />
       <DateTimePickerModal
         isVisible={dateModelShow2}

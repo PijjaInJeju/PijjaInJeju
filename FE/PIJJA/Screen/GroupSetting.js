@@ -15,90 +15,106 @@ import SetTravelPlan from './SetTravelPlan.js';
 import Gallery from './Gallery.js';
 
 const GroupSetting = ({ navigation }) => {
-  //let b_res = 0;
-  //let b_pressed = 0;
-
   // 그룹 성향 버튼
   // 누른 상태: 1, 안누른 상태:0
-  // 그룹 성향
-  const [tasteBtn, setTasteBtn] = useState([0, 0, 0, 0]);
+  // 여행 목적
+  const [travelTargetBtn, setTravelTargetBtn] = useState([0, 0, 0]);
 
-  // // 좋아하는 음식 설정
-  const [tasteFoodBtn, setFoodBtn] = useState([0, 0, 0, 0]);
+  // 여행 스타일
+  const [travelStyleBtn, setTravelStyleBtn] = useState([0, 0, 0, 0]);
 
-  // // 여행 메이트 설정하기
-  const [tasteMateBtn, setMateBtn] = useState([0, 0, 0, 0]);
+  // 여행 메이트
+  const [travelMateBtn, setTravelMateBtn] = useState([0, 0, 0, 0, 0]);
 
+  const [groupStyles, setGroupStyles] = useState(['', '']);
+  const [travelMate, setTravelMate] = useState('');
+
+  const travelTargets = ['식도락', '쇼핑', '레저 체험'];
+  const travelStyles = ['공항', '문화 유산', '걷기', '힐링'];
+  const travelMates = ['친구', '연인', '가족', '혼자', '아이'];
+
+  const setTravelStyle = () => {
+    let setStyle1 = '';
+    let setStyle2 = '';
+    let setMate = '';
+
+    for (let i = 0; i < 3; i++) {
+      if (travelTargetBtn[i] != 0) {
+        setStyle1 = travelTargets[i];
+        break;
+      }
+    }
+
+    for (let i = 0; i < 4; i++) {
+      if (travelStyleBtn[i] != 0) {
+        setStyle2 = travelStyles[i];
+      }
+    }
+
+    for (let i = 0; i < 5; i++) {
+      if (travelMateBtn[i] != 0) {
+        setMate = travelMates[i];
+      }
+    }
+
+    navigation.navigate('SetTravelPlan', {
+      groupStyles: [setStyle1, setStyle2],
+      travelMate: setMate,
+    });
+  };
   return (
     <View style={styles.container}>
-      <View>
-        <Text style={styles.titleTravel}>여행 그룹의 성향</Text>
+      <View style={styles.travelStyleContent}>
+        <Text style={styles.titleTravel}>여행의 주 목적은?</Text>
         <View style={styles.travelStyleWrapper}>
           <ScrollView horizontal={true}>
             <Pressable
               style={({ pressed }) => [
-                { backgroundColor: '#fcbf49' },
-                tasteBtn[0] && { backgroundColor: '#f77f00' },
+                {
+                  backgroundColor: '#fcbf49',
+                },
+                travelTargetBtn[0] && { backgroundColor: '#f77f00' },
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setTasteBtn([
-                  !tasteBtn[0],
-                  tasteBtn[1],
-                  tasteBtn[2],
-                  tasteBtn[3],
-                ]);
+                setTravelTargetBtn([!travelTargetBtn[0], 0, 0, 0]);
+                //setTravelStyle();
               }}
             >
-              <Text>힐링</Text>
+              <Text>먹거리</Text>
             </Pressable>
             <Pressable
               style={({ pressed }) => [
                 { backgroundColor: '#fcbf49' },
-                tasteBtn[1] && { backgroundColor: '#f77f00' },
+                travelTargetBtn[1] && { backgroundColor: '#f77f00' },
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setTasteBtn([
-                  tasteBtn[0],
-                  !tasteBtn[1],
-                  tasteBtn[2],
-                  tasteBtn[3],
-                ]);
+                setTravelTargetBtn([0, !travelTargetBtn[1], 0, 0]);
               }}
             >
-              <Text>레저</Text>
+              <Text>쇼핑</Text>
             </Pressable>
             <Pressable
               style={({ pressed }) => [
                 { backgroundColor: '#fcbf49' },
-                tasteBtn[2] && { backgroundColor: '#f77f00' },
+                travelTargetBtn[2] && { backgroundColor: '#f77f00' },
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setTasteBtn([
-                  tasteBtn[0],
-                  tasteBtn[1],
-                  !tasteBtn[2],
-                  tasteBtn[3],
-                ]);
+                setTravelTargetBtn([0, 0, !travelTargetBtn[2], 0]);
               }}
             >
-              <Text>문화 유산</Text>
+              <Text>레저 체험</Text>
             </Pressable>
             <Pressable
               style={({ pressed }) => [
                 { backgroundColor: '#fcbf49' },
-                tasteBtn[3] && { backgroundColor: '#f77f00' },
+                travelTargetBtn[3] && { backgroundColor: '#f77f00' },
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setTasteBtn([
-                  tasteBtn[0],
-                  tasteBtn[1],
-                  tasteBtn[2],
-                  !tasteBtn[3],
-                ]);
+                setTravelTargetBtn([0, 0, 0, !travelTargetBtn[3]]);
               }}
             >
               <Text>먹거리</Text>
@@ -107,97 +123,72 @@ const GroupSetting = ({ navigation }) => {
         </View>
       </View>
       <View>
-        <Text style={styles.titleTravel}>좋아하는 음식 종류</Text>
+        <Text style={styles.titleTravel}>당신의 여행 스타일은?</Text>
         <View style={styles.travelStyleWrapper}>
           <ScrollView horizontal={true}>
             <Pressable
               style={({ pressed }) => [
                 { backgroundColor: '#fcbf49' },
-                tasteFoodBtn[0] && { backgroundColor: '#f77f00' },
+                travelStyleBtn[0] && { backgroundColor: '#f77f00' },
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setFoodBtn([
-                  !tasteFoodBtn[0],
-                  tasteFoodBtn[1],
-                  tasteFoodBtn[2],
-                  tasteFoodBtn[3],
-                ]);
+                setTravelStyleBtn([!travelStyleBtn[0], 0, 0, 0]);
               }}
             >
-              <Text>한식</Text>
+              <Text>공항</Text>
             </Pressable>
             <Pressable
               style={({ pressed }) => [
                 { backgroundColor: '#fcbf49' },
-                tasteFoodBtn[1] && { backgroundColor: '#f77f00' },
+                travelStyleBtn[1] && { backgroundColor: '#f77f00' },
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setFoodBtn([
-                  tasteFoodBtn[0],
-                  !tasteFoodBtn[1],
-                  tasteFoodBtn[2],
-                  tasteFoodBtn[3],
-                ]);
+                setTravelStyleBtn([0, !travelStyleBtn[1], 0, 0]);
               }}
             >
-              <Text>중식</Text>
+              <Text>문화 유적</Text>
             </Pressable>
             <Pressable
               style={({ pressed }) => [
                 { backgroundColor: '#fcbf49' },
-                tasteFoodBtn[2] && { backgroundColor: '#f77f00' },
+                travelStyleBtn[2] && { backgroundColor: '#f77f00' },
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setFoodBtn([
-                  tasteFoodBtn[0],
-                  tasteFoodBtn[1],
-                  !tasteFoodBtn[2],
-                  tasteFoodBtn[3],
-                ]);
+                setTravelStyleBtn([0, 0, !travelStyleBtn[2], 0]);
               }}
             >
-              <Text>양식</Text>
+              <Text>걷기</Text>
             </Pressable>
             <Pressable
               style={({ pressed }) => [
                 { backgroundColor: '#fcbf49' },
-                tasteFoodBtn[3] && { backgroundColor: '#f77f00' },
+                travelStyleBtn[3] && { backgroundColor: '#f77f00' },
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setFoodBtn([
-                  tasteFoodBtn[0],
-                  tasteFoodBtn[1],
-                  tasteFoodBtn[2],
-                  !tasteFoodBtn[3],
-                ]);
+                setTravelStyleBtn([0, 0, 0, !travelStyleBtn[3]]);
               }}
             >
-              <Text>제주 특산물</Text>
+              <Text>힐링</Text>
             </Pressable>
           </ScrollView>
         </View>
       </View>
       <View>
-        <Text style={styles.titleTravel}>여행 메이트</Text>
+        <Text style={styles.titleTravel}>함께 여행할 메이트</Text>
         <View style={styles.travelStyleWrapper}>
           <ScrollView horizontal={true}>
             <Pressable
               style={({ pressed }) => [
                 { backgroundColor: '#fcbf49' },
-                tasteMateBtn[0] && { backgroundColor: '#f77f00' },
+                travelMateBtn[0] && { backgroundColor: '#f77f00' },
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setMateBtn([
-                  !tasteMateBtn[0],
-                  tasteMateBtn[1],
-                  tasteMateBtn[2],
-                  tasteMateBtn[3],
-                ]);
+                setTravelMateBtn([!travelMateBtn[0], 0, 0, 0, 0]);
               }}
             >
               <Text>친구</Text>
@@ -205,33 +196,23 @@ const GroupSetting = ({ navigation }) => {
             <Pressable
               style={({ pressed }) => [
                 { backgroundColor: '#fcbf49' },
-                tasteMateBtn[1] && { backgroundColor: '#f77f00' },
+                travelMateBtn[1] && { backgroundColor: '#f77f00' },
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setMateBtn([
-                  tasteMateBtn[0],
-                  !tasteMateBtn[1],
-                  tasteMateBtn[2],
-                  tasteMateBtn[3],
-                ]);
+                setTravelMateBtn([0, !travelMateBtn[1], 0, 0, 0]);
               }}
             >
-              <Text>애인</Text>
+              <Text>연인</Text>
             </Pressable>
             <Pressable
               style={({ pressed }) => [
                 { backgroundColor: '#fcbf49' },
-                tasteMateBtn[2] && { backgroundColor: '#f77f00' },
+                travelMateBtn[2] && { backgroundColor: '#f77f00' },
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setMateBtn([
-                  tasteMateBtn[0],
-                  tasteMateBtn[1],
-                  !tasteMateBtn[2],
-                  tasteMateBtn[3],
-                ]);
+                setTravelMateBtn([0, 0, !travelMateBtn[2], 0, 0]);
               }}
             >
               <Text>가족</Text>
@@ -239,19 +220,26 @@ const GroupSetting = ({ navigation }) => {
             <Pressable
               style={({ pressed }) => [
                 { backgroundColor: '#fcbf49' },
-                tasteMateBtn[3] && { backgroundColor: '#f77f00' },
+                travelMateBtn[3] && { backgroundColor: '#f77f00' },
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setMateBtn([
-                  tasteMateBtn[0],
-                  tasteMateBtn[1],
-                  tasteMateBtn[2],
-                  !tasteMateBtn[3],
-                ]);
+                setTravelMateBtn([0, 0, 0, !travelMateBtn[3], 0]);
               }}
             >
-              <Text>아이와 함께</Text>
+              <Text>혼자</Text>
+            </Pressable>
+            <Pressable
+              style={({ pressed }) => [
+                { backgroundColor: '#fcbf49' },
+                travelMateBtn[3] && { backgroundColor: '#f77f00' },
+                styles.tasteButton,
+              ]}
+              onPress={() => {
+                setTravelMateBtn([0, 0, 0, 0, !travelMateBtn[3]]);
+              }}
+            >
+              <Text>아이</Text>
             </Pressable>
           </ScrollView>
         </View>
@@ -262,11 +250,11 @@ const GroupSetting = ({ navigation }) => {
       <TouchableOpacity
         style={styles.buttonNext}
         onPress={() => {
+          setTravelStyle();
           //navigation.navigate('CreateScheduleMap');
-          navigation.navigate('SetTravelPlan');
         }}
       >
-        <Text>다음</Text>
+        <Text style={styles.nextBtnText}>다음</Text>
       </TouchableOpacity>
     </View>
   );
@@ -278,6 +266,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: '#ffffff',
   },
   titleTravel: {
     fontSize: 20,
@@ -295,10 +284,13 @@ const styles = StyleSheet.create({
   },
   tasteButton: {
     width: 128,
-    height: 70,
-    borderRadius: 32,
-    marginTop: 20,
-    marginHorizontal: 14,
+    height: 74,
+    //backgroundColor: '#fcbf49',
+    borderRadius: 33,
+    borderWidth: 3,
+    borderColor: '#f77f00',
+    marginVertical: 10,
+    marginHorizontal: 12,
     paddingVertical: 26,
     paddingHorizontal: 30,
   },
@@ -308,11 +300,19 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     width: 320,
     height: 60,
-    backgroundColor: '#ffffff',
-    borderWidth: 4,
+    backgroundColor: '#f77f00',
+    //borderWidth: 4,
     borderColor: '#f77f00',
     borderRadius: 16,
     marginVertical: 40,
+  },
+  nextBtnText: {
+    fontSize: 24,
+    color: '#ffffff',
+  },
+  travelStyleContent: {
+    marginTop: 24,
+    marginBottom: 10,
   },
   scrollStyle: {},
 });
