@@ -13,7 +13,7 @@ console.log('Screen Height: ', screenHeight);
 
 const Logo = require('../Image/k_Logo.png');
 
-const Header = ({ navigation, title }) => {
+const Header = ({ navigation, title, menu }) => {
     console.log("safsa")
     return (
         <View
@@ -32,7 +32,8 @@ const Header = ({ navigation, title }) => {
                 }}
                 onPress={
                     () => {
-                        navigation.navigate("Main");
+                        navigation.dispatch(DrawerActions.jumpTo('MainScreen'));
+                        navigation.navigate('Main');
                     }
                 }
                 >
@@ -60,18 +61,24 @@ const Header = ({ navigation, title }) => {
                     {title}
                 </Text>
             </View>
-            <Icon
-                style={{
-                    width: '5%',
-                    paddingRight: '1%',
-                }}
-                name='menu' 
-                size={30}
-                color="#000000"
-                onPress={ ()=>{
-                    navigation.dispatch(DrawerActions.openDrawer());
-                }}
-            />
+            {
+                menu
+                ?
+                <Icon
+                    style={{
+                        width: '5%',
+                        paddingRight: '1%',
+                    }}
+                    name='menu' 
+                    size={30}
+                    color="#000000"
+                    onPress={ ()=>{
+                        navigation.dispatch(DrawerActions.openDrawer());
+                    }}
+                />
+                :
+                undefined
+            }
         </View>
     )
 }

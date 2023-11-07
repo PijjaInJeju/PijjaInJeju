@@ -1,14 +1,17 @@
-package com.A605.pijja.domain.member.dto;
+package com.A605.pijja.domain.member.dto.response;
 
+import java.time.LocalDate;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.LocalDateTime;
 
 @Getter
 @Builder
-public class CompanionRegistDto {
+public class CompanionCreateDto {
+
     private String name;
+
+    private String code;
 
     private Boolean isStart;
 
@@ -18,9 +21,9 @@ public class CompanionRegistDto {
 
     private String tendency;
 
-    private LocalDateTime startTime;
+    private LocalDate startDay;
 
-    private LocalDateTime endTime;
+    private LocalDate endDay;
 
     private Long memberId;
 }

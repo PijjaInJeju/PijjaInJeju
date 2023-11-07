@@ -32,8 +32,10 @@ const App = () => {
       {/* // 최근 프로젝트 */}
       <Stack.Navigator
         initialRouteName="Login"
-        // // screenOptions={{
-        // //   animation: 'fade',
+        screenOptions={{
+          animation: 'fade',
+          headerShown: false,
+        }}
         // //   headerLeft: ({ onPress }) => (
         // //     <TouchableOpacity onPress={onPress}>
         // //       <Image style={styles.logo} source={Logo} />

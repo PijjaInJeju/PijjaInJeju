@@ -161,7 +161,7 @@ const RecommendSchedule = ({route}) => {
     );
 
     DATA[0].data = route.params.scheduleList;
-    console.log(route.params.scheduleList)
+    console.log(route.params.scheduleList);
     
 
     return (
