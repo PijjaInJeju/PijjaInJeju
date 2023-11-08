@@ -1,6 +1,8 @@
 import React from "react";
-import { View, Text, TouchableOpacity, PixelRatio, Dimensions } from "react-native";
+import { View, Text, TouchableOpacity, PixelRatio, Dimensions, Image } from "react-native";
 import Carousel from "react-native-snap-carousel";
+
+import Icon from 'react-native-vector-icons/AntDesign'; 
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -8,21 +10,76 @@ const pixelRatio = PixelRatio.get();
 
 const closeSize = 7 * pixelRatio;
 
-const One = ({title}) =>{
-    let profile = data.profile;
-    let groupList = data.groupList;
-    let setGroupList = data.setGroupList;
+const noImage = require('../../Image/s_noImage.jpg');
 
-    const groupListItem = (item) =>{
+const zeroLengthGroupComponent = () => {
+
+}
+
+const fullLengthGroupCompoent = () => {
+    
+}
+
+const One = ({data}) =>{
+    let profile =       data.profile;
+    let groupList =     data.groupList;
+    let setGroupList =  data.setGroupList;
+
+    const groupListItem = ({item}) =>{
         console.log(item);
         return (
-            <Text
+            <View
                 style={{
-                    color: 'black',
+                    alignItems: 'center',
+                    width: screenWidth * 0.6,
                 }}
             >
-                {item.title}fsafsa
-            </Text>
+                <Text
+                    style={{
+                        color: 'black',
+                        flexDirection: 'row'
+                    }}
+                >
+                    {item.title}fsafsa
+                    
+                </Text>
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        width: screenWidth * 0.6,
+                        height: screenHeight * 0.27,
+                    }}
+                >
+                    {
+                        //<Icon
+                        //    style={{
+                        //        color: 'gray',
+                        //        alignSelf: 'center',
+                        //    }}
+                        //    size={30}
+                        //    name="left"
+                        ///>
+                    }
+                    <Image
+                        style={{
+                            width: screenWidth * 0.6,
+                            height: screenHeight * 0.27,
+                            resizeMode: 'contain',
+                        }}
+                        source={noImage}
+                    />
+                    {
+                        //<Icon
+                        //    style={{
+                        //        color: 'gray',
+                        //        alignSelf: 'center',
+                        //    }}
+                        //    size={30}
+                        //    name="right"
+                        ///>
+                    }
+                </View>
+            </View>
         );
     }
 
@@ -32,10 +89,11 @@ const One = ({title}) =>{
         <View>
             <View
                 style={{
-                    width: '70%',
-                    height: '40%',
+                    width: screenWidth * 0.7,
+                    height: screenHeight * 0.4,
                     borderWidth: 1,
                     borderRadius: 50,
+                    borderColor: 'gray',
                     alignSelf: 'center',
                     paddingLeft: '5%',
                     paddingTop: '3%',
@@ -44,8 +102,9 @@ const One = ({title}) =>{
             >
                 <Text
                     style={{
+                        width: screenWidth * 0.6,
                         fontWeight: "bold",
-                        fontSize: 30,
+                        fontSize: pixelRatio * 8,
                         color: 'black',
                     }}
                 >
@@ -57,8 +116,10 @@ const One = ({title}) =>{
                     ?
                     <Text
                         style={{
+                            width: screenWidth * 0.6,
                             color: 'black',
                             flex: 1,
+                            fontSize: pixelRatio * 3.5,
                         }}
                     >
                         여행 그룹이 없어요 ㅠㅠ..
@@ -71,7 +132,9 @@ const One = ({title}) =>{
                     >
                         <Text
                             style={{
+                                width: screenWidth * 0.6,
                                 color: 'black',
+                                fontSize: pixelRatio * 4,
                             }}
                         >
                             신나는 제주도 여행중이시군요!
@@ -80,10 +143,10 @@ const One = ({title}) =>{
                         <Carousel
                             data={groupList[0].schedule}
                             renderItem={groupListItem}
-                            sliderWidth={screenWidth}
+                            sliderWidth={screenWidth * 0.6}
                             itemWidth={screenWidth}
-                            sliderHeight={screenHeight * 0.3}
-                            itemHeight={screenHeight * 0.3}
+                            sliderHeight={screenHeight * 0.2}
+                            itemHeight={screenHeight * 0.5}
                         />
                     </View>
                 }
