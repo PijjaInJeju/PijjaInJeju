@@ -1,10 +1,11 @@
 package com.A605.pijja.domain.plan.service;
 
-import com.A605.pijja.domain.plan.dto.request.DayGroupingRequestDto;
+import com.A605.pijja.domain.plan.dto.request.MakePlanRequestDto;
 import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
-import com.A605.pijja.domain.plan.entity.Path;
+import com.A605.pijja.domain.plan.entity.Plan;
 import com.A605.pijja.domain.plan.repository.PathRepository;
+import com.A605.pijja.domain.plan.repository.PlanRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,11 +16,12 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 public class PlanServiceImpl implements PlanService {
+    private final PlanRepository planRepository;
     private final PathRepository pathRepository;
     private final PathService pathService;
     @Override
-    public void planGrouping(DayGroupingRequestDto requestDto) {
-        ArrayList<DayGroupingRequestDto.PlaceDto>[] placeGroup=new ArrayList[requestDto.getTotalDay()];
+    public void planGrouping(MakePlanRequestDto requestDto) {
+        ArrayList<MakePlanRequestDto.PlaceDto>[] placeGroup=new ArrayList[requestDto.getTotalDay()];
         for(int i=0;i< placeGroup.length;i++){
             placeGroup[i]=new ArrayList<>();
         }
@@ -73,7 +75,7 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     @Transactional
-    public void combinationPlan(List<DayGroupingRequestDto.PlaceDto> requestDto, int[] result, int cnt, int start) {
+    public void combinationPlan(List<MakePlanRequestDto.PlaceDto> requestDto, int[] result, int cnt, int start) {
         if(cnt==2){
             List<GetRouteTmapRequestDto> requestTmapList=new ArrayList<>();
 
@@ -94,5 +96,17 @@ public class PlanServiceImpl implements PlanService {
             result[cnt]=i;
             combinationPlan(requestDto,result,cnt+1,i+1);
         }
+    }
+
+    @Override
+    @Transactional
+    public void makePlan(MakePlanRequestDto requestDto) {
+        Plan plan=Plan.builder()
+                .name(requestDto.getName())
+                .endDay(requestDto.getEndDay())
+                .startDay(requestDto.getStartDay())
+                .build();
+        planRepository.save(plan);
+        planGrouping(requestDto);
     }
 }

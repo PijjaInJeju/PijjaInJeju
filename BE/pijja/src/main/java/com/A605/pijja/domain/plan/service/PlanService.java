@@ -1,11 +1,11 @@
 package com.A605.pijja.domain.plan.service;
 
-import com.A605.pijja.domain.plan.dto.request.DayGroupingRequestDto;
-import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
+import com.A605.pijja.domain.plan.dto.request.MakePlanRequestDto;
 
 import java.util.List;
 
 public interface PlanService {
-    void planGrouping(DayGroupingRequestDto requestDto);
-    void combinationPlan(List<DayGroupingRequestDto.PlaceDto> requestDto, int[] result, int cnt, int start);
+    void planGrouping(MakePlanRequestDto requestDto);
+    void combinationPlan(List<MakePlanRequestDto.PlaceDto> requestDto, int[] result, int cnt, int start);
+    void makePlan(MakePlanRequestDto requestDto);
 }

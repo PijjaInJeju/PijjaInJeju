@@ -27,13 +27,13 @@ public class Plan {
 
     private String name;
 
-    private LocalDate startTime;
+    private LocalDate startDay;
 
-    private LocalDate endTime;
+    private LocalDate endDay;
     private Long isLike;
 
-    @OneToOne
-    @JoinColumn(name = "COMPANION_ID")
-    private Companion companion;
+//    @OneToOne
+//    @JoinColumn(name = "COMPANION_ID")
+//    private Companion companion;
 
 }

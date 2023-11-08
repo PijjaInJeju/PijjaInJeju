@@ -9,12 +9,13 @@ import java.util.ArrayList;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class DayGroupingRequestDto {
+public class MakePlanRequestDto {
     private LocalDate startDay;
     private LocalDate endDay;
     private int totalDay;
-    private String mate;
-    private String  tendency;
+    private String name;
+//    private String mate;
+//    private String  tendency;
     private ArrayList<PlaceDto> placeList;
 
     @Getter
