@@ -12,6 +12,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SaveProfile = async data => {
   //console.log('저장하는 데이터 : ', data);
+  //console.log('profile data: ', data);
   try {
     await AsyncStorage.setItem('user', JSON.stringify(data)); // "Data" 대신 "data"를 사용
   } catch (e) {
