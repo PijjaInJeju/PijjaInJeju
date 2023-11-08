@@ -1,7 +1,7 @@
-import React from "react";
+import React,{useState,useRef} from "react";
 import { View, Text, TouchableOpacity, PixelRatio, Dimensions, Image } from "react-native";
 
-import Carousel from "react-native-snap-carousel";
+import Carousel,{ Pagination } from "react-native-snap-carousel";
 
 import Header from "../../component/Header";
 
@@ -29,7 +29,8 @@ const One = ({data}) =>{
     let profile =       data.profile;
     let groupList =     data.groupList;
     let setGroupList =  data.setGroupList;
-
+    const [ activeSlide, setActiveSlide ] = useState(0);
+    const activeRef = useRef(null);
     
     console.log("one Data : ",data);
 
@@ -62,9 +63,38 @@ const One = ({data}) =>{
                 itemWidth={screenWidth}
                 sliderHeight={screenHeight}
                 itemHeight={screenHeight}
+                onSnapToItem={(index) => {
+                    setActiveSlide(index);
+                    console.log(index);
+                }}
+                ref={activeRef}
             />
             <Header
                 title={"fsafsa"}
+            />
+            <Pagination 
+                dotsLength={backGroundImageList.length}
+                activeDotIndex={activeSlide}
+                containerStyle={{ 
+                    position: 'absolute',
+                    zIndex: 10,
+                    bottom: '1%',
+                    width: '100%',
+                }}
+                dotStyle={{
+                    width: 10,
+                    height: 10,
+                    borderRadius: 5,
+                    marginHorizontal: 8,
+                    backgroundColor: 'rgba(255, 255, 255, 1)'
+                }}
+                inactiveDotStyle={{
+                    backgroundColor: 'rgba(255, 255, 255, 0.9)'
+                }}
+                inactiveDotOpacity={0.4}
+                inactiveDotScale={0.6}
+                tappableDots={true}
+                carouselRef={activeRef}
             />
             <View
                 style={{

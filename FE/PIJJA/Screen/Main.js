@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler'; // 파일의 가장 최상단에 위치해야함
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useRef } from 'react';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import {
@@ -11,7 +11,7 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-import Carousel from 'react-native-snap-carousel';
+import Carousel,{ Pagination } from 'react-native-snap-carousel';
 import One from './Carousel/One';
 import Two from './Carousel/Two'
 
@@ -70,6 +70,8 @@ const Main = ({ navigation, route }) => {
     );
   }
   
+  const [ activeSlide, setActiveSlide ] = useState();
+  const activeRef = useRef(null);
   return (
     <SafeAreaView>
       <Carousel
@@ -80,6 +82,34 @@ const Main = ({ navigation, route }) => {
         itemWidth={screenWidth}
         sliderHeight={screenHeight}
         itemHeight={screenHeight}
+        onSnapToItem={(index) => {
+          setActiveSlide(index);
+          console.log(index);
+        }}
+        ref={activeRef}
+      />
+      <Pagination 
+        dotsLength={data.length}
+        activeDotIndex={activeSlide}
+        containerStyle={{ 
+          height: screenHeight, 
+          position: 'absolute'
+         }}
+        dotStyle={{
+          width: 10,
+          height: 10,
+          borderRadius: 5,
+          marginVertical: 8,
+          backgroundColor: 'rgba(255, 255, 255, 0.92)'
+        }}
+        inactiveDotStyle={{
+            // Define styles for inactive dots here
+        }}
+        inactiveDotOpacity={0.4}
+        inactiveDotScale={0.6}
+        vertical={true}
+        carouselRef={activeRef}
+        tappableDots={true}
       />
     </SafeAreaView>
   );

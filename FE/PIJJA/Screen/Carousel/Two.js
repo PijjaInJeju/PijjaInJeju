@@ -126,6 +126,8 @@ const Two = ({data}) =>{
                         </Text>
                         {console.log(groupList[0].schedule)}
                         <Carousel
+                            layout={'tinder'}
+                            layoutCardOffset={`9`}
                             data={groupList[0].schedule}
                             renderItem={groupListItem}
                             sliderWidth={screenWidth * 0.6}
