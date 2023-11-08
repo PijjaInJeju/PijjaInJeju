@@ -29,6 +29,7 @@ public class PlanServiceImpl implements PlanService {
         for(int i=0;i< requestDto.getPlaceList().size();i++){
             if(!ch[i]) {
                 placeGroup[day].add(requestDto.getPlaceList().get(i));
+                ch[i]=true;
                 for (int j = i + 1; j < requestDto.getPlaceList().size(); j++) {
                     float distance=pathRepository.findByStartPlaceAndEndPlace(requestDto.getPlaceList().get(i).getId(),requestDto.getPlaceList().get(j).getId()).getDistance();
                     if(distance<=20000 && !ch[j]){
@@ -42,6 +43,24 @@ public class PlanServiceImpl implements PlanService {
                 break;
             }
         }
+        for(int i=0;i<requestDto.getPlaceList().size();i++){
+            float min=Float.MAX_VALUE;
+            int targetDay=0;
+            if(!ch[i]){
+                for(int j=0;j< requestDto.getTotalDay();j++){
+                    for(int k=0;k<placeGroup[j].size();k++){
+                        float distance=pathRepository.findByStartPlaceAndEndPlace(requestDto.getPlaceList().get(i).getId(),placeGroup[j].get(k).getId()).getDistance();
+                        if(min>distance){
+                            min=distance;
+                            targetDay=j;
+                        }
+                    }
+                }
+                placeGroup[targetDay].add(requestDto.getPlaceList().get(i));
+                ch[i]=true;
+            }
+        }
+
 
         for(int i=0;i<day;i++){
             for(int j=0;j<placeGroup[i].size();j++) {
