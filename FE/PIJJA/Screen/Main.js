@@ -53,7 +53,9 @@ const Main = ({ navigation, route }) => {
     {
       screen: Two,
       data: {
-        //...profile,
+        profile: route.params.profile,
+        groupList: groupList,
+        setGroupList: setGroupList,
         nickName: "asd"
       }
     },
