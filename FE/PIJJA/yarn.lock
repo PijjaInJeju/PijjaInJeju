@@ -6479,6 +6479,11 @@ react-native-gradle-plugin@^0.70.2:
   resolved "https://registry.npmjs.org/react-native-gradle-plugin/-/react-native-gradle-plugin-0.70.3.tgz"
   integrity sha512-oOanj84fJEXUg9FoEAQomA8ISG+DVIrTZ3qF7m69VQUJyOGYyDZmPqKcjvRku4KXlEH6hWO9i4ACLzNBh8gC0A==
 
+react-native-kakao-share-link@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.npmjs.org/react-native-kakao-share-link/-/react-native-kakao-share-link-1.0.10.tgz"
+  integrity sha512-EtlPhe5PK85Yr/fQt29bWuGits6LwTyL/RHwffflP/ZderwjUvxk3ASuqy41CZg/2Pax/3N/wZdMFiZNExjnuA==
+
 "react-native-nmap@github:zerocho/react-native-naver-map":
   version "0.0.67"
   resolved "git+ssh://git@github.com/zerocho/react-native-naver-map.git#42592cb1f3c1dbff82a15977728731841cc66bed"
