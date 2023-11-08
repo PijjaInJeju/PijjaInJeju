@@ -42,11 +42,13 @@ pipeline {
 //                 [file(credentialsId: 'application-oauth.properties', variable: 'oauth'),
 //                                 file(credentialsId: 'application-jwt.properties', variable: 'jwt'),
                                 [file(credentialsId: 'application-rds', variable: 'rds'),
+                                file(credentialsId: 'application-API-KEY', variable: 'APIKEY'),
                                 file(credentialsId: 'application-redis', variable: 'redis')])
                               {
                     script {
 //                         sh 'cp $aws BE/pijja/src/main/resources/application-aws-credentials.properties'
 //                         sh 'cp $oauth BE/pijja/src/main/resources/application-oauth.properties'
+                        sh 'cp $APIKEY BE/pijja/src/main/resources/application-API-KEY.properties'
                         sh 'cp $redis BE/pijja/src/main/resources/application-redis.properties'
                         sh 'cp $rds BE/pijja/src/main/resources/application-rds.properties'
                     }
@@ -111,6 +113,30 @@ pipeline {
                         ssh -o StrictHostKeyChecking=no $releaseServerAccount@$releaseServerUri "sudo docker run -i --network ubuntu_default  -e TZ=Asia/Seoul -v /home/ubuntu/backup:/backup --name spring -p $springReleasePort:$springReleasePort -d $springImageName:latest"
                     '''
                 }
+            }
+        }
+    }
+    post {
+        success {
+            script {
+                def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
+                def Author_Name = sh(script: "git show -s --pretty=%ae", returnStdout: true).trim()
+                mattermostSend (color: 'good',
+                message: "빌드 성공: ${env.JOB_NAME} #${env.BUILD_NUMBER} by ${Author_ID}(${Author_Name})\n(<${env.BUILD_URL}|Details>)",
+                endpoint: 'https://meeting.ssafy.com/hooks/prmf1o93otrc3xm43eym9azcxc',
+                channel: 'pijjainjeju_master_CICD'
+                )
+            }
+        }
+        failure {
+            script {
+                def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
+                def Author_Name = sh(script: "git show -s --pretty=%ae", returnStdout: true).trim()
+                mattermostSend (color: 'danger',
+                message: "빌드 실패: ${env.JOB_NAME} #${env.BUILD_NUMBER} by ${Author_ID}(${Author_Name})\n(<${env.BUILD_URL}|Details>)",
+                endpoint: 'https://meeting.ssafy.com/hooks/prmf1o93otrc3xm43eym9azcxc',
+                channel: 'pijjainjeju_master_CICD'
+                )
             }
         }
     }

@@ -153,12 +153,15 @@ const Item = ({ id,title,address,navigation }) => (
     </View>
 );
 
-const RecommendSchedule = () => {
+const RecommendSchedule = ({route}) => {
 
+    
     const renderSchedule = ({ item }) => (
         <scheduleItem title={item.title} address={item.address} />
     );
 
+    DATA[0].data = route.params.scheduleList;
+    console.log(route.params.scheduleList);
     
 
     return (
