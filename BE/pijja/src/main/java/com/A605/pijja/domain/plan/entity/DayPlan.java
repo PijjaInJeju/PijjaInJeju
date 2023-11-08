@@ -14,10 +14,12 @@ public class DayPlan {
     private Long id;
 
     @ManyToOne
-    @JoinColumn
+    @JoinColumn(name="PLAN_ID")
     private Plan plan;
 
     private int day;
 
-
+    public void assignPlan(Plan plan){
+        this.plan=plan;
+    }
 }

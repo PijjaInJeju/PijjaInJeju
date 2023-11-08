@@ -1,13 +1,12 @@
 package com.A605.pijja.domain.plan.entity;
 
 import com.A605.pijja.domain.member.entity.Companion;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.*;
+
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,4 +35,11 @@ public class Plan {
 //    @JoinColumn(name = "COMPANION_ID")
 //    private Companion companion;
 
+    @OneToMany(mappedBy="plan")
+    private List<DayPlan> dayPlanList=new ArrayList<>();
+
+    public void addPlanAndDayPlan(DayPlan dayPlan){
+        this.dayPlanList.add(dayPlan);
+        dayPlan.assignPlan(this);
+    }
 }

@@ -3,7 +3,9 @@ package com.A605.pijja.domain.plan.service;
 import com.A605.pijja.domain.plan.dto.request.MakePlanRequestDto;
 import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
+import com.A605.pijja.domain.plan.entity.DayPlan;
 import com.A605.pijja.domain.plan.entity.Plan;
+import com.A605.pijja.domain.plan.repository.DayPlanRepository;
 import com.A605.pijja.domain.plan.repository.PathRepository;
 import com.A605.pijja.domain.plan.repository.PlanRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,7 @@ public class PlanServiceImpl implements PlanService {
     private final PlanRepository planRepository;
     private final PathRepository pathRepository;
     private final PathService pathService;
+    private final DayPlanRepository dayPlanRepository;
     @Override
     public void planGrouping(MakePlanRequestDto requestDto) {
         ArrayList<MakePlanRequestDto.PlaceDto>[] placeGroup=new ArrayList[requestDto.getTotalDay()];
@@ -105,8 +108,18 @@ public class PlanServiceImpl implements PlanService {
                 .name(requestDto.getName())
                 .endDay(requestDto.getEndDay())
                 .startDay(requestDto.getStartDay())
+                .dayPlanList(new ArrayList<>())
                 .build();
         planRepository.save(plan);
         planGrouping(requestDto);
+
+        DayPlan dayPlan= DayPlan.builder()
+                .day(1)
+                .plan(plan)
+                .build();
+        dayPlanRepository.save(dayPlan);
+        plan.addPlanAndDayPlan(dayPlan);
+        System.out.println(plan.getDayPlanList());
+
     }
 }
