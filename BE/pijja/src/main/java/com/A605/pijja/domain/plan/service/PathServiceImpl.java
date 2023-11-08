@@ -47,7 +47,7 @@ public class PathServiceImpl implements PathService {
     }
 
     @Override
-    @Transactional
+    @Transactional //경로 db 저장
     public void addPath(AddRouteRequestDto requestDto) {
         PlaceTest startPlace=placeTestRepository.findById(requestDto.getStartPlaceId()).get();
         PlaceTest endPlace=placeTestRepository.findById(requestDto.getEndPlaceId()).get();
@@ -235,6 +235,8 @@ public class PathServiceImpl implements PathService {
     }
 
 
+    //경로가 db에 없으면, 티맵 경로 탐색 api 호출
+    @Override
     public void routeSearchTmap(List<GetRouteTmapRequestDto> request){
 
         String tmapApiKey=tmapConfig.getTmapApiKey();
@@ -315,8 +317,5 @@ public class PathServiceImpl implements PathService {
             e.printStackTrace();
         }
     }
-
-
-
 
 }

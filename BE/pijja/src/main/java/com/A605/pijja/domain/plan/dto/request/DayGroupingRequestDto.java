@@ -1,6 +1,5 @@
 package com.A605.pijja.domain.plan.dto.request;
 
-import com.A605.pijja.domain.plan.dto.response.PlaceDto;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -17,5 +16,13 @@ public class DayGroupingRequestDto {
     private String mate;
     private String  tendency;
     private ArrayList<PlaceDto> placeList;
+
+    @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    public static class PlaceDto{
+        private Long id;
+    }
 
 }
