@@ -3,12 +3,13 @@ package com.A605.pijja.domain.plan.service;
 import com.A605.pijja.domain.plan.dto.request.MakePlanRequestDto;
 import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
+import com.A605.pijja.domain.plan.dto.response.MakePlanResonseDto;
 import com.A605.pijja.domain.plan.dto.response.PlanGroupingResponseDto;
 import com.A605.pijja.domain.plan.entity.DayPlan;
+import com.A605.pijja.domain.plan.entity.DayPlanPlace;
+import com.A605.pijja.domain.plan.entity.PlaceTest;
 import com.A605.pijja.domain.plan.entity.Plan;
-import com.A605.pijja.domain.plan.repository.DayPlanRepository;
-import com.A605.pijja.domain.plan.repository.PathRepository;
-import com.A605.pijja.domain.plan.repository.PlanRepository;
+import com.A605.pijja.domain.plan.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +24,8 @@ public class PlanServiceImpl implements PlanService {
     private final PathRepository pathRepository;
     private final PathService pathService;
     private final DayPlanRepository dayPlanRepository;
+    private final DayPlanPlaceRepository dayPlanPlaceRepository;
+    private final PlaceTestRepository placeTestRepository;
     @Override
     @Transactional
     public List<PlanGroupingResponseDto> planGrouping(MakePlanRequestDto requestDto) {
@@ -79,7 +82,7 @@ public class PlanServiceImpl implements PlanService {
                         .build());
             }
             planGroupingResponseList.add(PlanGroupingResponseDto.builder()
-                    .day(i)
+                    .day(i+1)
                     .placeOrderList(placeList)
                     .build());
         }
@@ -113,7 +116,8 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     @Transactional
-    public void makePlan(MakePlanRequestDto requestDto) {
+    public List<MakePlanResonseDto> makePlan(MakePlanRequestDto requestDto) {
+        List<MakePlanResonseDto> responseList=new ArrayList<>();
         Plan plan=Plan.builder()
                 .name(requestDto.getName())
                 .endDay(requestDto.getEndDay())
@@ -122,10 +126,47 @@ public class PlanServiceImpl implements PlanService {
                 .build();
         planRepository.save(plan);
 
-        planGrouping(requestDto);
 
+        List<PlanGroupingResponseDto> planGroupingResponse = planGrouping(requestDto);
 
+        for(int i=0;i<planGroupingResponse.size();i++){
+            PlanGroupingResponseDto planGroup=planGroupingResponse.get(i);
+            List<PlanGroupingResponseDto.PlaceDto> dayPlanPlaceList=planGroup.getPlaceOrderList();
+            DayPlan dayPlan= DayPlan.builder()
+                    .day(planGroup.getDay())
+                    .dayPlanPlaceList(new ArrayList<>())
+                    .plan(plan)
+                    .build();
+            dayPlanRepository.save(dayPlan);
+            plan.addPlanAndDayPlan(dayPlan);
+            List<MakePlanResonseDto.PlaceDto> placeDtoList=new ArrayList<>();
+            for(int j=0;j<dayPlanPlaceList.size();j++){
+                PlaceTest place=placeTestRepository.findById(dayPlanPlaceList.get(j).getId()).get();
+//                PlaceTest place=PlaceTest.builder()
+//                        .id(dayPlanPlaceList.get(j).getId())
+//                        .dayPlanPlaceList(new ArrayList<>())
+//                        .build();
+                DayPlanPlace dayPlanPlace= DayPlanPlace.builder()
+                        .place(place)
+                        .dayPlan(dayPlan)
+                        .build();
+                dayPlanPlaceRepository.save(dayPlanPlace);
+                dayPlan.addDayPlan(dayPlanPlace);
+                place.addDayPlanPlace(dayPlanPlace);
 
+                MakePlanResonseDto.PlaceDto placeDto=MakePlanResonseDto.PlaceDto.builder()
+                        .id(place.getId())
+                        .title(place.getName())
+                        .build();
+                placeDtoList.add(placeDto);
+            }
+            responseList.add(MakePlanResonseDto.builder()
+                    .title(Integer.toString(dayPlan.getDay())+"일차")
+                    .data(placeDtoList)
+                    .build());
+        }
+
+        return responseList;
 
     }
 }

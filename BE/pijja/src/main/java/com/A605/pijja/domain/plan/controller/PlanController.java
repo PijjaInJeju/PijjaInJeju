@@ -1,6 +1,7 @@
 package com.A605.pijja.domain.plan.controller;
 
 import com.A605.pijja.domain.plan.dto.request.MakePlanRequestDto;
+import com.A605.pijja.domain.plan.dto.response.MakePlanResonseDto;
 import com.A605.pijja.domain.plan.dto.response.PlanGroupingResponseDto;
 import com.A605.pijja.domain.plan.service.PlanService;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class PlanController {
     }
 
     @PostMapping("")
-    public void makePlan(@RequestBody MakePlanRequestDto requestDto){
-        planService.makePlan(requestDto);
+    public List<MakePlanResonseDto> makePlan(@RequestBody MakePlanRequestDto requestDto){
+        return planService.makePlan(requestDto);
     }
 }
