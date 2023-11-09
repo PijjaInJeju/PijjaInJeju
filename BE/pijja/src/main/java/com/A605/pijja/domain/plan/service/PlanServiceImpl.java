@@ -3,6 +3,7 @@ package com.A605.pijja.domain.plan.service;
 import com.A605.pijja.domain.plan.dto.request.MakePlanRequestDto;
 import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
+import com.A605.pijja.domain.plan.dto.response.PlanGroupingResponseDto;
 import com.A605.pijja.domain.plan.entity.DayPlan;
 import com.A605.pijja.domain.plan.entity.Plan;
 import com.A605.pijja.domain.plan.repository.DayPlanRepository;
@@ -23,7 +24,9 @@ public class PlanServiceImpl implements PlanService {
     private final PathService pathService;
     private final DayPlanRepository dayPlanRepository;
     @Override
-    public void planGrouping(MakePlanRequestDto requestDto) {
+    @Transactional
+    public List<PlanGroupingResponseDto> planGrouping(MakePlanRequestDto requestDto) {
+        ArrayList<PlanGroupingResponseDto> planGroupingResponseList=new ArrayList<>();
         ArrayList<MakePlanRequestDto.PlaceDto>[] placeGroup=new ArrayList[requestDto.getTotalDay()];
         for(int i=0;i< placeGroup.length;i++){
             placeGroup[i]=new ArrayList<>();
@@ -67,13 +70,20 @@ public class PlanServiceImpl implements PlanService {
         }
 
 
-        for(int i=0;i<day;i++){
-            for(int j=0;j<placeGroup[i].size();j++) {
-                System.out.print(placeGroup[i].get(j).getId() + " ");
-            }
-            System.out.println();
-        }
 
+        for(int i=0;i<day;i++){
+            List<PlanGroupingResponseDto.PlaceDto> placeList=new ArrayList<>();
+            for(int j=0;j<placeGroup[i].size();j++) {
+                placeList.add(PlanGroupingResponseDto.PlaceDto.builder()
+                        .id(placeGroup[i].get(j).getId())
+                        .build());
+            }
+            planGroupingResponseList.add(PlanGroupingResponseDto.builder()
+                    .day(i)
+                    .placeOrderList(placeList)
+                    .build());
+        }
+        return planGroupingResponseList;
     }
 
     @Override
@@ -111,9 +121,11 @@ public class PlanServiceImpl implements PlanService {
                 .dayPlanList(new ArrayList<>())
                 .build();
         planRepository.save(plan);
+
         planGrouping(requestDto);
 
-        
+
+
 
     }
 }
