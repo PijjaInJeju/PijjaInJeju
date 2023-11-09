@@ -109,7 +109,9 @@ public class PathServiceImpl implements PathService {
             PlaceTest place =placeTestRepository.findById(map2.get(now)).get();
             placeList.add(PlaceDto.builder()
                     .id(place.getId())
-                    .name(place.getName()).build());
+                    .name(place.getName())
+                    .latitude(place.getLat())
+                    .longitude(place.getLon()).build());
 
             ch[now]=1;
             for(int i=0;i<arr[now].size();i++){
@@ -289,8 +291,8 @@ public class PathServiceImpl implements PathService {
                         JsonNode nodeList = jsonNode.at("/features/" + i + "/geometry/coordinates/" + j);
 
                         pathDtoList.add(AddRouteRequestDto.PathDto.builder()
-                                .latitude(nodeList.get(0).floatValue())
-                                .longitude(nodeList.get(1).floatValue())
+                                .latitude(nodeList.get(1).floatValue())
+                                .longitude(nodeList.get(0).floatValue())
                                 .build());
 
                     }
@@ -364,22 +366,5 @@ public class PathServiceImpl implements PathService {
         }
     }
 
-    @Override
-    public void test(Long id){
-        Path path=pathRepository.findById(id).get();
-        Path path2=pathRepository.findById(5L).get();
 
-        ObjectMapper objectMapper=new ObjectMapper();
-        try {
-            JsonNode pathJson = objectMapper.readTree(path.getPath());
-            JsonNode pathJson2 = objectMapper.readTree(path2.getPath());
-            JsonNode lat=pathJson.at("/0/latitude");
-            System.out.println(lat+"!!@@@!!!");
-            System.out.println(pathJson);
-            System.out.println(pathJson2);
-        } catch (Exception e) {
-            System.out.println("파싱오류");
-            // JSON 파싱 오류 처리
-        }
-    }
 }

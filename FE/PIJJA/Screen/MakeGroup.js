@@ -22,7 +22,7 @@ const MakeGroup = ({ navigation }) => {
 
   return (
     <SafeAreaView style={[styles.container]}>
-      <Header navigation={navigation} title={"그룹 만들기"}/> 
+      <Header navigation={navigation} title={'그룹 만들기'} />
       <Image source={MakeGroupImage} style={[styles.img]} />
       <View style={styles.buttonWrapper}>
         <Text style={styles.groupText}>당신은 누구인가요?</Text>
