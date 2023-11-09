@@ -4,9 +4,9 @@ pipeline {
 
     // 사용할 플러그인 명시
     tools {
-        gradle 'gradle-8.2.1'
-        dockerTool 'docker'
-        jdk 'JDK-17'
+        gradle 'Gradle-8.1.1'
+        dockerTool 'Docker'
+        jdk 'JDK-17.0.8'
     }
 
      environment {
@@ -15,7 +15,7 @@ pipeline {
 
         // 젠킨스가 접속할 서버 정보 (ec2)
         releaseServerAccount = 'ubuntu'
-        releaseServerUri = '43.201.248.189'
+        releaseServerUri = '54.180.132.135'
         springReleasePort = '8080'
     }
 
@@ -31,7 +31,7 @@ pipeline {
         // Git Clone 진행
         stage('git clone') {
             steps {
-                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: 'GitLab', url: 'https://lab.ssafy.com/s09-fintech-finance-sub2/S09P22A109.git']])
+                checkout scmGit(branches: [[name: 'master']], extensions: [], userRemoteConfigs: [[credentialsId: 'gitlabToken', url: 'https://lab.ssafy.com/s09-final/S09P31A605.git']])
             }
         }
 
@@ -41,13 +41,15 @@ pipeline {
                 withCredentials(
 //                 [file(credentialsId: 'application-oauth.properties', variable: 'oauth'),
 //                                 file(credentialsId: 'application-jwt.properties', variable: 'jwt'),
-                                file(credentialsId: 'application-rds.properties', variable: 'rds'))
-//                                 file(credentialsId: 'application-aws-credentials.properties', variable: 'aws')])
-                                {
+                                [file(credentialsId: 'application-rds', variable: 'rds'),
+                                file(credentialsId: 'application-API-KEY', variable: 'APIKEY'),
+                                file(credentialsId: 'application-redis', variable: 'redis')])
+                              {
                     script {
 //                         sh 'cp $aws BE/pijja/src/main/resources/application-aws-credentials.properties'
 //                         sh 'cp $oauth BE/pijja/src/main/resources/application-oauth.properties'
-//                         sh 'cp $jwt BE/pijja/src/main/resources/application-jwt.properties'
+                        sh 'cp $APIKEY BE/pijja/src/main/resources/application-API-KEY.properties'
+                        sh 'cp $redis BE/pijja/src/main/resources/application-redis.properties'
                         sh 'cp $rds BE/pijja/src/main/resources/application-rds.properties'
                     }
                 }
@@ -108,9 +110,33 @@ pipeline {
             steps {
                 sshagent(credentials: ['ubuntu']) {
                     sh '''
-                        ssh -o StrictHostKeyChecking=no $releaseServerAccount@$releaseServerUri "sudo docker run -i -e TZ=Asia/Seoul -v /home/ubuntu/backup:/backup --name spring -p $springReleasePort:$springReleasePort -d $springImageName:latest"
+                        ssh -o StrictHostKeyChecking=no $releaseServerAccount@$releaseServerUri "sudo docker run -i --network ubuntu_default  -e TZ=Asia/Seoul -v /home/ubuntu/backup:/backup --name spring -p $springReleasePort:$springReleasePort -d $springImageName:latest"
                     '''
                 }
+            }
+        }
+    }
+    post {
+        success {
+            script {
+                def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
+                def Author_Name = sh(script: "git show -s --pretty=%ae", returnStdout: true).trim()
+                mattermostSend (color: 'good',
+                message: "빌드 성공: ${env.JOB_NAME} #${env.BUILD_NUMBER} by ${Author_ID}(${Author_Name})\n(<${env.BUILD_URL}|Details>)",
+                endpoint: 'https://meeting.ssafy.com/hooks/prmf1o93otrc3xm43eym9azcxc',
+                channel: 'pijjainjeju_master_CICD'
+                )
+            }
+        }
+        failure {
+            script {
+                def Author_ID = sh(script: "git show -s --pretty=%an", returnStdout: true).trim()
+                def Author_Name = sh(script: "git show -s --pretty=%ae", returnStdout: true).trim()
+                mattermostSend (color: 'danger',
+                message: "빌드 실패: ${env.JOB_NAME} #${env.BUILD_NUMBER} by ${Author_ID}(${Author_Name})\n(<${env.BUILD_URL}|Details>)",
+                endpoint: 'https://meeting.ssafy.com/hooks/prmf1o93otrc3xm43eym9azcxc',
+                channel: 'pijjainjeju_master_CICD'
+                )
             }
         }
     }

@@ -1,167 +1,175 @@
 import 'react-native-gesture-handler'; // 파일의 가장 최상단에 위치해야함
-import React from 'react';
-import { useState } from 'react';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import React, { useState, useEffect,useRef } from 'react';
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
-import Button from '../component/Button.js';
-import { StyleSheet, Text, View, Image, SafeAreaView } from 'react-native';
-import MakeGroup from './MakeGroup.js';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+  StyleSheet,
+  PixelRatio,
+  Dimensions,
+  Text,
+  View,
+  SafeAreaView,
+} from 'react-native';
 
-//const appDrawer = createDrawerNavigator();
-//const appDrawer = createNativeStackNavigator();
+import Carousel,{ Pagination } from 'react-native-snap-carousel';
+import One from './Carousel/One';
+import Two from './Carousel/Two';
 
-// const drawerMain = ({ navigation }) => {
-//   return (
-//     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+import MakeGroup from './MakeGroup.js';
+import CheckTripPlan from './CheckTripPlan.js';
 
-//     </View>
-//   );
-// };
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const pijjaTab = createBottomTabNavigator();
 
-const Main = ({ navigation }) => {
-  //let b_res = 0;
-  return (
-    <View style={styles.container}>
-      {/* <appDrawer.Navigator initialRouteName="Main">
-        <appDrawer.Screen name="Main" component={Main} />
-        <appDrawer.Screen name="MakeGroup" component={MakeGroup} />
-      </appDrawer.Navigator> */}
+const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
-      <Button
-        onPress={() => navigation.navigate('MakeGroup')}
-        title="goToMakeGroup"
-      />
+const pixelRatio = PixelRatio.get();
 
-      {/* <View style={styles.logoWrapper}>
-        <Image style={styles.logoImage} source={require('../Image/Logo.png')} />
+const getTabBarIcon = ({ props, iconName }) => {};
+
+const MainScreen = ({ navigation }) => {
+  const [groupList, setGroupList] = useState([
+    {
+      id: 1,
+      schedule: [
+        {
+          id: 1,
+          title: '1번',
+        },
+        {
+          id: 2,
+          title: '2번',
+        },
+      ],
+    },
+    {
+      id: 2,
+    },
+  ]);
+  // let route.params;
+  //console.log("Main Profile  :  ", route.params.profile);
+
+  const [userData, setUserData] = useState(new Object);
+
+  const load = async () => {
+    try {
+      const kakaoData = await AsyncStorage.getItem('user');
+      if (kakaoData === null) {
+        console.log('there is noting');
+        //navigation.push('Login');
+      } else {
+        setUserData(JSON.parse(kakaoData));
+        //return kakaoData;
+      }
+    } catch (e) {
+      console.log('Profile 불러오기 실패. : ', e);
+    }
+  };
+
+  useEffect(
+    () => {
+      load();
+    },[]
+  );
+
+  const data = [
+    {
+      screen: One,
+      data: {
+        profile: userData,
+        groupList: groupList,
+        setGroupList: setGroupList,
+      },
+    },
+    {
+      screen: Two,
+      data: {
+        profile: userData,
+        groupList: groupList,
+        setGroupList: setGroupList,
+        nickName: "asd"
+      }
+    },
+  ];
+
+  const renderItem = ({ item, index }) => {
+    return (
+      <View>
+        <item.screen data={item.data} />
       </View>
-      <View style={styles.travelWrapper}>
-        <View style={styles.travelGroup}>
-          <View style={styles.travelSpot}>
-            <Text>가이드1</Text>
-            <Image
-              style={styles.travelSpotImg}
-              source={require('../Image/guideimg1.jpg')}
-            />
-          </View>
-          <View style={styles.travelSpot}>
-            <Text>가이드2</Text>
-            <Image
-              style={styles.travelSpotImg}
-              source={require('../Image/guideimg2.jpg')}
-            />
-          </View>
-          <View style={styles.travelSpot}>
-            <Text>가이드3</Text>
-            <Image
-              style={styles.travelSpotImg}
-              source={require('../Image/guideimg3.jpg')}
-            />
-          </View>
-        </View>
-        <View style={styles.travelGroup}>
-          <View style={styles.travelSpot}>
-            <Text>맛집1</Text>
-            <Image
-              style={styles.travelSpotImg}
-              source={require('../Image/storeimg1.jpg')}
-            />
-          </View>
-          <View style={styles.travelSpot}>
-            <Text>맛집2</Text>
-            <Image
-              style={styles.travelSpotImg}
-              source={require('../Image/storeimg2.jpg')}
-            />
-          </View>
-          <View style={styles.travelSpot}>
-            <Text>맛집3</Text>
-            <Image
-              style={styles.travelSpotImg}
-              source={require('../Image/storeimg3.jpg')}
-            />
-          </View>
-        </View>
-        <View style={styles.travelGroup}>
-          <View style={styles.travelSpot}>
-            <Text>산책1</Text>
-            <Image
-              style={styles.travelSpotImg}
-              source={require('../Image/hikingimg1.jpg')}
-            />
-          </View>
-          <View style={styles.travelSpot}>
-            <Text>산책2</Text>
-            <Image
-              style={styles.travelSpotImg}
-              source={require('../Image/hikingimg2.jpg')}
-            />
-          </View>
-          <View style={styles.travelSpot}>
-            <Text>산책3</Text>
-            <Image
-              style={styles.travelSpotImg}
-              source={require('../Image/hikingimg3.jpg')}
-            />
-          </View>
-        </View>
-      </View> */}
-    </View>
+    );
+  }
+  
+  const [ activeSlide, setActiveSlide ] = useState();
+  const activeRef = useRef(null);
+  return (
+    <SafeAreaView>
+      <Carousel
+        vertical={true}
+        data={data}
+        renderItem={renderItem}
+        sliderWidth={screenWidth}
+        itemWidth={screenWidth}
+        sliderHeight={screenHeight}
+        itemHeight={screenHeight}
+        onSnapToItem={(index) => {
+          setActiveSlide(index);
+          console.log(index);
+        }}
+        ref={activeRef}
+      />
+      <Pagination 
+        dotsLength={data.length}
+        activeDotIndex={activeSlide}
+        containerStyle={{ 
+          height: screenHeight, 
+          position: 'absolute'
+         }}
+        dotStyle={{
+          width: 10,
+          height: 10,
+          borderRadius: 5,
+          marginVertical: 8,
+          backgroundColor: 'rgba(255, 255, 255, 0.92)'
+        }}
+        inactiveDotStyle={{
+            // Define styles for inactive dots here
+        }}
+        inactiveDotOpacity={0.4}
+        inactiveDotScale={0.6}
+        vertical={true}
+        carouselRef={activeRef}
+        tappableDots={true}
+      />
+    </SafeAreaView>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-  },
-  logoWrapper: {
-    position: 'absolute',
-    top: 40,
-    left: 100,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  travelWrapper: {
-    position: 'absolute',
-    top: 220,
-    left: 26,
-    marginTop: 12,
-  },
-  logoImage: {
-    width: 220,
-    height: 180,
-    resizeMode: 'stretch',
-  },
-  travelGroup: {
-    flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'flex-start',
-    marginTop: 16,
-    paddingVertical: 15,
-    borderWidth: 3.2,
-    borderColor: '#f77f00',
-    backgroundColor: '#fcbf49',
-    borderRadius: 8,
-  },
-  travelSpot: {
-    paddingHorizontal: 8,
-  },
-  travelSpotImg: {
-    width: 100,
-    height: 110,
-    resizeMode: 'stretch',
-    borderRadius: 3,
-  },
-});
+const Main = () => {
+  return (
+    <pijjaTab.Navigator
+      initialRouteName="홈"
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <pijjaTab.Screen
+        name="홈"
+        component={MainScreen}
+        options={{
+          tabBarIcon: props => getTabBarIcon({ props, iconName: '홈' }),
+        }}
+      />
+      <pijjaTab.Screen name="일정 생성" component={MakeGroup} />
+      <pijjaTab.Screen name="일정 보기" component={CheckTripPlan} />
+    </pijjaTab.Navigator>
+  );
+};
+const styles = StyleSheet.create({});
 
 export default Main;
