@@ -37,7 +37,7 @@ public class MemberRegistService {
                     .id(existingMember.getId())
                     .build();
 
-            return ResponseEntity.status(409)
+            return ResponseEntity.ok()
                     .body(new SuccessResponseDto(true, "기존 회원으로 로그인합니다.", memberDetailDto));
         } else {
             // 회원 객체를 생성하여 저장
