@@ -4,12 +4,12 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { StyleSheet, Text, View } from 'react-native';
 
-const TripPlanCheck = ({ navigation }) => {
+const CheckTripPlan = ({ navigation }) => {
   //let b_res = 0;
   const [b_res, setBtnRes] = useState(0);
   return (
     <View style={styles.container}>
-      <Text>그룹 생성</Text>
+      <Text>일정 확인</Text>
       {/* <Button
         title="go_to_Main"
         onPress={() => navigation.navigate('Main')}
@@ -28,4 +28,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TripPlanCheck;
+export default CheckTripPlan;
