@@ -52,8 +52,9 @@ public class MemberRegistService {
 
             MemberDetailDto memberDetailDto = MemberDetailDto.builder()
                     .id(member.getId())
+                    .nickname(member.getNickname())
                     .email(member.getEmail())
-                    .sysType(member.getSnsType())
+                    .snsType(member.getSnsType())
                     .originalId(member.getOriginalId())
                     .build();
 
