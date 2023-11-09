@@ -21,6 +21,8 @@ public class Place {
     private String phoneNumber;
     private String address;
     private String image;
+    private String mate1;
+    private String mate2;
 
     @OneToOne
     @JoinColumn(name="VISIT_ID")
