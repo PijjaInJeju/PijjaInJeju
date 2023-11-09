@@ -1,21 +1,24 @@
 package com.A605.pijja.domain.plan.service;
 
+import com.A605.pijja.domain.plan.dto.request.KruskalRequestDto;
 import com.A605.pijja.domain.plan.dto.request.MakePlanRequestDto;
 import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
-import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
-import com.A605.pijja.domain.plan.dto.response.MakePlanResonseDto;
-import com.A605.pijja.domain.plan.dto.response.PlanGroupingResponseDto;
+import com.A605.pijja.domain.plan.dto.response.*;
 import com.A605.pijja.domain.plan.entity.DayPlan;
 import com.A605.pijja.domain.plan.entity.DayPlanPlace;
 import com.A605.pijja.domain.plan.entity.PlaceTest;
 import com.A605.pijja.domain.plan.entity.Plan;
 import com.A605.pijja.domain.plan.repository.*;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 @Service
 @RequiredArgsConstructor
@@ -36,6 +39,7 @@ public class PlanServiceImpl implements PlanService {
         }
         int day=0;
         combinationPlan(requestDto.getPlaceList(),new int[2],0,0);
+
         boolean[] ch=new boolean[requestDto.getPlaceList().size()];
         for(int i=0;i< requestDto.getPlaceList().size();i++){
             if(!ch[i]) {
@@ -72,8 +76,6 @@ public class PlanServiceImpl implements PlanService {
             }
         }
 
-
-
         for(int i=0;i<day;i++){
             List<PlanGroupingResponseDto.PlaceDto> placeList=new ArrayList<>();
             for(int j=0;j<placeGroup[i].size();j++) {
@@ -106,6 +108,7 @@ public class PlanServiceImpl implements PlanService {
                 searchResult=pathService.searchRoute(requestDto.get(result[0]).getId(),requestDto.get(result[1]).getId());
             }
 
+
             return ;
         }
         for(int i=start;i<requestDto.size();i++){
@@ -116,7 +119,7 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     @Transactional
-    public List<MakePlanResonseDto> makePlan(MakePlanRequestDto requestDto) {
+    public List<MakePlanResonseDto> makePlan(MakePlanRequestDto requestDto) throws JsonProcessingException {
         List<MakePlanResonseDto> responseList=new ArrayList<>();
         Plan plan=Plan.builder()
                 .name(requestDto.getName())
@@ -132,20 +135,30 @@ public class PlanServiceImpl implements PlanService {
         for(int i=0;i<planGroupingResponse.size();i++){
             PlanGroupingResponseDto planGroup=planGroupingResponse.get(i);
             List<PlanGroupingResponseDto.PlaceDto> dayPlanPlaceList=planGroup.getPlaceOrderList();
+            List<GetRouteTmapRequestDto> pathCombinationRequest=new ArrayList<>();
+
+            for(int j=0;j<dayPlanPlaceList.size();j++){
+                pathCombinationRequest.add(GetRouteTmapRequestDto.builder()
+                        .id(dayPlanPlaceList.get(j).getId())
+                        .build());
+            }
+            PriorityQueue<KruskalRequestDto> pq=pathService.combination(pathCombinationRequest,new int[2],0,0, pathCombinationRequest.size(),new PriorityQueue<>());
+            GetRouteResponseDto kruskalResponse=pathService.kruskal(pq,pathCombinationRequest);
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonPath=objectMapper.writeValueAsString(kruskalResponse.getPathList() );
+
+
             DayPlan dayPlan= DayPlan.builder()
                     .day(planGroup.getDay())
                     .dayPlanPlaceList(new ArrayList<>())
                     .plan(plan)
+                    .path(jsonPath)
                     .build();
             dayPlanRepository.save(dayPlan);
             plan.addPlanAndDayPlan(dayPlan);
             List<MakePlanResonseDto.PlaceDto> placeDtoList=new ArrayList<>();
             for(int j=0;j<dayPlanPlaceList.size();j++){
                 PlaceTest place=placeTestRepository.findById(dayPlanPlaceList.get(j).getId()).get();
-//                PlaceTest place=PlaceTest.builder()
-//                        .id(dayPlanPlaceList.get(j).getId())
-//                        .dayPlanPlaceList(new ArrayList<>())
-//                        .build();
                 DayPlanPlace dayPlanPlace= DayPlanPlace.builder()
                         .place(place)
                         .dayPlan(dayPlan)

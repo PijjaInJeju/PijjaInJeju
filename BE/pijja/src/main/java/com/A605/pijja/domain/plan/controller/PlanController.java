@@ -4,6 +4,7 @@ import com.A605.pijja.domain.plan.dto.request.MakePlanRequestDto;
 import com.A605.pijja.domain.plan.dto.response.MakePlanResonseDto;
 import com.A605.pijja.domain.plan.dto.response.PlanGroupingResponseDto;
 import com.A605.pijja.domain.plan.service.PlanService;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,13 +18,18 @@ import java.util.List;
 @RequestMapping("/api/plan")
 public class PlanController {
     private final PlanService planService;
+//    @PostMapping("/daygrouping")
+//    public List<PlanGroupingResponseDto> dayGrouping(@RequestBody MakePlanRequestDto requestDto){
+//        return planService.planGrouping(requestDto);
+//    }
+
     @PostMapping("/daygrouping")
-    public List<PlanGroupingResponseDto> dayGrouping(@RequestBody MakePlanRequestDto requestDto){
-        return planService.planGrouping(requestDto);
+    public void dayGrouping(@RequestBody MakePlanRequestDto requestDto){
+        planService.planGrouping(requestDto);
     }
 
     @PostMapping("")
-    public List<MakePlanResonseDto> makePlan(@RequestBody MakePlanRequestDto requestDto){
+    public List<MakePlanResonseDto> makePlan(@RequestBody MakePlanRequestDto requestDto) throws JsonProcessingException {
         return planService.makePlan(requestDto);
     }
 }

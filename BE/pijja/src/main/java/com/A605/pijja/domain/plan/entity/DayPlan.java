@@ -28,6 +28,10 @@ public class DayPlan {
         this.plan=plan;
     }
 
+    @Lob
+    @Column(columnDefinition="LONGBLOB")
+    private String path;
+
     public void addDayPlan(DayPlanPlace dayPlanPlace){
         this.dayPlanPlaceList.add(dayPlanPlace);
         dayPlanPlace.assignDayPlan(this);
