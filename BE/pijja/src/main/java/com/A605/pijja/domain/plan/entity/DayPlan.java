@@ -3,6 +3,8 @@ package com.A605.pijja.domain.plan.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @Builder
@@ -17,9 +19,18 @@ public class DayPlan {
     @JoinColumn(name="PLAN_ID")
     private Plan plan;
 
+    @OneToMany(mappedBy = "dayPlan")
+    private List<DayPlanPlace> dayPlanPlaceList;
+
     private int day;
 
     public void assignPlan(Plan plan){
         this.plan=plan;
+    }
+
+    public void addDayPlan(DayPlanPlace dayPlanPlace){
+        this.dayPlanPlaceList.add(dayPlanPlace);
+        dayPlanPlace.assignDayPlan(this);
+
     }
 }

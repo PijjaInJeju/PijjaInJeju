@@ -42,4 +42,6 @@ public class Plan {
         this.dayPlanList.add(dayPlan);
         dayPlan.assignPlan(this);
     }
+
+
 }

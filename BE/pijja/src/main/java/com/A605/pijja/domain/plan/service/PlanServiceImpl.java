@@ -113,13 +113,7 @@ public class PlanServiceImpl implements PlanService {
         planRepository.save(plan);
         planGrouping(requestDto);
 
-        DayPlan dayPlan= DayPlan.builder()
-                .day(1)
-                .plan(plan)
-                .build();
-        dayPlanRepository.save(dayPlan);
-        plan.addPlanAndDayPlan(dayPlan);
-        System.out.println(plan.getDayPlanList());
+        
 
     }
 }

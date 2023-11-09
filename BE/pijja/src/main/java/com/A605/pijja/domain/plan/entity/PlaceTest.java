@@ -1,10 +1,9 @@
 package com.A605.pijja.domain.plan.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -22,4 +21,11 @@ public class PlaceTest {
 
     private float lon;
 
+    @OneToMany(mappedBy = "place")
+    private List<DayPlanPlace> dayPlanPlaceList;
+
+    public void addDayPlanPlace(DayPlanPlace dayPlanPlace){
+        this.dayPlanPlaceList.add(dayPlanPlace);
+        dayPlanPlace.assignPlace(this);
+    }
 }
