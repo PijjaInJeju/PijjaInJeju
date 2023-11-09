@@ -30,7 +30,16 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const pixelRatio = PixelRatio.get();
 
-const getTabBarIcon = ({ props, iconName }) => {};
+const getTabBarIcon = ({ focused, color, size, iconName, toIconName }) => {
+  const tabIcon = focused ? iconName : toIconName;
+  return (
+    <MaterialCommunityIcons
+      name={tabIcon}
+      color="fcbf49"
+      size={24}
+    ></MaterialCommunityIcons>
+  );
+};
 
 const MainScreen = ({ navigation }) => {
   const [groupList, setGroupList] = useState([
@@ -132,11 +141,41 @@ const Main = () => {
         name="홈"
         component={MainScreen}
         options={{
-          tabBarIcon: props => getTabBarIcon({ props, iconName: '홈' }),
+          tabBarIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'home-circle' : 'home-circle-outline'}
+              color={'#fcbf49'}
+              size={30}
+            ></MaterialCommunityIcons>
+          ),
         }}
       />
-      <pijjaTab.Screen name="일정 생성" component={MakeGroup} />
-      <pijjaTab.Screen name="일정 보기" component={CheckTripPlan} />
+      <pijjaTab.Screen
+        name="일정 생성"
+        component={MakeGroup}
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <FontAwesome
+              name={focused ? 'paper-plane' : 'paper-plane-o'}
+              color={'#fcbf49'}
+              size={30}
+            ></FontAwesome>
+          ),
+        }}
+      />
+      <pijjaTab.Screen
+        name="일정 보기"
+        component={CheckTripPlan}
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <Entypo
+              name={focused ? 'text-document' : 'text-document-inverted'}
+              color={'#fcbf49'}
+              size={30}
+            ></Entypo>
+          ),
+        }}
+      />
     </pijjaTab.Navigator>
   );
 };

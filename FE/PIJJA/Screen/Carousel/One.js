@@ -86,7 +86,7 @@ const One = ({ data }) => {
   };
 
   console.log('one Data : ', data);
-  console.log('one Data : ', data.profile.nickname);
+  //console.log('one Data : ', data.profile.nickname);
 
   return (
     <View>
