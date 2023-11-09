@@ -9,4 +9,10 @@ public class MemberDetailDto {
 
     private Long id;
 
+    private String email;
+
+    private String sysType;
+
+    private String originalId;
+
 }

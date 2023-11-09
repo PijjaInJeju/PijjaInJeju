@@ -52,6 +52,9 @@ public class MemberRegistService {
 
             MemberDetailDto memberDetailDto = MemberDetailDto.builder()
                     .id(member.getId())
+                    .email(member.getEmail())
+                    .sysType(member.getSnsType())
+                    .originalId(member.getOriginalId())
                     .build();
 
             // 회원 등록 성공 응답 반환
