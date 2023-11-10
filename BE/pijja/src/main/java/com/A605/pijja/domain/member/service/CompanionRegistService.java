@@ -5,15 +5,20 @@ import com.A605.pijja.domain.member.dto.SuccessResponseDto;
 import com.A605.pijja.domain.member.dto.request.CompanionAddRequestDto;
 import com.A605.pijja.domain.member.dto.response.CompanionCreateDto;
 import com.A605.pijja.domain.member.entity.Companion;
+import com.A605.pijja.domain.member.entity.CompanionTendency;
 import com.A605.pijja.domain.member.entity.Member;
 import com.A605.pijja.domain.member.entity.MemberCompanion;
 import com.A605.pijja.domain.member.entity.Role;
+import com.A605.pijja.domain.member.entity.Tendency;
 import com.A605.pijja.domain.member.repository.CompanionRepository;
+import com.A605.pijja.domain.member.repository.CompanionTendencyRepository;
 import com.A605.pijja.domain.member.repository.MemberCompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberRepository;
+import com.A605.pijja.domain.member.repository.TendencyRepository;
 import com.A605.pijja.global.time.TimeUtil;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -29,6 +34,8 @@ public class CompanionRegistService {
     private final CompanionRepository companionRepository;
     private final MemberCompanionRepository memberCompanionRepository;
     private final MemberRepository memberRepository;
+    private final TendencyRepository tendencyRepository;
+    private final CompanionTendencyRepository companionTendencyRepository;
     private final TimeUtil timeUtil;
 
     /**
@@ -61,6 +68,8 @@ public class CompanionRegistService {
         Member member = memberRepository.findById(companionAddRequestDto.getMemberId())
                 .orElse(null);
 
+        List<String> tendencyList = companionAddRequestDto.getTendencies();
+
         Long memberId = member.getId();
 
         LocalDate startTime = companionAddRequestDto.getStartDay();
@@ -92,11 +101,11 @@ public class CompanionRegistService {
                 .code(generateRandomCode())
                 .isStart(isStart)
                 .isEnd(isEnd)
-                .tendency(companionAddRequestDto.getTendency())
                 .mate(companionAddRequestDto.getMate())
                 .startDay(companionAddRequestDto.getStartDay())
                 .endDay(companionAddRequestDto.getEndDay())
                 .companionMembers(new ArrayList<>())
+                .companionTendencies(new ArrayList<>())
                 .build();
 
         companionRepository.save(companion);
@@ -112,13 +121,26 @@ public class CompanionRegistService {
 
         addMemberCompanion(companion, member, memberCompanion);
 
+        for(int i = 0; i < tendencyList.size(); i++) {
+            System.out.println(tendencyList.get(i));
+            Tendency tendency = tendencyRepository.findBytendencyType(tendencyList.get(i));
+
+            CompanionTendency companionTendency = CompanionTendency.builder()
+                    .companion(companion)
+                    .tendency(tendency)
+                    .build();
+
+            companionTendencyRepository.save(companionTendency);
+            addCompanionTendency(companion, tendency, companionTendency);
+        }
+
         CompanionCreateDto create = CompanionCreateDto.builder()
                 .name(companion.getName())
                 .code(companion.getCode())
                 .isStart(isStart)
                 .isEnd(isEnd)
                 .mate(companion.getMate())
-                .tendency(companion.getTendency())
+                .tendencies(tendencyList)
                 .startDay(companion.getStartDay())
                 .endDay(companion.getEndDay())
                 .memberId(memberId)
@@ -144,5 +166,11 @@ public class CompanionRegistService {
         companion.getCompanionMembers().add(memberCompanion);
         member.getMyCompanions().add(memberCompanion);
 
+    }
+
+    @Transactional
+    public void addCompanionTendency(Companion companion, Tendency tendency, CompanionTendency companionTendency) {
+        companion.getCompanionTendencies().add(companionTendency);
+        tendency.getCompanions().add(companionTendency);
     }
 }
