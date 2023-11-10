@@ -20,7 +20,7 @@ public class PlanController {
     private final PlanService planService;
 
     @PostMapping("")
-    public List<MakePlanResonseDto> makePlan(@RequestBody MakePlanRequestDto requestDto) throws JsonProcessingException {
+    public MakePlanResonseDto makePlan(@RequestBody MakePlanRequestDto requestDto) throws JsonProcessingException {
         return planService.makePlan(requestDto);
     }
 }

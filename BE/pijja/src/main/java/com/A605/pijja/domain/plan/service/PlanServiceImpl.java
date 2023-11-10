@@ -1,5 +1,7 @@
 package com.A605.pijja.domain.plan.service;
 
+import com.A605.pijja.domain.member.entity.Companion;
+import com.A605.pijja.domain.member.repository.CompanionRepository;
 import com.A605.pijja.domain.plan.dto.request.KruskalRequestDto;
 import com.A605.pijja.domain.plan.dto.request.MakePlanRequestDto;
 import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
@@ -29,10 +31,11 @@ public class PlanServiceImpl implements PlanService {
     private final DayPlanRepository dayPlanRepository;
     private final DayPlanPlaceRepository dayPlanPlaceRepository;
     private final PlaceTestRepository placeTestRepository;
+    private final CompanionRepository companionRepository;
     @Override
     @Transactional
     public List<PlanGroupingResponseDto> planGrouping(MakePlanRequestDto requestDto) {
-        ArrayList<PlanGroupingResponseDto> planGroupingResponseList=new ArrayList<>();
+        ArrayList<PlanGroupingResponseDto> planGroupingplanList=new ArrayList<>();
         ArrayList<MakePlanRequestDto.PlaceDto>[] placeGroup=new ArrayList[requestDto.getTotalDay()];
         for(int i=0;i< placeGroup.length;i++){
             placeGroup[i]=new ArrayList<>();
@@ -83,12 +86,12 @@ public class PlanServiceImpl implements PlanService {
                         .id(placeGroup[i].get(j).getId())
                         .build());
             }
-            planGroupingResponseList.add(PlanGroupingResponseDto.builder()
+            planGroupingplanList.add(PlanGroupingResponseDto.builder()
                     .day(i+1)
                     .placeOrderList(placeList)
                     .build());
         }
-        return planGroupingResponseList;
+        return planGroupingplanList;
     }
 
     @Override
@@ -119,11 +122,13 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     @Transactional
-    public List<MakePlanResonseDto> makePlan(MakePlanRequestDto requestDto) throws JsonProcessingException {
-        List<MakePlanResonseDto> responseList=new ArrayList<>();
+    public MakePlanResonseDto makePlan(MakePlanRequestDto requestDto) throws JsonProcessingException {
+        List<MakePlanResonseDto.PlanDto> planList=new ArrayList<>();
+        Companion companion=companionRepository.findById(requestDto.getCompanionId()).get();
         Plan plan=Plan.builder()
                 .name(requestDto.getName())
                 .endDay(requestDto.getEndDay())
+                .companion(companion)
                 .startDay(requestDto.getStartDay())
                 .dayPlanList(new ArrayList<>())
                 .build();
@@ -195,14 +200,18 @@ public class PlanServiceImpl implements PlanService {
                     placeDtoList.add(placeDto);
                 }
             }
-            responseList.add(MakePlanResonseDto.builder()
-                    .title(Integer.toString(dayPlan.getDay())+"일차")
+            planList.add(MakePlanResonseDto.PlanDto.builder()
+                    .day(Integer.toString(dayPlan.getDay())+"일차")
                     .data(placeDtoList)
                     .pathList(kruskalResponse.getPathList())
                     .build());
         }
 
-        return responseList;
+        return MakePlanResonseDto.builder()
+                .name(requestDto.getName())
+                .companionId(requestDto.getCompanionId())
+                .planList(planList)
+                .build();
 
     }
 }

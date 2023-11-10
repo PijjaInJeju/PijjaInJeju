@@ -14,8 +14,7 @@ public class MakePlanRequestDto {
     private LocalDate endDay;
     private int totalDay;
     private String name;
-//    private String mate;
-//    private String  tendency;
+    private Long companionId;
     private ArrayList<PlaceDto> placeList;
 
     @Getter

@@ -12,5 +12,5 @@ import java.util.PriorityQueue;
 public interface PlanService {
     List<PlanGroupingResponseDto> planGrouping(MakePlanRequestDto requestDto);
     void combinationPlan(List<MakePlanRequestDto.PlaceDto> requestDto, int[] result, int cnt, int start);
-    List<MakePlanResonseDto> makePlan(MakePlanRequestDto requestDto) throws JsonProcessingException;
+    MakePlanResonseDto makePlan(MakePlanRequestDto requestDto) throws JsonProcessingException;
 }

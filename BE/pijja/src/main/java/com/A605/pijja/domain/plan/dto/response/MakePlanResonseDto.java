@@ -10,10 +10,19 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class MakePlanResonseDto {
-    private String title;
-    private List<PlaceDto> data;
-    private ArrayList<PathDto> pathList;
+    private String name;
+    private Long companionId;
+    private List<PlanDto> planList;
 
+    @Getter
+    @Builder
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    @AllArgsConstructor
+    public static class PlanDto{
+        private String day;
+        private List<PlaceDto> data;
+        private List<PathDto> pathList;
+    }
     @Getter
     @Builder
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
