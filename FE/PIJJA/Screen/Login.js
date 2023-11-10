@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import * as KakaoLogin from '@react-native-seoul/kakao-login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Rest from '../lib/Rest';
 
 const SaveProfile = async data => {
   //console.log('저장하는 데이터 : ', data);
@@ -23,10 +24,32 @@ const SaveProfile = async data => {
 
 const kakaoLogin = async ({ navigation }) => {
   try {
-    const profile = await KakaoLogin.getProfile();
-    //console.log('카카오 프로 파일 : ', JSON.stringify(profile));
+    let profile = await KakaoLogin.getProfile();
+    //const addIdprofile = await BackEndLogin(profile);
+    console.log('카카오 프로 파일 : ', profile);
+    let id = new Number();
+    await Rest(
+      '/api/members/sign-up',
+      'POST',
+      {
+        nickname: profile.nickname,
+        email: profile.email,
+        snsType: 'kakao',
+        originalId: profile.id,
+      },
+      response => {
+        id = response.data.id;
+        //console.log('kakao: ', response.data);
+      },
+      error => {
+        console.log('error:', error);
+        if (error.data.id !== undefined) id = error.data.id;
+      },
+    );
+    profile = { ...profile, backEndId: id };
+    console.log('수정된 프로파일 : ', profile);
     SaveProfile(profile);
-    navigation.push('Main', { profile });
+    navigation.push('Main', profile);
   } catch (error) {
     console.log('로그인 실패: ', error);
   }

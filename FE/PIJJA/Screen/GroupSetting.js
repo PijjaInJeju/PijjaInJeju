@@ -26,7 +26,7 @@ const GroupSetting = ({ navigation }) => {
   // 여행 메이트
   const [travelMateBtn, setTravelMateBtn] = useState([0, 0, 0, 0, 0]);
 
-  const [groupStyles, setGroupStyles] = useState(['', '']);
+  const [groupStyles, setGroupStyles] = useState('');
   const [travelMate, setTravelMate] = useState('');
 
   const travelTargets = ['식도락', '쇼핑', '레저 체험'];
@@ -34,20 +34,23 @@ const GroupSetting = ({ navigation }) => {
   const travelMates = ['친구', '연인', '가족', '혼자', '아이'];
 
   const setTravelStyle = () => {
-    let setStyle1 = '';
+    let setStyle = [];
     let setStyle2 = '';
     let setMate = '';
 
     for (let i = 0; i < 3; i++) {
       if (travelTargetBtn[i] != 0) {
-        setStyle1 = travelTargets[i];
-        break;
+        setStyle2 = travelTargets[i];
+      } else {
+        setStyle[i] = '';
       }
     }
 
     for (let i = 0; i < 4; i++) {
       if (travelStyleBtn[i] != 0) {
         setStyle2 = travelStyles[i];
+      } else {
+        setStyle[i + 3] = '';
       }
     }
 
@@ -57,8 +60,13 @@ const GroupSetting = ({ navigation }) => {
       }
     }
 
+    //console.log(setStyle);
+    //console.log(setMate);
+    setGroupStyles(setStyle2);
+    setTravelMate(setMate);
+
     navigation.navigate('SetTravelPlan', {
-      groupStyles: [setStyle1, setStyle2],
+      groupStyles: setStyle2,
       travelMate: setMate,
     });
   };
@@ -77,7 +85,11 @@ const GroupSetting = ({ navigation }) => {
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setTravelTargetBtn([!travelTargetBtn[0], 0, 0, 0]);
+                setTravelTargetBtn([
+                  !travelTargetBtn[0],
+                  travelTargetBtn[1],
+                  travelTargetBtn[2],
+                ]);
                 //setTravelStyle();
               }}
             >
@@ -90,7 +102,11 @@ const GroupSetting = ({ navigation }) => {
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setTravelTargetBtn([0, !travelTargetBtn[1], 0, 0]);
+                setTravelTargetBtn([
+                  travelTargetBtn[0],
+                  !travelTargetBtn[1],
+                  travelTargetBtn[2],
+                ]);
               }}
             >
               <Text>쇼핑</Text>
@@ -102,7 +118,11 @@ const GroupSetting = ({ navigation }) => {
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setTravelTargetBtn([0, 0, !travelTargetBtn[2], 0]);
+                setTravelTargetBtn([
+                  travelTargetBtn[0],
+                  travelTargetBtn[1],
+                  !travelTargetBtn[2],
+                ]);
               }}
             >
               <Text>레저 체험</Text>
@@ -114,7 +134,12 @@ const GroupSetting = ({ navigation }) => {
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setTravelTargetBtn([0, 0, 0, !travelTargetBtn[3]]);
+                setTravelStyleBtn([
+                  travelTargetBtn[0],
+                  travelTargetBtn[1],
+                  travelTargetBtn[2],
+                  !travelTargetBtn[3],
+                ]);
               }}
             >
               <Text>먹거리</Text>
@@ -133,7 +158,12 @@ const GroupSetting = ({ navigation }) => {
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setTravelStyleBtn([!travelStyleBtn[0], 0, 0, 0]);
+                setTravelStyleBtn([
+                  !travelStyleBtn[0],
+                  travelStyleBtn[1],
+                  travelStyleBtn[2],
+                  travelStyleBtn[3],
+                ]);
               }}
             >
               <Text>공항</Text>
@@ -145,7 +175,12 @@ const GroupSetting = ({ navigation }) => {
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setTravelStyleBtn([0, !travelStyleBtn[1], 0, 0]);
+                setTravelStyleBtn([
+                  travelStyleBtn[0],
+                  !travelStyleBtn[1],
+                  travelStyleBtn[2],
+                  travelStyleBtn[3],
+                ]);
               }}
             >
               <Text>문화 유적</Text>
@@ -157,7 +192,12 @@ const GroupSetting = ({ navigation }) => {
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setTravelStyleBtn([0, 0, !travelStyleBtn[2], 0]);
+                setTravelStyleBtn([
+                  travelStyleBtn[0],
+                  travelStyleBtn[1],
+                  !travelStyleBtn[2],
+                  travelStyleBtn[3],
+                ]);
               }}
             >
               <Text>걷기</Text>
@@ -169,7 +209,12 @@ const GroupSetting = ({ navigation }) => {
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setTravelStyleBtn([0, 0, 0, !travelStyleBtn[3]]);
+                setTravelStyleBtn([
+                  travelStyleBtn[0],
+                  travelStyleBtn[1],
+                  travelStyleBtn[2],
+                  !travelStyleBtn[3],
+                ]);
               }}
             >
               <Text>힐링</Text>
