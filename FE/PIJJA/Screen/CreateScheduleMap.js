@@ -507,7 +507,7 @@ const CreateScheduleMap = ({ navigation }) => {
 
     const [searchList,setSearchList] = useState([
         {
-            id: "1",
+            id: 1,
             title: "제주국제공항",
             address: "제주특별자치도 제주시 특별자치도, 공항로 2",
             longitude: 126.4953097579903, 
@@ -517,7 +517,7 @@ const CreateScheduleMap = ({ navigation }) => {
 
 
         {
-            id: "2",
+            id: 2,
             title: "제주곶자왈도립공원",
             address: "제주특별자치도 서귀포시 대정읍 보성리 63",
             longitude:126.277675549109,
@@ -797,6 +797,15 @@ const CreateScheduleMap = ({ navigation }) => {
                         onPress={ 
                             () => {
                                 console.log("일정 만들기")
+                                let T = {
+                                    placeList : scheduleList.map(
+                                        (item) => {
+                                            //console.log("item id :", item.id);
+                                            return { id: item.id};
+                                        }
+                                    ),
+                                }
+                                console.log(T);
                                 navigation.push('RecommendSchedule',{scheduleList: scheduleList});
                             }
                         }
