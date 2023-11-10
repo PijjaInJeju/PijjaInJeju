@@ -1,25 +1,18 @@
-package com.A605.pijja.domain.member.dto.response;
+package com.A605.pijja.domain.member.dto.request;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.extern.jackson.Jacksonized;
 
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class MemberDetailDto {
+public class TendencyAddDto {
 
-    private Long id;
-
-    private String nickname;
-
-    private String email;
-
-    private String snsType;
-
-    private String originalId;
+    private String tendencyType;
 
 }
