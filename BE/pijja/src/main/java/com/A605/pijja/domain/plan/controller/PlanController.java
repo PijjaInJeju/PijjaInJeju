@@ -19,11 +19,6 @@ import java.util.List;
 public class PlanController {
     private final PlanService planService;
 
-    @PostMapping("/daygrouping")
-    public void dayGrouping(@RequestBody MakePlanRequestDto requestDto){
-        planService.planGrouping(requestDto);
-    }
-
     @PostMapping("")
     public List<MakePlanResonseDto> makePlan(@RequestBody MakePlanRequestDto requestDto) throws JsonProcessingException {
         return planService.makePlan(requestDto);
