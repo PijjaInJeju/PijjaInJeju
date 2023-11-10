@@ -60,8 +60,8 @@ const GroupSetting = ({ navigation }) => {
       }
     }
 
-    console.log(setStyle);
-    console.log(setMate);
+    //console.log(setStyle);
+    //console.log(setMate);
     setGroupStyles(setStyle);
     setTravelMate(setMate);
 

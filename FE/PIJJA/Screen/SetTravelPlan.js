@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
@@ -50,6 +51,32 @@ const SetTravelPlan = ({ navigation, route }) => {
 
   // 그룹 데이터
   const { groupStyles, travelMate } = route.params;
+  const [userData, setUserData] = useState(new Object());
+
+  const load = async () => {
+    try {
+      const kakaoData = await AsyncStorage.getItem('user');
+      if (kakaoData === null) {
+        console.log('there is noting');
+        //navigation.push('Login');
+      } else {
+        setUserData(JSON.parse(kakaoData));
+        //return kakaoData;
+      }
+    } catch (e) {
+      console.log('Profile 불러오기 실패. : ', e);
+    }
+  };
+
+  // useEffect(() => {
+  //   load();
+  // }, []);
+
+  console.log(groupStyles);
+  console.log(travelMate);
+  console.log(travelStartData);
+  console.log(travelEndData);
+  console.log(userData.backEndId);
 
   // 여행 제목
   const [titileText, setText] = useState(0);

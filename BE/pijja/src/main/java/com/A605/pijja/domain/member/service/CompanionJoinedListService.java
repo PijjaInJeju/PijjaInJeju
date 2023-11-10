@@ -39,6 +39,7 @@ public class CompanionJoinedListService {
                             .tendency(companion.getTendency())
                             .mate(companion.getMate())
                             .startDay(companion.getStartDay())
+                            .planId(companion.getPlan().getId())
                             .endDay(companion.getEndDay());
 
                     // 현재 시간을 가져옵니다.
