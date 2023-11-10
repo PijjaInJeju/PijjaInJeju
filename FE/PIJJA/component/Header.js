@@ -14,7 +14,6 @@ console.log('Screen Height: ', screenHeight);
 const Logo = require('../Image/k_Logo.png');
 
 const Header = ({ navigation, title, menu }) => {
-    console.log("safsa")
     return (
         <View
             style={{

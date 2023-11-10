@@ -1,6 +1,7 @@
-import React from "react";
+import React,{useState} from "react";
 import { View, Text, TouchableOpacity, Image, PixelRatio, Dimensions } from "react-native";
 import Carousel from "react-native-snap-carousel";
+import Header from "../../component/Header";
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -8,181 +9,209 @@ const pixelRatio = PixelRatio.get();
 
 const noImage = require('../../Image/s_noImage.jpg');
 
+const back = require('../../Image/s_back2.jpg');
+
 const Two = ({data}) =>{
+    const [ activeSlide, setActiveSlide ] = useState(0);
     let profile =       data.profile;
     let groupList =     data.groupList;
     let setGroupList =  data.setGroupList;
     const groupListItem = ({item}) =>{
-        console.log(item);
+        //console.log(item);
         return (
             <View
                 style={{
                     alignItems: 'center',
-                    width: screenWidth * 0.6,
+                    width: screenWidth * 0.7,
                 }}
+
             >
-                <Text
+                <Image
                     style={{
-                        color: 'black',
-                        flexDirection: 'row'
+                        width: screenWidth * 0.7,
+                        height: screenHeight * 0.3,
+                        resizeMode: 'contain',
+                    }}
+                    source={noImage}
+                />
+                <TouchableOpacity 
+                    style={{
+                        borderTopWidth: 1,
+                        borderColor: 'black',
+                        width: screenWidth * 0.7,
+                        height: screenHeight * 0.2,
+                        alignItems: 'center',      // 수직 가운데 정렬을 위해 추가
                     }}
                 >
-                    {item.title}fsafsa
-                    
-                </Text>
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        width: screenWidth * 0.6,
-                        height: screenHeight * 0.27,
-                    }}
-                >
-                    {
-                        //<Icon
-                        //    style={{
-                        //        color: 'gray',
-                        //        alignSelf: 'center',
-                        //    }}
-                        //    size={30}
-                        //    name="left"
-                        ///>
-                    }
-                    <Image
+                    <View
                         style={{
                             width: screenWidth * 0.6,
-                            height: screenHeight * 0.27,
-                            resizeMode: 'contain',
+                            height: screenHeight * 0.1,
+                            flexDirection: 'row',
+                            alignItems:'center',
                         }}
-                        source={noImage}
-                    />
-                    {
-                        //<Icon
-                        //    style={{
-                        //        color: 'gray',
-                        //        alignSelf: 'center',
-                        //    }}
-                        //    size={30}
-                        //    name="right"
-                        ///>
-                    }
-                </View>
+                    >
+                        <Text
+                            style={{
+                                color: 'black',
+                            }}
+                        >
+                            {item.schedule.title} 
+                        </Text>
+                        <View
+                            style={{
+                                flex: 1,
+                            }}
+                        >
+                        <Text
+                            style={{
+                                alignSelf: 'flex-end',
+                                color: 'black'
+                            }}
+                        >
+                            자세히 보기
+                        </Text>
+                        </View>
+                        
+                    </View>
+                    
+                </TouchableOpacity>
             </View>
         );
     }
 
     return (
         <View>
+            <Header title={""}/>
+            <Image
+                style={{
+                    position: 'absolute',
+                    zIndex: -1,
+                }}
+                source={back}
+            />
             <View
                 style={{
-                    width: screenWidth * 0.7,
-                    height: screenHeight * 0.4,
-                    borderWidth: 1,
-                    borderRadius: 50,
-                    borderColor: 'gray',
-                    alignSelf: 'center',
-                    paddingLeft: '5%',
-                    paddingTop: '3%',
-                    backgroundColor: 'white',
+                    width: screenWidth,
+                    height: screenHeight,
+                    paddingTop: '7%',
                 }}
             >
                 <Text
                     style={{
-                        width: screenWidth * 0.6,
-                        fontWeight: "bold",
-                        fontSize: pixelRatio * 8,
                         color: 'black',
+                        fontSize: pixelRatio * 9,
+                        paddingLeft: '10%',
+                    }}
+                    
+                >
+                    나의 여행지 보기
+                </Text>
+                <View
+                    style={{
+                        width: screenWidth * 0.7,
+                        height: screenHeight * 0.4,
+                        borderWidth: 1,
+                        borderRadius: 25,
+                        borderColor: 'gray',
+                        alignSelf: 'center',
+                        backgroundColor: 'white',
                     }}
                 >
-                    {profile.nickname}님 환영합니다.
-                </Text>
-                
-                {
-                    groupList.length === 0
-                    ?
-                    <Text
-                        style={{
-                            width: screenWidth * 0.6,
-                            color: 'black',
-                            flex: 1,
-                            fontSize: pixelRatio * 3.5,
-                        }}
-                    >
-                        여행 그룹이 없어요 ㅠㅠ..
-                    </Text>
-                    :
-                    <View
-                        style={{
-                            
-                        }}
-                    >
+                    {
+                        groupList.length === 0
+                        ?
                         <Text
                             style={{
                                 width: screenWidth * 0.6,
                                 color: 'black',
-                                fontSize: pixelRatio * 4,
+                                flex: 1,
+                                fontSize: pixelRatio * 3.5,
                             }}
                         >
-                            신나는 제주도 여행중이시군요!
+                            여행 가는곳이 없어요 ㅠㅠ..
                         </Text>
-                        {console.log(groupList[0].schedule)}
-                        <Carousel
-                            layout={'tinder'}
-                            layoutCardOffset={`9`}
-                            data={groupList[0].schedule}
-                            renderItem={groupListItem}
-                            sliderWidth={screenWidth * 0.6}
-                            itemWidth={screenWidth}
-                            sliderHeight={screenHeight * 0.2}
-                            itemHeight={screenHeight * 0.5}
-                        />
-                    </View>
-                }
-            </View>
-            
-            <View
-                style={{
-                    width: '70%',
-                    height: '40%',
-                    borderWidth: 1,
-                    borderRadius: 50,
-                    alignSelf: 'center',
-                    paddingLeft: '5%',
-                    paddingTop: '3%',
-                    backgroundColor: 'white',
+                        :
+                        <View
+                            style={{
+                                alignSelf: 'center',
+                            }}
+                        >
+                            <Carousel
 
-                }}
-            >
+                                data={groupList}
+                                renderItem={groupListItem}
+                                sliderWidth={screenWidth * 0.7}
+                                itemWidth={screenWidth * 0.7}
+                                sliderHeight={screenHeight}
+                                itemHeight={screenHeight}
+                                onSnapToItem={(index) => {
+                                    setActiveSlide(index);
+                                    //console.log(index);
+                                }}
+                            />
+                        </View>
+                    }
+                    
+                </View>
                 <Text
                     style={{
                         color: 'black',
-                        flex: 1,
+                        fontSize: pixelRatio * 9,
+                        paddingLeft: '10%',
+                        marginTop: '5%',
                     }}
+                    
                 >
-                    신나는 제주도 여행중이시군요!
+                    여행지 추천
                 </Text>
-                <TouchableOpacity
-                    onPress={ () => {
-                        console.log("일정보기를 클릭했어요 ");
-                    }}
+                <View
                     style={{
-                        width: '25%',
-                        flex: 1,
-                        alignSelf: 'flex-end',
-                        paddingRight: '1%',
+                        width: screenWidth * 0.7,
+                        height: screenHeight * 0.3,
+                        borderWidth: 1,
+                        borderRadius: 25,
+                        borderColor: 'gray',
+                        alignSelf: 'center',
+                        backgroundColor: 'white',
                     }}
                 >
-                    <Text
-                        style={{
-                            borderWidth: 1,
-                            borderRadius: 10,
-                            color: 'black',
-                            textAlign: 'center',
-                            backgroundColor: '#fcbf49',
-                        }}
-                    >
-                        일정 만들기
-                    </Text>
-                </TouchableOpacity>
+                    {
+                        groupList.length === 0
+                        ?
+                        <Text
+                            style={{
+                                width: screenWidth * 0.6,
+                                color: 'black',
+                                flex: 1,
+                                fontSize: pixelRatio * 3.5,
+                            }}
+                        >
+                            여행 가는곳이 없어요 ㅠㅠ..
+                        </Text>
+                        :
+                        <View
+                            style={{
+                                alignSelf: 'center',
+                            }}
+                        >
+                            <Carousel
+
+                                data={groupList}
+                                renderItem={groupListItem}
+                                sliderWidth={screenWidth * 0.7}
+                                itemWidth={screenWidth * 0.7}
+                                sliderHeight={screenHeight}
+                                itemHeight={screenHeight}
+                                onSnapToItem={(index) => {
+                                    setActiveSlide(index);
+                                    //console.log(index);
+                                }}
+                            />
+                        </View>
+                    }
+                    
+                </View>
             </View>
         </View>
     );
