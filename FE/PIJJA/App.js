@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 import 'react-native-gesture-handler';
-import React from 'react';
+import React,{useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -31,17 +31,6 @@ const Drawer = createDrawerNavigator();
 const Logo = require('./Image/k_Logo.png');
 
 const App = () => {
-  useEffect(() => {
-    const unsubscribe = messaging().onMessage(async remoteMessage => {
-       console.log(remoteMessage)   
-    });
-
-    return unsubscribe;
-  }, []);
-
-  useEffect(() => {
-    requestUserPermission();
-  }, []);
 
   const requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();

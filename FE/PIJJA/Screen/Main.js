@@ -36,19 +36,17 @@ const MainScreen = ({ navigation }) => {
   const [groupList, setGroupList] = useState([
     {
       id: 1,
-      schedule: [
-        {
-          id: 1,
-          title: '1번',
-        },
-        {
-          id: 2,
-          title: '2번',
-        },
-      ],
+      schedule:
+      {
+        title: '1번',
+      },
     },
     {
       id: 2,
+      schedule:
+      {
+        title: '2번',
+      },
     },
   ]);
   // let route.params;
@@ -106,7 +104,7 @@ const MainScreen = ({ navigation }) => {
   }
   
   const [ activeSlide, setActiveSlide ] = useState();
-  const activeRef = useRef(null);
+  const activeRef = useRef(1);
   return (
     <SafeAreaView>
       <Carousel

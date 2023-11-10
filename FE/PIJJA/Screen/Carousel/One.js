@@ -78,7 +78,7 @@ const One = ({data}) =>{
                 containerStyle={{ 
                     position: 'absolute',
                     zIndex: 10,
-                    bottom: '1%',
+                    bottom: '10%',
                     width: '100%',
                 }}
                 dotStyle={{
