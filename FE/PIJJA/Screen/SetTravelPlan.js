@@ -14,11 +14,14 @@ import {
   Image,
   Alert,
 } from 'react-native';
+
 import JoinGroup from './JoinGroup.js';
 import CreateScheduleMap from './CreateScheduleMap.js';
+import Rest from '../lib/Rest.js';
+
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import Rest from '../lib/Rest.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 screenWidth = Dimensions.get('window').width;
 screenHeight = Dimensions.get('window').height;
@@ -61,6 +64,7 @@ const SetTravelPlan = ({ navigation, route }) => {
         //navigation.push('Login');
       } else {
         setUserData(JSON.parse(kakaoData));
+
         //return kakaoData;
       }
     } catch (e) {
@@ -68,9 +72,40 @@ const SetTravelPlan = ({ navigation, route }) => {
     }
   };
 
-  // useEffect(() => {
-  //   load();
-  // }, []);
+  useEffect(() => {
+    load();
+  }, []);
+
+  const transmitGroupStyle = async () => {
+    try {
+      await Rest(
+        '/api/companions',
+        'POST',
+        {
+          name: titileText,
+          tendency: groupStyles,
+          mate: travelMate,
+          startDay: travelStartData,
+          endDay: travelEndData,
+          memberId: userData.backEndId,
+        },
+        response => {
+          console.log('응답 데이터2 : ' + response.data);
+          navigation.navigate('CreateScheduleMap', {
+            travelTitle: titileText,
+            groupStyles: groupStyles,
+            travelMate: travelMate,
+          });
+        },
+        error => {
+          console.log('error:', error);
+          // if (error.data.id !== undefined) id = error.data.id;
+        },
+      );
+    } catch (error) {
+      console.log('그룹 데이터 송신 실패', error);
+    }
+  };
 
   console.log(groupStyles);
   console.log(travelMate);
@@ -98,8 +133,6 @@ const SetTravelPlan = ({ navigation, route }) => {
 
   // 입력 시간 검사
   const [nextOk, setNextOk] = useState(false);
-
-  // 그룹 데이터 송신
 
   // 달력 다루기
   const nowDate = new Date();
@@ -216,11 +249,7 @@ const SetTravelPlan = ({ navigation, route }) => {
         style={styles.travelPlanButton}
         onPress={() => {
           if (nextOk) {
-            navigation.navigate('CreateScheduleMap', {
-              travelTitle: titileText,
-              groupStyles: groupStyles,
-              travelMate: travelMate,
-            });
+            transmitGroupStyle();
           } else {
             Alert.alert('여행 일정을 입력해주세요.');
           }
@@ -231,14 +260,14 @@ const SetTravelPlan = ({ navigation, route }) => {
 
       <DateTimePickerModal
         isVisible={dateModelShow1}
-        mode="datetime"
+        mode="date"
         onConfirm={dateConfirm1}
         onCancel={dateModelCancle1}
         display="default"
       />
       <DateTimePickerModal
         isVisible={dateModelShow2}
-        mode="datetime"
+        mode="date"
         onConfirm={dateConfirm2}
         onCancel={dateModelCancle2}
         display="default"
