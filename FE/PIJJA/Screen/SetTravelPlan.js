@@ -17,17 +17,39 @@ import JoinGroup from './JoinGroup.js';
 import CreateScheduleMap from './CreateScheduleMap.js';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import Rest from '../lib/Rest.js';
 
 screenWidth = Dimensions.get('window').width;
 screenHeight = Dimensions.get('window').height;
 
 const pixelRatio = PixelRatio.get();
 
-const SetTravelPlan = ({ route, navigation }) => {
+const getUserId = async () => {
+  let userId = new Number();
+  userId = await Rest(
+    '/api/members/sign-up',
+    'POST',
+    {
+      nickname: profile.nickname,
+      email: profile.email,
+      snsType: 'kakao',
+      originalId: profile.id,
+    },
+    response => (id = response.data.id),
+    error => {
+      console.log('error:', error);
+      if (error.data.id !== undefined) id = error.data.id;
+    },
+  );
+
+  return userId;
+};
+
+const SetTravelPlan = ({ navigation, route }) => {
   const planLogo = require('../Image/k_setPlanLogo.png');
+
+  // 그룹 데이터
   const { groupStyles, travelMate } = route.params;
-  console.log(groupStyles);
-  console.log(travelMate);
 
   // 여행 제목
   const [titileText, setText] = useState(0);
@@ -50,8 +72,10 @@ const SetTravelPlan = ({ route, navigation }) => {
   // 입력 시간 검사
   const [nextOk, setNextOk] = useState(false);
 
+  // 그룹 데이터 송신
+
+  // 달력 다루기
   const nowDate = new Date();
-  //const daysOfMonth = [31, fabDay, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
   const showDatePicker1 = () => {
     setDateModel1(true);
@@ -72,8 +96,6 @@ const SetTravelPlan = ({ route, navigation }) => {
     console.log(dateModelShow2);
   };
 
-  const fabDay = new Date(nowDate.getFullYear(), 2, 0).getDate();
-
   const dateConfirm1 = date => {
     let confirmDate = new Date(
       date.getFullYear(),
@@ -81,6 +103,7 @@ const SetTravelPlan = ({ route, navigation }) => {
       date.getDate(),
     );
 
+    setTravelStartData(confirmDate);
     setTravelStart(confirmDate.getTime());
     setStartTextContent(date.getMonth() + '월 ' + date.getDate() + '일');
     dateModelCancle1();
@@ -94,6 +117,7 @@ const SetTravelPlan = ({ route, navigation }) => {
       date.getDate(),
     );
 
+    setTravelEndData(confirmDate);
     setTravelEnd(confirmDate.getTime());
 
     let startDay = travelStart / (1000 * 60 * 60 * 24);
@@ -167,6 +191,8 @@ const SetTravelPlan = ({ route, navigation }) => {
           if (nextOk) {
             navigation.navigate('CreateScheduleMap', {
               travelTitle: titileText,
+              groupStyles: groupStyles,
+              travelMate: travelMate,
             });
           } else {
             Alert.alert('여행 일정을 입력해주세요.');

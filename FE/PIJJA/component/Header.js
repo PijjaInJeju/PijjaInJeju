@@ -18,10 +18,11 @@ const Header = ({ navigation, title, menu }) => {
     return (
         <View
             style={{
+                position: 'absolute',
                 alignItems: 'center',
                 flexDirection: 'row',
                 width: screenWidth,
-                height: '5%'
+                height: screenHeight * 0.05,
             }}
         >
             <TouchableOpacity
@@ -39,8 +40,8 @@ const Header = ({ navigation, title, menu }) => {
                 >
                 <Image
                     style={{
-                        width: 15 * pixelRatio,
-                        height: 15 * pixelRatio,
+                        width: screenWidth * 0.05,
+                        height: screenWidth * 0.05,
                         resizeMode: 'stretch',
                     } }
                     source={Logo}

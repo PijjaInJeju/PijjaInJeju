@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler'; // 파일의 가장 최상단에 위치해야함
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -16,11 +16,11 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-import Carousel from 'react-native-snap-carousel';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 import One from './Carousel/One';
 import Two from './Carousel/Two';
 
-import MakeGroup from './MakeGroup.js';
+import GroupSetting from './GroupSetting.js';
 import CheckTripPlan from './CheckTripPlan.js';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -63,20 +63,16 @@ const MainScreen = ({ navigation }) => {
   // let route.params;
   //console.log("Main Profile  :  ", route.params.profile);
 
-  const [userData, setUserData] = useState(0);
+  const [userData, setUserData] = useState(new Object());
 
   const load = async () => {
     try {
       const kakaoData = await AsyncStorage.getItem('user');
-      //let user = JSON.parse(json);
-
-      //console.log('get data1: ', kakaoData);
-      //console.log('to data: ', user);
       if (kakaoData === null) {
         console.log('there is noting');
         //navigation.push('Login');
       } else {
-        setUserData(kakaoData);
+        setUserData(JSON.parse(kakaoData));
         //return kakaoData;
       }
     } catch (e) {
@@ -84,9 +80,9 @@ const MainScreen = ({ navigation }) => {
     }
   };
 
-  load();
-  console.log('get k data\n');
-  console.log(userData);
+  useEffect(() => {
+    load();
+  }, []);
 
   const data = [
     {
@@ -100,7 +96,9 @@ const MainScreen = ({ navigation }) => {
     {
       screen: Two,
       data: {
-        //...profile,
+        profile: userData,
+        groupList: groupList,
+        setGroupList: setGroupList,
         nickName: 'asd',
       },
     },
@@ -114,6 +112,8 @@ const MainScreen = ({ navigation }) => {
     );
   };
 
+  const [activeSlide, setActiveSlide] = useState();
+  const activeRef = useRef(null);
   return (
     <SafeAreaView>
       <Carousel
@@ -124,6 +124,36 @@ const MainScreen = ({ navigation }) => {
         itemWidth={screenWidth}
         sliderHeight={screenHeight}
         itemHeight={screenHeight}
+        onSnapToItem={index => {
+          setActiveSlide(index);
+          console.log(index);
+        }}
+        ref={activeRef}
+      />
+      <Pagination
+        dotsLength={data.length}
+        activeDotIndex={activeSlide}
+        containerStyle={{
+          height: screenHeight,
+          position: 'absolute',
+        }}
+        dotStyle={{
+          width: 10,
+          height: 10,
+          borderRadius: 5,
+          marginVertical: 8,
+          backgroundColor: 'rgba(255, 255, 255, 0.92)',
+        }}
+        inactiveDotStyle={
+          {
+            // Define styles for inactive dots here
+          }
+        }
+        inactiveDotOpacity={0.4}
+        inactiveDotScale={0.6}
+        vertical={true}
+        carouselRef={activeRef}
+        tappableDots={true}
       />
     </SafeAreaView>
   );
@@ -152,7 +182,7 @@ const Main = () => {
       />
       <pijjaTab.Screen
         name="일정 생성"
-        component={MakeGroup}
+        component={GroupSetting}
         options={{
           tabBarIcon: ({ focused, color, size }) => (
             <FontAwesome
