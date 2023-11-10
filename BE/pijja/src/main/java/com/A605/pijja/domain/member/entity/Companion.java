@@ -39,8 +39,6 @@ public class Companion {
 
     private Boolean isEnd; // 동반 여행의 종료 여부
 
-    private String tendency; // 여행 그룹의 특성 정보
-
     private String mate; // 여행 그룹에 대한 추가 정보
 
     private LocalDate startDay; // 동반 여행의 시작 날짜
@@ -54,4 +52,6 @@ public class Companion {
     @OneToMany(mappedBy = "companion")
     private List<MemberCompanion> companionMembers = new ArrayList<>();
 
+    @OneToMany(mappedBy = "companion")
+    private List<CompanionTendency> companionTendencies = new ArrayList<>();
 }

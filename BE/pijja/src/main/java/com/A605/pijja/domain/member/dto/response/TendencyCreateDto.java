@@ -10,16 +10,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class MemberDetailDto {
-
+public class TendencyCreateDto {
     private Long id;
 
-    private String nickname;
-
-    private String email;
-
-    private String snsType;
-
-    private String originalId;
-
+    private String tendency;
 }
