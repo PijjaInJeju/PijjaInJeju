@@ -23,4 +23,6 @@ public class MyCompanionListDto {
     private LocalDate startDay; // 동반 여행의 시작 시간
 
     private LocalDate endDay; // 동반 여행의 종료 시간
+
+    private Long planId; // 그룹 계획의 아이디
 }
