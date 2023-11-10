@@ -45,6 +45,7 @@ public class CompanionListService {
                 .mate(companion.getMate())
                 .startDay(companion.getStartDay())
                 .endDay(companion.getEndDay())
+                .planId(companion.getPlan().getId())
                 .build();
     }
 }
