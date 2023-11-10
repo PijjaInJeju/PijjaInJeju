@@ -115,12 +115,4 @@ public class PathController {
         return pathService.kruskal(pq,requestDto);
     }
 
-    @PostMapping("/getroutevia") //티맵 경유지 api 호출
-    public ResponseEntity<String> getRouteViaTmap(@RequestBody GetRouteViaTmapRequestDto requestDto){
-
-        return pathService.getRouteViaTmap(requestDto);
-
-    }
-
-
 }

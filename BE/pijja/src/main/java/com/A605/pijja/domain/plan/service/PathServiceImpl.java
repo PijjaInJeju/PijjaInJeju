@@ -208,36 +208,6 @@ public class PathServiceImpl implements PathService {
         return pq;
     }
 
-    @Override
-    public ResponseEntity<String> getRouteViaTmap(GetRouteViaTmapRequestDto requestDto) {
-        String tmapApiKey=tmapConfig.getTmapApiKey();
-
-        WebClient wc=webClient;
-        String encodedStartName= URLEncoder.encode(requestDto.getStartName(),StandardCharsets.UTF_8);
-        String encodedEndName=URLEncoder.encode(requestDto.getEndName(),StandardCharsets.UTF_8);
-
-
-        GetRouteViaTmapRequestDto tmapRequest=GetRouteViaTmapRequestDto.builder()
-                .startName(encodedStartName)
-                .startX(requestDto.getStartX())
-                .startY(requestDto.getStartY())
-                .startTime(requestDto.getStartTime())
-                .endName(encodedEndName)
-                .endX(requestDto.getEndX())
-                .endY(requestDto.getEndY())
-                .viaPoints(requestDto.getViaPoints())
-                .build();
-        ResponseEntity<String> result=wc.post()
-                .uri(uriBuilder -> uriBuilder.path("/tmap/routes/routeOptimization10")
-                        .build())
-                .header("appKey",tmapApiKey)
-                .bodyValue(tmapRequest)
-                .retrieve()
-                .toEntity(String.class)
-                .block();
-        return result;
-    }
-
 
     //경로가 db에 없으면, 티맵 경로 탐색 api 호출
     @Override
