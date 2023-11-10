@@ -18,10 +18,6 @@ import java.util.List;
 @RequestMapping("/api/plan")
 public class PlanController {
     private final PlanService planService;
-//    @PostMapping("/daygrouping")
-//    public List<PlanGroupingResponseDto> dayGrouping(@RequestBody MakePlanRequestDto requestDto){
-//        return planService.planGrouping(requestDto);
-//    }
 
     @PostMapping("/daygrouping")
     public void dayGrouping(@RequestBody MakePlanRequestDto requestDto){
