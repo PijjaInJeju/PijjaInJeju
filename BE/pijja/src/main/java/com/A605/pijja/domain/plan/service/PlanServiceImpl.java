@@ -131,7 +131,7 @@ public class PlanServiceImpl implements PlanService {
 
 
         List<PlanGroupingResponseDto> planGroupingResponse = planGrouping(requestDto);
-
+        ArrayList<PathDto> pathList=new ArrayList<>();
         for(int i=0;i<planGroupingResponse.size();i++){
             PlanGroupingResponseDto planGroup=planGroupingResponse.get(i);
             List<PlanGroupingResponseDto.PlaceDto> dayPlanPlaceList=planGroup.getPlaceOrderList();
@@ -147,6 +147,9 @@ public class PlanServiceImpl implements PlanService {
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonPath=objectMapper.writeValueAsString(kruskalResponse.getPathList() );
 
+            for(int j=0;j<kruskalResponse.getPlaceList().size();j++){
+                System.out.print(kruskalResponse.getPlaceList().get(j).getId());
+            }
 
             DayPlan dayPlan= DayPlan.builder()
                     .day(planGroup.getDay())
@@ -157,25 +160,45 @@ public class PlanServiceImpl implements PlanService {
             dayPlanRepository.save(dayPlan);
             plan.addPlanAndDayPlan(dayPlan);
             List<MakePlanResonseDto.PlaceDto> placeDtoList=new ArrayList<>();
-            for(int j=0;j<dayPlanPlaceList.size();j++){
-                PlaceTest place=placeTestRepository.findById(dayPlanPlaceList.get(j).getId()).get();
+            for(int j=0;j<kruskalResponse.getPlaceList().size();j++){
+                PlaceTest place=placeTestRepository.findById(kruskalResponse.getPlaceList().get(j).getId()).get();
                 DayPlanPlace dayPlanPlace= DayPlanPlace.builder()
                         .place(place)
+                        .orderNumber(j)
                         .dayPlan(dayPlan)
                         .build();
                 dayPlanPlaceRepository.save(dayPlanPlace);
                 dayPlan.addDayPlan(dayPlanPlace);
                 place.addDayPlanPlace(dayPlanPlace);
-
                 MakePlanResonseDto.PlaceDto placeDto=MakePlanResonseDto.PlaceDto.builder()
                         .id(place.getId())
                         .title(place.getName())
                         .build();
                 placeDtoList.add(placeDto);
             }
+            if(kruskalResponse.getPlaceList().size()==0) {
+                for (int j = 0; j < dayPlanPlaceList.size(); j++) {
+                    PlaceTest place = placeTestRepository.findById(dayPlanPlaceList.get(j).getId()).get();
+                    DayPlanPlace dayPlanPlace = DayPlanPlace.builder()
+                            .place(place)
+                            .orderNumber(j)
+                            .dayPlan(dayPlan)
+                            .build();
+                    dayPlanPlaceRepository.save(dayPlanPlace);
+                    dayPlan.addDayPlan(dayPlanPlace);
+                    place.addDayPlanPlace(dayPlanPlace);
+
+                    MakePlanResonseDto.PlaceDto placeDto = MakePlanResonseDto.PlaceDto.builder()
+                            .id(place.getId())
+                            .title(place.getName())
+                            .build();
+                    placeDtoList.add(placeDto);
+                }
+            }
             responseList.add(MakePlanResonseDto.builder()
                     .title(Integer.toString(dayPlan.getDay())+"일차")
                     .data(placeDtoList)
+                    .pathList(kruskalResponse.getPathList())
                     .build());
         }
 

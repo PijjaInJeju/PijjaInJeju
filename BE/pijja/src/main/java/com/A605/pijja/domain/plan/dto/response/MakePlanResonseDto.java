@@ -2,6 +2,7 @@ package com.A605.pijja.domain.plan.dto.response;
 
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -11,6 +12,7 @@ import java.util.List;
 public class MakePlanResonseDto {
     private String title;
     private List<PlaceDto> data;
+    private ArrayList<PathDto> pathList;
 
     @Getter
     @Builder

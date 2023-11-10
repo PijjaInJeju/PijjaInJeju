@@ -86,18 +86,22 @@ public class PathServiceImpl implements PathService {
             int place1=map.get(now.getPlace1());
             int place2=map.get(now.getPlace2());
 
-            if(find(place1,parent)!=find(place2,parent)){
+            if(find(parent[place1],parent)!=find(parent[place2],parent)){
+
                 arr[place1].add(place2);
                 arr[place2].add(place1);
                 union(place1,place2,parent);
                 totalDistance+=now.getDist();
                 totalTime+=now.getTime();
+
             }
         }
 
         ArrayDeque<Integer> q=new ArrayDeque<>();
         int[] ch=new int[requestDto.size()];
+
         for(int i=0;i<requestDto.size();i++){
+
             if(arr[i].size()==1){
                 q.add(i);
                 break;
@@ -171,9 +175,9 @@ public class PathServiceImpl implements PathService {
             return ;
         }
         if(parentA<parentB){
-            parent[b]=parentA;
+            parent[parentB]=find(parentA,parent);
         }else{
-            parent[a]=parentB;
+            parent[parentA]=find(parentB,parent);
         }
     }
 
