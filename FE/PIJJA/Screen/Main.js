@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler'; // 파일의 가장 최상단에 위치해야함
-import React, { useState, useEffect,useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -16,11 +16,11 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-import Carousel,{ Pagination } from 'react-native-snap-carousel';
+import Carousel, { Pagination } from 'react-native-snap-carousel';
 import One from './Carousel/One';
 import Two from './Carousel/Two';
 
-import MakeGroup from './MakeGroup.js';
+import GroupSetting from './GroupSetting.js';
 import CheckTripPlan from './CheckTripPlan.js';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -30,31 +30,38 @@ const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const pixelRatio = PixelRatio.get();
 
-const getTabBarIcon = ({ props, iconName }) => {};
+const getTabBarIcon = ({ focused, color, size, iconName, toIconName }) => {
+  const tabIcon = focused ? iconName : toIconName;
+  return (
+    <MaterialCommunityIcons
+      name={tabIcon}
+      color="fcbf49"
+      size={24}
+    ></MaterialCommunityIcons>
+  );
+};
 
 const MainScreen = ({ navigation }) => {
   const [groupList, setGroupList] = useState([
     {
       id: 1,
-      schedule: [
-        {
-          id: 1,
-          title: '1번',
-        },
-        {
-          id: 2,
-          title: '2번',
-        },
-      ],
+      schedule:
+      {
+        title: '1번',
+      },
     },
     {
       id: 2,
+      schedule:
+      {
+        title: '2번',
+      },
     },
   ]);
   // let route.params;
   //console.log("Main Profile  :  ", route.params.profile);
 
-  const [userData, setUserData] = useState(new Object);
+  const [userData, setUserData] = useState(new Object());
 
   const load = async () => {
     try {
@@ -71,11 +78,9 @@ const MainScreen = ({ navigation }) => {
     }
   };
 
-  useEffect(
-    () => {
-      load();
-    },[]
-  );
+  useEffect(() => {
+    load();
+  }, []);
 
   const data = [
     {
@@ -92,8 +97,8 @@ const MainScreen = ({ navigation }) => {
         profile: userData,
         groupList: groupList,
         setGroupList: setGroupList,
-        nickName: "asd"
-      }
+        nickName: 'asd',
+      },
     },
   ];
 
@@ -106,7 +111,7 @@ const MainScreen = ({ navigation }) => {
   }
   
   const [ activeSlide, setActiveSlide ] = useState();
-  const activeRef = useRef(null);
+  const activeRef = useRef(1);
   return (
     <SafeAreaView>
       <Carousel
@@ -117,29 +122,31 @@ const MainScreen = ({ navigation }) => {
         itemWidth={screenWidth}
         sliderHeight={screenHeight}
         itemHeight={screenHeight}
-        onSnapToItem={(index) => {
+        onSnapToItem={index => {
           setActiveSlide(index);
           console.log(index);
         }}
         ref={activeRef}
       />
-      <Pagination 
+      <Pagination
         dotsLength={data.length}
         activeDotIndex={activeSlide}
-        containerStyle={{ 
-          height: screenHeight, 
-          position: 'absolute'
-         }}
+        containerStyle={{
+          height: screenHeight,
+          position: 'absolute',
+        }}
         dotStyle={{
           width: 10,
           height: 10,
           borderRadius: 5,
           marginVertical: 8,
-          backgroundColor: 'rgba(255, 255, 255, 0.92)'
+          backgroundColor: 'rgba(255, 255, 255, 0.92)',
         }}
-        inactiveDotStyle={{
+        inactiveDotStyle={
+          {
             // Define styles for inactive dots here
-        }}
+          }
+        }
         inactiveDotOpacity={0.4}
         inactiveDotScale={0.6}
         vertical={true}
@@ -162,11 +169,41 @@ const Main = () => {
         name="홈"
         component={MainScreen}
         options={{
-          tabBarIcon: props => getTabBarIcon({ props, iconName: '홈' }),
+          tabBarIcon: ({ focused, color, size }) => (
+            <MaterialCommunityIcons
+              name={focused ? 'home-circle' : 'home-circle-outline'}
+              color={'#fcbf49'}
+              size={30}
+            ></MaterialCommunityIcons>
+          ),
         }}
       />
-      <pijjaTab.Screen name="일정 생성" component={MakeGroup} />
-      <pijjaTab.Screen name="일정 보기" component={CheckTripPlan} />
+      <pijjaTab.Screen
+        name="일정 생성"
+        component={GroupSetting}
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <FontAwesome
+              name={focused ? 'paper-plane' : 'paper-plane-o'}
+              color={'#fcbf49'}
+              size={30}
+            ></FontAwesome>
+          ),
+        }}
+      />
+      <pijjaTab.Screen
+        name="일정 보기"
+        component={CheckTripPlan}
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <Entypo
+              name={focused ? 'text-document' : 'text-document-inverted'}
+              color={'#fcbf49'}
+              size={30}
+            ></Entypo>
+          ),
+        }}
+      />
     </pijjaTab.Navigator>
   );
 };

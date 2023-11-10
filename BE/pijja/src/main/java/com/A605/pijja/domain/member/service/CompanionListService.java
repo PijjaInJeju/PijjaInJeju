@@ -25,7 +25,7 @@ public class CompanionListService {
      */
     public ResponseEntity getAllCompanions() {
         // 모든 그룹을 데이터베이스에서 조회합니다.
-        List<Companion> companionList = companionRepository.findAll();
+        List<Companion> companionList = companionRepository.findAllByOrderByStartDayAsc();
 
         // CompanionListDto 객체로 변환하여 반환
         List<CompanionListDto> companionListDto = companionList.stream()
@@ -41,10 +41,14 @@ public class CompanionListService {
     private CompanionListDto convertToCompanionListDto(Companion companion) {
         return CompanionListDto.builder()
                 .name(companion.getName())
-                .tendency(companion.getTendency())
+                .tendencies(companion.getCompanionTendencies()
+                        .stream()
+                        .map(companionTendency -> companionTendency.getTendency().getTendencyType())
+                        .collect(Collectors.toList()))
                 .mate(companion.getMate())
                 .startDay(companion.getStartDay())
                 .endDay(companion.getEndDay())
+                .planId(companion.getPlan() != null ? companion.getPlan().getId() : null)
                 .build();
     }
 }

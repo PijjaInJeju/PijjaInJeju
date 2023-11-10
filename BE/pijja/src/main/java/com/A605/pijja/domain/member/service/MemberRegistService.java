@@ -35,6 +35,10 @@ public class MemberRegistService {
             Member existingMember = existingMemberOptional.get();
             MemberDetailDto memberDetailDto = MemberDetailDto.builder()
                     .id(existingMember.getId())
+                    .nickname(existingMember.getNickname())
+                    .email(existingMember.getEmail())
+                    .snsType(existingMember.getSnsType())
+                    .originalId(existingMember.getOriginalId())
                     .build();
 
             return ResponseEntity.ok()

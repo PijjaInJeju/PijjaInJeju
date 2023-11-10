@@ -18,7 +18,7 @@ import Header from '../component/Header.js';
 const pixelRatio = PixelRatio.get();
 
 const MakeGroup = ({ navigation }) => {
-  const MakeGroupImage = require('../Image/s_Create_Group.png');
+  const MakeGroupImage = require('../Image/k_leader.png');
 
   return (
     <SafeAreaView style={[styles.container]}>
