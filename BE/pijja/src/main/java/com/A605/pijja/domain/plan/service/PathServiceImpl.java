@@ -47,7 +47,7 @@ public class PathServiceImpl implements PathService {
     }
 
     @Override
-    @Transactional
+    @Transactional //경로 db 저장
     public void addPath(AddRouteRequestDto requestDto) {
         PlaceTest startPlace=placeTestRepository.findById(requestDto.getStartPlaceId()).get();
         PlaceTest endPlace=placeTestRepository.findById(requestDto.getEndPlaceId()).get();
@@ -86,18 +86,22 @@ public class PathServiceImpl implements PathService {
             int place1=map.get(now.getPlace1());
             int place2=map.get(now.getPlace2());
 
-            if(find(place1,parent)!=find(place2,parent)){
+            if(find(parent[place1],parent)!=find(parent[place2],parent)){
+
                 arr[place1].add(place2);
                 arr[place2].add(place1);
                 union(place1,place2,parent);
                 totalDistance+=now.getDist();
                 totalTime+=now.getTime();
+
             }
         }
 
         ArrayDeque<Integer> q=new ArrayDeque<>();
         int[] ch=new int[requestDto.size()];
+
         for(int i=0;i<requestDto.size();i++){
+
             if(arr[i].size()==1){
                 q.add(i);
                 break;
@@ -171,9 +175,9 @@ public class PathServiceImpl implements PathService {
             return ;
         }
         if(parentA<parentB){
-            parent[b]=parentA;
+            parent[parentB]=find(parentA,parent);
         }else{
-            parent[a]=parentB;
+            parent[parentA]=find(parentB,parent);
         }
     }
 
@@ -204,37 +208,9 @@ public class PathServiceImpl implements PathService {
         return pq;
     }
 
+
+    //경로가 db에 없으면, 티맵 경로 탐색 api 호출
     @Override
-    public ResponseEntity<String> getRouteViaTmap(GetRouteViaTmapRequestDto requestDto) {
-        String tmapApiKey=tmapConfig.getTmapApiKey();
-
-        WebClient wc=webClient;
-        String encodedStartName= URLEncoder.encode(requestDto.getStartName(),StandardCharsets.UTF_8);
-        String encodedEndName=URLEncoder.encode(requestDto.getEndName(),StandardCharsets.UTF_8);
-
-
-        GetRouteViaTmapRequestDto tmapRequest=GetRouteViaTmapRequestDto.builder()
-                .startName(encodedStartName)
-                .startX(requestDto.getStartX())
-                .startY(requestDto.getStartY())
-                .startTime(requestDto.getStartTime())
-                .endName(encodedEndName)
-                .endX(requestDto.getEndX())
-                .endY(requestDto.getEndY())
-                .viaPoints(requestDto.getViaPoints())
-                .build();
-        ResponseEntity<String> result=wc.post()
-                .uri(uriBuilder -> uriBuilder.path("/tmap/routes/routeOptimization10")
-                        .build())
-                .header("appKey",tmapApiKey)
-                .bodyValue(tmapRequest)
-                .retrieve()
-                .toEntity(String.class)
-                .block();
-        return result;
-    }
-
-
     public void routeSearchTmap(List<GetRouteTmapRequestDto> request){
 
         String tmapApiKey=tmapConfig.getTmapApiKey();
@@ -315,56 +291,5 @@ public class PathServiceImpl implements PathService {
             e.printStackTrace();
         }
     }
-
-
-    @Override
-    public void tmap(TmapRequestDto request){
-        String tmapApiKey=tmapConfig.getTmapApiKey();
-        WebClient wc=webClient;
-
-        ResponseEntity<String> result=wc.post()
-                .uri(uriBuilder -> uriBuilder.path("/tmap/routes")
-                        .build())
-                .header("appKey",tmapApiKey)
-                .bodyValue(request)
-                .retrieve()
-                .toEntity(String.class)
-                .block();
-
-        // JSON 응답 문자열
-        String jsonResponse = result.getBody();
-
-        // Jackson ObjectMapper를 사용하여 JSON 파싱
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        try {
-            System.out.println("API호출!!!!!!!!!!!!!!!!!!!!!!!!");
-            JsonNode jsonNode = objectMapper.readTree(jsonResponse);
-            JsonNode totalDistance=jsonNode.at("/features/0/properties/totalDistance");
-            JsonNode totalTime=jsonNode.at("/features/0/properties/totalTime");
-
-
-            JsonNode jsonNodeList=jsonNode.at("/features");
-            for(int i=0;i<jsonNodeList.size();i++) {
-                JsonNode type = jsonNode.at("/features/" + i + "/geometry/type");
-                if (type.asText().equals("LineString")) {
-                    JsonNode node=jsonNode.at("/features/" + i + "/geometry/coordinates");
-                    for (int j = 0; j < node.size(); j++) {
-                        JsonNode nodeList = jsonNode.at("/features/" + i + "/geometry/coordinates/" + j);
-                        System.out.println("lon : "+ nodeList.get(0));
-                        System.out.println("lat : "+ nodeList.get(1));
-                        System.out.println(nodeList);
-                    }
-                    System.out.println("--------");
-                }
-            }
-
-
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
 
 }
