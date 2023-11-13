@@ -18,19 +18,15 @@ public class DayPlanPlace {
 
     private Boolean isVisited;
 
-//    @ManyToOne
-//    @JoinColumn(name="PLACE_ID")
-//    private Place place;
-
     @ManyToOne
     @JoinColumn(name="PLACETEST_ID")
-    private PlaceTest place;
+    private Place place;
 
     @ManyToOne
     @JoinColumn(name="DAYPLAN_ID")
     private DayPlan dayPlan;
 
-    public void assignPlace(PlaceTest place){
+    public void assignPlace(Place place){
         this.place=place;
     }
 

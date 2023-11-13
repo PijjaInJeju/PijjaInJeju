@@ -2,6 +2,8 @@ package com.A605.pijja.domain.plan.service;
 
 import com.A605.pijja.domain.member.entity.Companion;
 import com.A605.pijja.domain.member.repository.CompanionRepository;
+import com.A605.pijja.domain.place.entity.Place;
+import com.A605.pijja.domain.place.repository.PlaceRepository;
 import com.A605.pijja.domain.plan.dto.request.KruskalRequestDto;
 import com.A605.pijja.domain.plan.dto.request.MakePlanRequestDto;
 import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
@@ -28,8 +30,9 @@ public class PlanServiceImpl implements PlanService {
     private final PathService pathService;
     private final DayPlanRepository dayPlanRepository;
     private final DayPlanPlaceRepository dayPlanPlaceRepository;
-    private final PlaceTestRepository placeTestRepository;
+//    private final PlaceTestRepository placeTestRepository;
     private final CompanionRepository companionRepository;
+    private final PlaceRepository placeRepository;
     @Override
     @Transactional
     public List<PlanGroupingResponseDto> planGrouping(MakePlanRequestDto requestDto) {
@@ -125,9 +128,9 @@ public class PlanServiceImpl implements PlanService {
         Companion companion=companionRepository.findById(requestDto.getCompanionId()).get();
         Plan plan=Plan.builder()
                 .name(requestDto.getName())
-                .endDay(requestDto.getEndDay())
+                .endDay(companion.getEndDay())
                 .companion(companion)
-                .startDay(requestDto.getStartDay())
+                .startDay(companion.getStartDay())
                 .dayPlanList(new ArrayList<>())
                 .build();
         planRepository.save(plan);
@@ -150,9 +153,6 @@ public class PlanServiceImpl implements PlanService {
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonPath=objectMapper.writeValueAsString(kruskalResponse.getPathList() );
 
-            for(int j=0;j<kruskalResponse.getPlaceList().size();j++){
-                System.out.print(kruskalResponse.getPlaceList().get(j).getId());
-            }
 
             DayPlan dayPlan= DayPlan.builder()
                     .day(planGroup.getDay())
@@ -164,7 +164,7 @@ public class PlanServiceImpl implements PlanService {
             plan.addPlanAndDayPlan(dayPlan);
             List<MakePlanResonseDto.PlaceDto> placeDtoList=new ArrayList<>();
             for(int j=0;j<kruskalResponse.getPlaceList().size();j++){
-                PlaceTest place=placeTestRepository.findById(kruskalResponse.getPlaceList().get(j).getId()).get();
+                Place place=placeRepository.findById(kruskalResponse.getPlaceList().get(j).getId()).get();
                 DayPlanPlace dayPlanPlace= DayPlanPlace.builder()
                         .place(place)
                         .orderNumber(j)
@@ -175,13 +175,13 @@ public class PlanServiceImpl implements PlanService {
                 place.addDayPlanPlace(dayPlanPlace);
                 MakePlanResonseDto.PlaceDto placeDto=MakePlanResonseDto.PlaceDto.builder()
                         .id(place.getId())
-                        .title(place.getName())
+                        .title(place.getTitle())
                         .build();
                 placeDtoList.add(placeDto);
             }
             if(kruskalResponse.getPlaceList().size()==0) {
                 for (int j = 0; j < dayPlanPlaceList.size(); j++) {
-                    PlaceTest place = placeTestRepository.findById(dayPlanPlaceList.get(j).getId()).get();
+                    Place place = placeRepository.findById(dayPlanPlaceList.get(j).getId()).get();
                     DayPlanPlace dayPlanPlace = DayPlanPlace.builder()
                             .place(place)
                             .orderNumber(j)
@@ -193,7 +193,7 @@ public class PlanServiceImpl implements PlanService {
 
                     MakePlanResonseDto.PlaceDto placeDto = MakePlanResonseDto.PlaceDto.builder()
                             .id(place.getId())
-                            .title(place.getName())
+                            .title(place.getTitle())
                             .build();
                     placeDtoList.add(placeDto);
                 }
