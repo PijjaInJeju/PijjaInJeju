@@ -1,12 +1,16 @@
 package com.A605.pijja.domain.plan.service;
 
 import com.A605.pijja.domain.member.entity.Companion;
+import com.A605.pijja.domain.member.entity.Member;
+import com.A605.pijja.domain.member.entity.MemberCompanion;
 import com.A605.pijja.domain.member.repository.CompanionRepository;
+import com.A605.pijja.domain.member.repository.MemberRepository;
 import com.A605.pijja.domain.place.entity.Place;
 import com.A605.pijja.domain.place.repository.PlaceRepository;
 import com.A605.pijja.domain.plan.dto.request.KruskalRequestDto;
 import com.A605.pijja.domain.plan.dto.request.MakePlanRequestDto;
 import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
+import com.A605.pijja.domain.plan.dto.request.PlanListRequestDto;
 import com.A605.pijja.domain.plan.dto.response.*;
 import com.A605.pijja.domain.plan.entity.DayPlan;
 import com.A605.pijja.domain.plan.entity.DayPlanPlace;
@@ -30,9 +34,9 @@ public class PlanServiceImpl implements PlanService {
     private final PathService pathService;
     private final DayPlanRepository dayPlanRepository;
     private final DayPlanPlaceRepository dayPlanPlaceRepository;
-//    private final PlaceTestRepository placeTestRepository;
     private final CompanionRepository companionRepository;
     private final PlaceRepository placeRepository;
+    private final MemberRepository memberRepository;
     @Override
     @Transactional
     public List<PlanGroupingResponseDto> planGrouping(MakePlanRequestDto requestDto) {
@@ -211,5 +215,26 @@ public class PlanServiceImpl implements PlanService {
                 .planList(planList)
                 .build();
 
+    }
+
+    @Override
+    @Transactional
+    public List<PlanListResponseDto> planList(PlanListRequestDto requestDto) {
+        List<PlanListResponseDto> responseDto=new ArrayList<>();
+        Member member=memberRepository.findById(requestDto.getMemberId()).get();
+        List<MemberCompanion> companionList=member.getMyCompanions();
+        for(int i=0;i<companionList.size();i++){
+            Plan plan=planRepository.findByCompanionId(companionList.get(i).getId());
+
+            responseDto.add(PlanListResponseDto.builder()
+                    .plan(PlanListResponseDto.PlanDto.builder()
+                            .id(plan.getId())
+                            .name(plan.getName())
+                            .startDay(plan.getStartDay())
+                            .endDay(plan.getEndDay())
+                            .build())
+                    .build());
+        }
+        return responseDto;
     }
 }

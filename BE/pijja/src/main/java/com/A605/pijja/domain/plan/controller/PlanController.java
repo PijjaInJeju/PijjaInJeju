@@ -1,8 +1,10 @@
 package com.A605.pijja.domain.plan.controller;
 
 import com.A605.pijja.domain.plan.dto.request.MakePlanRequestDto;
+import com.A605.pijja.domain.plan.dto.request.PlanListRequestDto;
 import com.A605.pijja.domain.plan.dto.response.MakePlanResonseDto;
 import com.A605.pijja.domain.plan.dto.response.PlanGroupingResponseDto;
+import com.A605.pijja.domain.plan.dto.response.PlanListResponseDto;
 import com.A605.pijja.domain.plan.service.PlanService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.RequiredArgsConstructor;
@@ -22,5 +24,10 @@ public class PlanController {
     @PostMapping("")
     public MakePlanResonseDto makePlan(@RequestBody MakePlanRequestDto requestDto) throws JsonProcessingException {
         return planService.makePlan(requestDto);
+    }
+
+    @PostMapping("/list")
+    public List<PlanListResponseDto> planList(@RequestBody PlanListRequestDto requestDto){
+        return planService.planList(requestDto);
     }
 }
