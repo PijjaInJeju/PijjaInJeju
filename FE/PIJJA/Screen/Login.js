@@ -22,32 +22,29 @@ const SaveProfile = async data => {
   //await console.log("저장한 데이터  : " , await AsyncStorage.getItem('user'));
 };
 
+
 const kakaoLogin = async ({ navigation }) => {
   try {
     let profile = await KakaoLogin.getProfile();
-    //const addIdprofile = await BackEndLogin(profile);
+    //const addIdprofile = await BackEndLogin(profile); 
     console.log('카카오 프로 파일 : ', profile);
     let id = new Number();
-    await Rest(
-      '/api/members/sign-up',
-      'POST',
+    await Rest("/api/members/sign-up", "POST",
       {
-        nickname: profile.nickname,
-        email: profile.email,
-        snsType: 'kakao',
-        originalId: profile.id,
+        "nickname": profile.nickname,
+        "email": profile.email,
+        "snsType": "kakao",
+        "originalId": profile.id, 
       },
-      response => {
-        id = response.data.id;
-        //console.log('kakao: ', response.data);
-      },
-      error => {
-        console.log('error:', error);
-        if (error.data.id !== undefined) id = error.data.id;
-      },
+      (response) => id = response.data.id,
+      (error) => {
+        console.log("error:", error)
+        if( error.data.id !== undefined )
+          id = error.data.id;
+      }
     );
-    profile = { ...profile, backEndId: id };
-    console.log('수정된 프로파일 : ', profile);
+    profile = {...profile,backEndId: id};
+    console.log("수정된 프로파일 : " , profile);
     SaveProfile(profile);
     navigation.push('Main', profile);
   } catch (error) {

@@ -6536,12 +6536,6 @@ react-native-gradle-plugin@^0.70.2:
   resolved "https://registry.npmjs.org/react-native-gradle-plugin/-/react-native-gradle-plugin-0.70.3.tgz"
   integrity sha512-oOanj84fJEXUg9FoEAQomA8ISG+DVIrTZ3qF7m69VQUJyOGYyDZmPqKcjvRku4KXlEH6hWO9i4ACLzNBh8gC0A==
 
-<<<<<<< HEAD
-react-native-kakao-share-link@^1.0.10:
-  version "1.0.10"
-  resolved "https://registry.npmjs.org/react-native-kakao-share-link/-/react-native-kakao-share-link-1.0.10.tgz"
-  integrity sha512-EtlPhe5PK85Yr/fQt29bWuGits6LwTyL/RHwffflP/ZderwjUvxk3ASuqy41CZg/2Pax/3N/wZdMFiZNExjnuA==
-=======
 react-native-link@^4.1.0:
   version "4.1.0"
   resolved "https://registry.npmjs.org/react-native-link/-/react-native-link-4.1.0.tgz"
@@ -6555,7 +6549,6 @@ react-native-modal-datetime-picker@^17.1.0:
   integrity sha512-jfTwfaCLtBffYbQ+pOGFLM+J5HmUh3vb9rT0JrrQPjxzecdc8pNYreB1c96+mVuq8bDCvaCdIeuEsslTqLJL0Q==
   dependencies:
     prop-types "^15.7.2"
->>>>>>> d07857fe5d89161816cc4d2ffa41b5c97b5c0cf4
 
 "react-native-nmap@github:zerocho/react-native-naver-map":
   version "0.0.67"

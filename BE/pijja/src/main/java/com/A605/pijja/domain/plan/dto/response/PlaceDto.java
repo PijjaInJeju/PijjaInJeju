@@ -9,6 +9,6 @@ import lombok.*;
 public class PlaceDto {
     private Long id;
     private String name;
-    private float latitude;
-    private float longitude;
+    private double latitude;
+    private double longitude;
 }

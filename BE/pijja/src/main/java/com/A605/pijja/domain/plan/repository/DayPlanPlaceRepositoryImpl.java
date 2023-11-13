@@ -5,6 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 @RequiredArgsConstructor
-public class PlaceTestRepositoryImpl implements PlaceTestRepositoryCustom {
-
+public class DayPlanPlaceRepositoryImpl implements DayPlanPlaceRepositoryCustom{
 }
