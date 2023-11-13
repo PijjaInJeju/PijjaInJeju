@@ -18,6 +18,8 @@
     "@react-navigation/drawer": "^6.6.6",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.16",
+    "install": "^0.13.0",
+    "npm": "^10.2.3",
     "react": "18.1.0",
     "react-native": "0.70.0",
     "react-native-device-info": "^10.11.0",
