@@ -6,9 +6,7 @@ import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
 import com.A605.pijja.domain.plan.dto.response.PathDto;
 import com.A605.pijja.domain.plan.dto.response.PlaceDto;
 import com.A605.pijja.domain.plan.entity.Path;
-import com.A605.pijja.domain.plan.entity.PlaceTest;
 import com.A605.pijja.domain.plan.repository.PathRepository;
-import com.A605.pijja.domain.plan.repository.PlaceTestRepository;
 import com.A605.pijja.global.tmap.TmapConfig;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,9 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.sql.Blob;
 import java.util.*;
 
 @Service

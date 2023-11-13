@@ -8,7 +8,6 @@ import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
 import com.A605.pijja.domain.plan.dto.response.*;
 import com.A605.pijja.domain.plan.entity.DayPlan;
 import com.A605.pijja.domain.plan.entity.DayPlanPlace;
-import com.A605.pijja.domain.plan.entity.PlaceTest;
 import com.A605.pijja.domain.plan.entity.Plan;
 import com.A605.pijja.domain.plan.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
