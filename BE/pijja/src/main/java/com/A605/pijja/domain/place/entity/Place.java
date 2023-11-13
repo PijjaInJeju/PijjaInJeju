@@ -1,7 +1,10 @@
 package com.A605.pijja.domain.place.entity;
 
+import com.A605.pijja.domain.plan.entity.DayPlanPlace;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -27,4 +30,13 @@ public class Place {
     @OneToOne
     @JoinColumn(name="VISIT_ID")
     private Visit visit;
+
+    @OneToMany(mappedBy = "place")
+    private List<DayPlanPlace> dayPlanPlaceList;
+
+    public void addDayPlanPlace(DayPlanPlace dayPlanPlace){
+        this.dayPlanPlaceList.add(dayPlanPlace);
+        dayPlanPlace.assignPlace(this);
+    }
+
 }

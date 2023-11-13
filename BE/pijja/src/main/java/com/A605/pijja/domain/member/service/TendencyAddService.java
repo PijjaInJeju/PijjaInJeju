@@ -31,7 +31,7 @@ public class TendencyAddService {
                     .build();
 
             // Log to see if the tendency is being created
-            System.out.println("Tendency created: " + tendencyCreateDto);
+//            System.out.println("Tendency created: " + tendencyCreateDto);
 
             return ResponseEntity.ok()
                     .body(new SuccessResponseDto(true, "여행 성향 등록이 완료되었습니다.", tendencyCreateDto));
