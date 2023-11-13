@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   View,
   StyleSheet,
@@ -8,23 +8,51 @@ import {
   Dimensions,
 } from 'react-native';
 import * as KakaoLogin from '@react-native-seoul/kakao-login';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Rest from '../lib/Rest';
 
-const kakaoLogin = ({ navigation }) => {
-  KakaoLogin.login()
-    .then(result => {
-      console.log('로그인 성공', JSON.stringify(result));
-      navigation.navigate('Main');
-    })
-    .catch(error => {
-      if (error.code === 'E_CANCELLED_OPERATION') {
-        console.log('로그인 취소', error.message);
-      } else {
-        console.log(`로그인 실패(code:${error.code})`, error.message);
-      }
-    });
-  // KakaoLogin.getProfile().then(result => {
-  //   console.log('data', JSON.stringify(result));
-  // });
+const SaveProfile = async data => {
+  //console.log('저장하는 데이터 : ', data);
+  //console.log('profile data: ', data);
+  try {
+    await AsyncStorage.setItem('user', JSON.stringify(data)); // "Data" 대신 "data"를 사용
+  } catch (e) {
+    console.error('저장실패', data); // "Data" 대신 "data"를 사용
+  }
+  //await console.log("저장한 데이터  : " , await AsyncStorage.getItem('user'));
+};
+
+const kakaoLogin = async ({ navigation }) => {
+  try {
+    let profile = await KakaoLogin.getProfile();
+    //const addIdprofile = await BackEndLogin(profile);
+    console.log('카카오 프로 파일 : ', profile);
+    let id = new Number();
+    await Rest(
+      '/api/members/sign-up',
+      'POST',
+      {
+        nickname: profile.nickname,
+        email: profile.email,
+        snsType: 'kakao',
+        originalId: profile.id,
+      },
+      response => {
+        id = response.data.id;
+        //console.log('kakao: ', response.data);
+      },
+      error => {
+        console.log('error:', error);
+        if (error.data.id !== undefined) id = error.data.id;
+      },
+    );
+    profile = { ...profile, backEndId: id };
+    console.log('수정된 프로파일 : ', profile);
+    SaveProfile(profile);
+    navigation.push('Main', profile);
+  } catch (error) {
+    console.log('로그인 실패: ', error);
+  }
 };
 
 const Login = ({ navigation }) => {
@@ -37,6 +65,23 @@ const Login = ({ navigation }) => {
 
   const login = require('../Image/s_kakao_logo.png');
   const logo = require('../Image/k_Logo.png');
+
+  let user;
+  //초기화
+  useEffect(() => {
+    async function load() {
+      try {
+        const json = await AsyncStorage.getItem('todos');
+        user = JSON.parse(json);
+        if (user !== null) {
+          navigation.push('Main', { user });
+        }
+      } catch (e) {
+        console.log('Profile 불러오기 실패. : ', e);
+      }
+    }
+    load();
+  }, []);
 
   return (
     <View style={{ height: '100%' }}>
@@ -62,6 +107,7 @@ const Login = ({ navigation }) => {
       <TouchableOpacity
         onPress={() => {
           kakaoLogin({ navigation });
+          //navigation.navigate('Main');
         }}
         style={[
           styles.login,

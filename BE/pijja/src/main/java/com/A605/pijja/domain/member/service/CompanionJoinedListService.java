@@ -29,16 +29,23 @@ public class CompanionJoinedListService {
     public ResponseEntity getMyCompanions(Long memberId) {
         Member member = memberRepository.findMemberById(memberId).orElse(null);
 
-        List<MyCompanionListDto> myCompanions = memberCompanionRepository.findByMember(member)
+        List<MyCompanionListDto> myCompanions = memberCompanionRepository.findByMemberOrderByCompanion_StartDayAsc(member)
                 .stream()
                 .map(memberCompanion -> {
                     Companion companion = memberCompanion.getCompanion();
+
+                    List<String> tendencies = companion.getCompanionTendencies()
+                            .stream()
+                            .map(companionTendency -> companionTendency.getTendency().getTendencyType())
+                            .collect(Collectors.toList());
+
                     MyCompanionListDto.MyCompanionListDtoBuilder builder = MyCompanionListDto.builder()
                             .id(companion.getId())
                             .name(companion.getName())
-                            .tendency(companion.getTendency())
+                            .tendencies(tendencies)
                             .mate(companion.getMate())
                             .startDay(companion.getStartDay())
+                            .planId(companion.getPlan() != null ? companion.getPlan().getId() : null)
                             .endDay(companion.getEndDay());
 
                     // 현재 시간을 가져옵니다.

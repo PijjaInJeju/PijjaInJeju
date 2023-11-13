@@ -2,11 +2,14 @@
   package="com.pijja">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />  
 
     <application>
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="j9mc1cqyry"
+            android:allowBackup="true"
         />
     </application>
 

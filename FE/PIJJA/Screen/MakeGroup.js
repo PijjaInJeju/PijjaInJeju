@@ -18,11 +18,11 @@ import Header from '../component/Header.js';
 const pixelRatio = PixelRatio.get();
 
 const MakeGroup = ({ navigation }) => {
-  const MakeGroupImage = require('../Image/s_Create_Group.png');
+  const MakeGroupImage = require('../Image/k_leader.png');
 
   return (
     <SafeAreaView style={[styles.container]}>
-      <Header navigation={navigation} title={"그룹 만들기"}/> 
+      <Header navigation={navigation} title={'그룹 만들기'} />
       <Image source={MakeGroupImage} style={[styles.img]} />
       <View style={styles.buttonWrapper}>
         <Text style={styles.groupText}>당신은 누구인가요?</Text>
