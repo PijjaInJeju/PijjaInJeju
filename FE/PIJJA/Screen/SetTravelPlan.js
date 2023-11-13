@@ -1,5 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
+import { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import {
@@ -13,11 +14,14 @@ import {
   Image,
   Alert,
 } from 'react-native';
+
 import JoinGroup from './JoinGroup.js';
 import CreateScheduleMap from './CreateScheduleMap.js';
+import Rest from '../lib/Rest.js';
+
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import Rest from '../lib/Rest.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 screenWidth = Dimensions.get('window').width;
 screenHeight = Dimensions.get('window').height;
@@ -50,6 +54,64 @@ const SetTravelPlan = ({ navigation, route }) => {
 
   // 그룹 데이터
   const { groupStyles, travelMate } = route.params;
+  const [userData, setUserData] = useState(new Object());
+
+  const load = async () => {
+    try {
+      const kakaoData = await AsyncStorage.getItem('user');
+      if (kakaoData === null) {
+        console.log('there is noting');
+        //navigation.push('Login');
+      } else {
+        setUserData(JSON.parse(kakaoData));
+
+        //return kakaoData;
+      }
+    } catch (e) {
+      console.log('Profile 불러오기 실패. : ', e);
+    }
+  };
+
+  useEffect(() => {
+    load();
+  }, []);
+
+  const transmitGroupStyle = async () => {
+    try {
+      await Rest(
+        '/api/companions',
+        'POST',
+        {
+          name: titileText,
+          tendency: groupStyles,
+          mate: travelMate,
+          startDay: travelStartData,
+          endDay: travelEndData,
+          memberId: userData.backEndId,
+        },
+        response => {
+          console.log('응답 데이터2 : ' + response.data);
+          navigation.navigate('CreateScheduleMap', {
+            travelTitle: titileText,
+            groupStyles: groupStyles,
+            travelMate: travelMate,
+          });
+        },
+        error => {
+          console.log('error:', error);
+          // if (error.data.id !== undefined) id = error.data.id;
+        },
+      );
+    } catch (error) {
+      console.log('그룹 데이터 송신 실패', error);
+    }
+  };
+
+  console.log(groupStyles);
+  console.log(travelMate);
+  console.log(travelStartData);
+  console.log(travelEndData);
+  console.log(userData.backEndId);
 
   // 여행 제목
   const [titileText, setText] = useState(0);
@@ -71,8 +133,6 @@ const SetTravelPlan = ({ navigation, route }) => {
 
   // 입력 시간 검사
   const [nextOk, setNextOk] = useState(false);
-
-  // 그룹 데이터 송신
 
   // 달력 다루기
   const nowDate = new Date();
@@ -189,11 +249,7 @@ const SetTravelPlan = ({ navigation, route }) => {
         style={styles.travelPlanButton}
         onPress={() => {
           if (nextOk) {
-            navigation.navigate('CreateScheduleMap', {
-              travelTitle: titileText,
-              groupStyles: groupStyles,
-              travelMate: travelMate,
-            });
+            transmitGroupStyle();
           } else {
             Alert.alert('여행 일정을 입력해주세요.');
           }
@@ -204,14 +260,14 @@ const SetTravelPlan = ({ navigation, route }) => {
 
       <DateTimePickerModal
         isVisible={dateModelShow1}
-        mode="datetime"
+        mode="date"
         onConfirm={dateConfirm1}
         onCancel={dateModelCancle1}
         display="default"
       />
       <DateTimePickerModal
         isVisible={dateModelShow2}
-        mode="datetime"
+        mode="date"
         onConfirm={dateConfirm2}
         onCancel={dateModelCancle2}
         display="default"

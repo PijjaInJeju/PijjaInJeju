@@ -26,7 +26,7 @@ const GroupSetting = ({ navigation }) => {
   // 여행 메이트
   const [travelMateBtn, setTravelMateBtn] = useState([0, 0, 0, 0, 0]);
 
-  const [groupStyles, setGroupStyles] = useState([]);
+  const [groupStyles, setGroupStyles] = useState('');
   const [travelMate, setTravelMate] = useState('');
 
   const travelTargets = ['식도락', '쇼핑', '레저 체험'];
@@ -40,7 +40,7 @@ const GroupSetting = ({ navigation }) => {
 
     for (let i = 0; i < 3; i++) {
       if (travelTargetBtn[i] != 0) {
-        setStyle[i] = travelTargets[i];
+        setStyle2 = travelTargets[i];
       } else {
         setStyle[i] = '';
       }
@@ -48,7 +48,7 @@ const GroupSetting = ({ navigation }) => {
 
     for (let i = 0; i < 4; i++) {
       if (travelStyleBtn[i] != 0) {
-        setStyle[i + 3] = travelStyles[i];
+        setStyle2 = travelStyles[i];
       } else {
         setStyle[i + 3] = '';
       }
@@ -60,13 +60,13 @@ const GroupSetting = ({ navigation }) => {
       }
     }
 
-    console.log(setStyle);
-    console.log(setMate);
-    setGroupStyles(setStyle);
+    //console.log(setStyle);
+    //console.log(setMate);
+    setGroupStyles(setStyle2);
     setTravelMate(setMate);
 
     navigation.navigate('SetTravelPlan', {
-      groupStyles: setStyle,
+      groupStyles: setStyle2,
       travelMate: setMate,
     });
   };
