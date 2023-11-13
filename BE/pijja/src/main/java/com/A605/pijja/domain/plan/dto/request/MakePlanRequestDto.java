@@ -10,8 +10,7 @@ import java.util.ArrayList;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class MakePlanRequestDto {
-    private LocalDate startDay;
-    private LocalDate endDay;
+
     private int totalDay;
     private String name;
     private Long companionId;

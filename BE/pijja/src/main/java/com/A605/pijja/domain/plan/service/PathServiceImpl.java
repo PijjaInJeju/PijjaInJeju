@@ -1,14 +1,14 @@
 package com.A605.pijja.domain.plan.service;
 
+import com.A605.pijja.domain.place.entity.Place;
+import com.A605.pijja.domain.place.repository.PlaceRepository;
 import com.A605.pijja.domain.plan.dto.request.*;
 import com.A605.pijja.domain.plan.dto.response.GetRouteResponseDto;
 import com.A605.pijja.domain.plan.dto.response.GetRouteTmapResponseDto;
 import com.A605.pijja.domain.plan.dto.response.PathDto;
 import com.A605.pijja.domain.plan.dto.response.PlaceDto;
 import com.A605.pijja.domain.plan.entity.Path;
-import com.A605.pijja.domain.plan.entity.PlaceTest;
 import com.A605.pijja.domain.plan.repository.PathRepository;
-import com.A605.pijja.domain.plan.repository.PlaceTestRepository;
 import com.A605.pijja.global.tmap.TmapConfig;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -19,9 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
-import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.sql.Blob;
 import java.util.*;
 
 @Service
@@ -29,8 +26,9 @@ import java.util.*;
 public class PathServiceImpl implements PathService {
     private final TmapConfig tmapConfig;
     private final PathRepository pathRepository;
-    private final PlaceTestRepository placeTestRepository;
+//    private final PlaceTestRepository placeTestRepository;
     private final WebClient webClient;
+    private final PlaceRepository placeRepository;
 
     @Override
     @Transactional(readOnly = true) // 두 여행지 사이의 path가 db에 있는지 없는지
@@ -49,8 +47,8 @@ public class PathServiceImpl implements PathService {
     @Override
     @Transactional //경로 db 저장
     public void addPath(AddRouteRequestDto requestDto) {
-        PlaceTest startPlace=placeTestRepository.findById(requestDto.getStartPlaceId()).get();
-        PlaceTest endPlace=placeTestRepository.findById(requestDto.getEndPlaceId()).get();
+        Place startPlace=placeRepository.findById(requestDto.getStartPlaceId()).get();
+        Place endPlace=placeRepository.findById(requestDto.getEndPlaceId()).get();
         Path newPath=Path.builder()
                 .startPlace(startPlace)
                 .endPlace(endPlace)
@@ -110,12 +108,12 @@ public class PathServiceImpl implements PathService {
 
         while(!q.isEmpty()){
             int now=q.poll();
-            PlaceTest place =placeTestRepository.findById(map2.get(now)).get();
+            Place place =placeRepository.findById(map2.get(now)).get();
             placeList.add(PlaceDto.builder()
                     .id(place.getId())
-                    .name(place.getName())
-                    .latitude(place.getLat())
-                    .longitude(place.getLon()).build());
+                    .name(place.getTitle())
+                    .latitude(place.getLatitude())
+                    .longitude(place.getLongitude()).build());
 
             ch[now]=1;
             for(int i=0;i<arr[now].size();i++){
@@ -216,12 +214,12 @@ public class PathServiceImpl implements PathService {
         String tmapApiKey=tmapConfig.getTmapApiKey();
         WebClient wc=webClient;
 
-        PlaceTest startPlace=placeTestRepository.findById(request.get(0).getId()).get();
-        PlaceTest endPlace=placeTestRepository.findById(request.get(1).getId()).get();
-        float startY=startPlace.getLat();
-        float startX=startPlace.getLon();
-        float endY=endPlace.getLat();
-        float endX=endPlace.getLon();
+        Place startPlace=placeRepository.findById(request.get(0).getId()).get();
+        Place endPlace=placeRepository.findById(request.get(1).getId()).get();
+        double startY=startPlace.getLatitude();
+        double startX=startPlace.getLongitude();
+        double endY=endPlace.getLatitude();
+        double endX=endPlace.getLongitude();
         
         //TmapRequestDto 변환
         TmapRequestDto tmapRequest= TmapRequestDto.builder()
@@ -247,7 +245,7 @@ public class PathServiceImpl implements PathService {
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            System.out.println("API호출!!!!!!!!!!!!!!!!!!!!!!!!");
+//            System.out.println("API호출!!!!!!!!!!!!!!!!!!!!!!!!");
             ArrayList<AddRouteRequestDto.PathDto> pathDtoList=new ArrayList<>();
 
 

@@ -122,7 +122,7 @@ public class CompanionRegistService {
         addMemberCompanion(companion, member, memberCompanion);
 
         for(int i = 0; i < tendencyList.size(); i++) {
-            System.out.println(tendencyList.get(i));
+
             Tendency tendency = tendencyRepository.findBytendencyType(tendencyList.get(i));
 
             CompanionTendency companionTendency = CompanionTendency.builder()
