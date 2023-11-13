@@ -29,8 +29,13 @@ const GroupSetting = ({ navigation }) => {
   const [groupStyles, setGroupStyles] = useState([]);
   const [travelMate, setTravelMate] = useState('');
 
-  const travelTargets = ['식도락', '쇼핑', '레저 체험'];
-  const travelStyles = ['공항', '문화 유산', '걷기', '힐링'];
+  const travelTargets = ['식도락 여행', '쇼핑', '레저와 체험'];
+  const travelStyles = [
+    '공항',
+    '제주의 문화유산',
+    '천천히 걷기',
+    '휴식과 치유 여행',
+  ];
   const travelMates = ['친구', '연인', '가족', '혼자', '아이'];
 
   const setTravelStyle = () => {
@@ -38,19 +43,22 @@ const GroupSetting = ({ navigation }) => {
     let setStyle2 = '';
     let setMate = '';
 
+    let s_id = 0;
     for (let i = 0; i < 3; i++) {
       if (travelTargetBtn[i] != 0) {
-        setStyle[i] = travelTargets[i];
+        setStyle[s_id] = travelTargets[i];
+        s_id += 1;
       } else {
-        setStyle[i] = '';
+        //setStyle[i] = '';
       }
     }
 
     for (let i = 0; i < 4; i++) {
       if (travelStyleBtn[i] != 0) {
-        setStyle[i + 3] = travelStyles[i];
+        setStyle[s_id] = travelStyles[i];
+        s_id += 1;
       } else {
-        setStyle[i + 3] = '';
+        //setStyle[i + 3] = '';
       }
     }
 
@@ -60,9 +68,9 @@ const GroupSetting = ({ navigation }) => {
       }
     }
 
-    console.log(setStyle);
-    console.log(setMate);
-    setGroupStyles(setStyle);
+    //console.log(setStyle);
+    //console.log(setMate);
+    setGroupStyles(setStyle2);
     setTravelMate(setMate);
 
     navigation.navigate('SetTravelPlan', {
@@ -93,7 +101,7 @@ const GroupSetting = ({ navigation }) => {
                 //setTravelStyle();
               }}
             >
-              <Text>먹거리</Text>
+              <Text /**style={styles.tasteText}**/>먹거리</Text>
             </Pressable>
             <Pressable
               style={({ pressed }) => [
@@ -359,7 +367,10 @@ const styles = StyleSheet.create({
     marginTop: 24,
     marginBottom: 10,
   },
-  scrollStyle: {},
+  tasteText: {
+    fontSize: 10,
+    color: '#ffffff',
+  },
 });
 
 export default GroupSetting;

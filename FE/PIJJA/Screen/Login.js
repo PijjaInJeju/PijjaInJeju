@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import * as KakaoLogin from '@react-native-seoul/kakao-login';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Rest from '../lib/Rest';
 
 const SaveProfile = async data => {
   //console.log('저장하는 데이터 : ', data);
@@ -23,17 +24,41 @@ const SaveProfile = async data => {
 
 const kakaoLogin = async ({ navigation }) => {
   try {
-    const profile = await KakaoLogin.getProfile();
-    //console.log('카카오 프로 파일 : ', JSON.stringify(profile));
+    let profile = await KakaoLogin.getProfile();
+    //const addIdprofile = await BackEndLogin(profile);
+    console.log('카카오 프로 파일 : ', profile);
+    let id = new Number();
+    await Rest(
+      '/api/members/sign-up',
+      'POST',
+      {
+        nickname: profile.nickname,
+        email: profile.email,
+        snsType: 'kakao',
+        originalId: profile.id,
+      },
+      response => {
+        id = response.data.id;
+        //console.log('kakao: ', response.data);
+      },
+      error => {
+        console.log('error:', error);
+        if (error.data.id !== undefined) id = error.data.id;
+      },
+    );
+    profile = { ...profile, backEndId: id };
+    console.log('수정된 프로파일 : ', profile);
     SaveProfile(profile);
-    navigation.push('Main', { profile });
+    navigation.push('Main', profile);
   } catch (error) {
     console.log('로그인 실패: ', error);
   }
 };
 
+screenWidth = Dimensions.get('window').width;
+screenHeight = Dimensions.get('window').height;
+
 const Login = ({ navigation }) => {
-  const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
   const pixelRatio = PixelRatio.get();
 
   // console.log('Pixel Ratio: ', pixelRatio);
@@ -61,7 +86,7 @@ const Login = ({ navigation }) => {
   }, []);
 
   return (
-    <View style={{ height: '100%' }}>
+    <View style={{ height: '100%', flex: 1 }}>
       <View
         style={{
           width: screenWidth,
@@ -74,7 +99,7 @@ const Login = ({ navigation }) => {
           styles.outerCircle,
           {
             width: screenWidth * 1.2,
-            height: screenWidth * 0.95,
+            height: screenWidth * 0.88,
             borderRadius: screenWidth,
             backgroundColor: 'rgb(254, 196, 38)',
             top: screenHeight * 0.1,
@@ -86,14 +111,16 @@ const Login = ({ navigation }) => {
           kakaoLogin({ navigation });
           //navigation.navigate('Main');
         }}
-        style={[
-          styles.login,
-          {
-            top: screenHeight * 0.8, // 아래에서 20% 위치에 고정
-          },
-        ]}
       >
-        <Image source={login} />
+        <Image
+          source={login}
+          style={[
+            {
+              top: screenHeight * 0.36,
+            },
+            styles.login,
+          ]}
+        />
       </TouchableOpacity>
 
       <Image
@@ -101,7 +128,7 @@ const Login = ({ navigation }) => {
         style={[
           styles.img,
           {
-            top: screenHeight * 0.08,
+            top: screenHeight * 0.1,
           },
         ]}
       />
@@ -122,6 +149,7 @@ const styles = StyleSheet.create({
   outerCircle: {
     position: 'absolute',
     top: '35%',
+    //start: '0%',
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
@@ -131,12 +159,18 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
+    resizeMode: 'stretch',
+    width: (screenWidth * 40) / 100,
+    height: (screenHeight * 7.6) / 100,
   },
   img: {
     position: 'absolute',
     alignSelf: 'center',
     justifyContent: 'center',
     alignItems: 'center',
+    resizeMode: 'stretch',
+    width: screenWidth * 0.52,
+    height: screenHeight * 0.36,
   },
 });
 
