@@ -1,5 +1,6 @@
 package com.A605.pijja.domain.plan.entity;
 
+import com.A605.pijja.domain.place.entity.Place;
 import io.swagger.v3.core.util.Json;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,17 +17,17 @@ public class Path {
 
     @ManyToOne
     @JoinColumn(name="STARTPLACE_ID")
-    private PlaceTest startPlace;
+    private Place startPlace;
 
     @ManyToOne
     @JoinColumn(name="ENDPLACE_ID")
-    private PlaceTest endPlace;
+    private Place endPlace;
 
     private float distance;
 
     private float time;
 
     @Lob
-    @Column(columnDefinition="BLOB")
+    @Column(columnDefinition="LONGBLOB")
     private String path;
 }
