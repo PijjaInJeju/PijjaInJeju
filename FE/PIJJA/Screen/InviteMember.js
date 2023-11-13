@@ -17,7 +17,7 @@ import GroupSetting from './GroupSetting.js';
 const pixelRatio = PixelRatio.get();
 
 const InviteMember = ({ navigation }) => {
-  const MakeGroupImage = require('../Image/k_inviteMember.png');
+  const MakeGroupImage = require('../Image/k_invite.png');
 
   return (
     <SafeAreaView style={[styles.container]}>
