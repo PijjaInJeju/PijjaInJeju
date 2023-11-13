@@ -6,8 +6,6 @@ import com.A605.pijja.domain.place.entity.Place;
 import com.A605.pijja.domain.place.entity.Visit;
 import com.A605.pijja.domain.place.repository.PlaceRepository;
 import com.A605.pijja.domain.place.repository.VisitRepository;
-import com.amazonaws.services.s3.AmazonS3;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,10 +18,6 @@ import java.util.stream.Collectors;
 public class PlaceServiceImpl implements PlaceService {
     private final PlaceRepository placeRepository;
     private final VisitRepository visitRepository;
-
-    //AWS S3
-    private final AmazonS3 awsS3Client;
-    private final String bucketName = "pijja";
 
     @Override
     @Transactional(readOnly = true)

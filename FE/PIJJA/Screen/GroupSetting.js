@@ -26,7 +26,7 @@ const GroupSetting = ({ navigation }) => {
   // 여행 메이트
   const [travelMateBtn, setTravelMateBtn] = useState([0, 0, 0, 0, 0]);
 
-  const [groupStyles, setGroupStyles] = useState([]);
+  const [groupStyles, setGroupStyles] = useState('');
   const [travelMate, setTravelMate] = useState('');
 
   const travelTargets = ['식도락 여행', '쇼핑', '레저와 체험'];
@@ -74,7 +74,7 @@ const GroupSetting = ({ navigation }) => {
     setTravelMate(setMate);
 
     navigation.navigate('SetTravelPlan', {
-      groupStyles: setStyle,
+      groupStyles: setStyle2,
       travelMate: setMate,
     });
   };

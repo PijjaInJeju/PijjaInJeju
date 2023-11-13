@@ -37,10 +37,7 @@ const kakaoLogin = async ({ navigation }) => {
         snsType: 'kakao',
         originalId: profile.id,
       },
-      response => {
-        id = response.data.id;
-        //console.log('kakao: ', response.data);
-      },
+      response => (id = response.data.id),
       error => {
         console.log('error:', error);
         if (error.data.id !== undefined) id = error.data.id;

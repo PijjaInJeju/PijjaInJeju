@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 import 'react-native-gesture-handler';
-import React from 'react';
+import React,{useEffect} from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -31,6 +31,24 @@ const Drawer = createDrawerNavigator();
 const Logo = require('./Image/k_Logo.png');
 
 const App = () => {
+  const requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+
+    if (enabled) {
+      return getToken();
+    }
+  };
+
+  const getToken = async () => {
+    const fcmToken = await messaging().getToken();
+    console.log('디바이스 토큰값');
+    console.log(fcmToken);
+    dispatch(set_deviceToken(fcmToken));
+  };
+
   return (
     <NavigationContainer>
       {/* // 최근 프로젝트 */}

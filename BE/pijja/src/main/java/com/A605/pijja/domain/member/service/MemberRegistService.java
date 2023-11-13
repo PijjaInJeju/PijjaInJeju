@@ -35,11 +35,14 @@ public class MemberRegistService {
             Member existingMember = existingMemberOptional.get();
             MemberDetailDto memberDetailDto = MemberDetailDto.builder()
                     .id(existingMember.getId())
+                    .nickname(existingMember.getNickname())
+                    .email(existingMember.getEmail())
+                    .snsType(existingMember.getSnsType())
+                    .originalId(existingMember.getOriginalId())
                     .build();
 
-            // 이미 존재하는 이메일인 경우 실패 응답 반환
-            return ResponseEntity.status(409)
-                    .body(new FailResponseDto(false, "이미 존재하는 이메일입니다.", 409));
+            return ResponseEntity.ok()
+                    .body(new SuccessResponseDto(true, "기존 회원으로 로그인합니다.", memberDetailDto));
         } else {
             // 회원 객체를 생성하여 저장
             Member member = Member.builder()
@@ -53,6 +56,10 @@ public class MemberRegistService {
 
             MemberDetailDto memberDetailDto = MemberDetailDto.builder()
                     .id(member.getId())
+                    .nickname(member.getNickname())
+                    .email(member.getEmail())
+                    .snsType(member.getSnsType())
+                    .originalId(member.getOriginalId())
                     .build();
 
             // 회원 등록 성공 응답 반환

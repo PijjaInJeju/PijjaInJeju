@@ -1,5 +1,5 @@
 const GetRest = async (url, method, thenFun, catchFun) => {
-  console.log('data : ', JSON.stringify(data));
+  //console.log('data : ', JSON.stringify(data));
   return await fetch('https://k9a605.p.ssafy.io' + url, {
     method: method,
     cache: 'no-cache',
