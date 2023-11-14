@@ -16,6 +16,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CompanionCreateDto {
 
+    private Long id;
+
     private String name;
 
     private String code;
