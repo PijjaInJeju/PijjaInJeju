@@ -4,6 +4,7 @@ import com.A605.pijja.domain.member.entity.Companion;
 import com.A605.pijja.domain.member.entity.Member;
 import com.A605.pijja.domain.member.entity.MemberCompanion;
 import com.A605.pijja.domain.member.repository.CompanionRepository;
+import com.A605.pijja.domain.member.repository.MemberCompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberRepository;
 import com.A605.pijja.domain.place.entity.Place;
 import com.A605.pijja.domain.place.repository.PlaceRepository;
@@ -37,6 +38,7 @@ public class PlanServiceImpl implements PlanService {
     private final CompanionRepository companionRepository;
     private final PlaceRepository placeRepository;
     private final MemberRepository memberRepository;
+    private final MemberCompanionRepository memberCompanionRepository;
     @Override
     @Transactional
     public List<PlanGroupingResponseDto> planGrouping(MakePlanRequestDto requestDto) {
@@ -198,6 +200,7 @@ public class PlanServiceImpl implements PlanService {
                     MakePlanResonseDto.PlaceDto placeDto = MakePlanResonseDto.PlaceDto.builder()
                             .id(place.getId())
                             .title(place.getTitle())
+                            .address(place.getAddress())
                             .build();
                     placeDtoList.add(placeDto);
                 }
@@ -222,7 +225,7 @@ public class PlanServiceImpl implements PlanService {
     public List<PlanListResponseDto> planList(PlanListRequestDto requestDto) {
         List<PlanListResponseDto> responseDto=new ArrayList<>();
         Member member=memberRepository.findById(requestDto.getMemberId()).get();
-        List<MemberCompanion> companionList=member.getMyCompanions();
+        List<MemberCompanion> companionList=memberCompanionRepository.findByMemberOrderByCompanion_StartDayAsc(member);
         for(int i=0;i<companionList.size();i++){
             Plan plan=planRepository.findByCompanionId(companionList.get(i).getId());
 
