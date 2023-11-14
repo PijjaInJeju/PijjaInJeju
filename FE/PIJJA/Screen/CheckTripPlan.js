@@ -45,7 +45,9 @@ const CheckTripPlan = () => {
   //console.log(route.params.scheduleList);
 
   const [planData, setPlanData] = useState([]);
-  const [nowPlanData, setNowPlanData] = useState({});
+  const [nowPlanData, setNowPlanData] = useState([]);
+  const [historyPlanData, setHistoryPlanData] = useState([]);
+
   let someData = {
     name: 'Io',
     tendencies: ['레저와 체험', '공항', '천천히 걷기'],
@@ -89,7 +91,15 @@ const CheckTripPlan = () => {
         'GET',
         response => {
           console.log('응답 데이터3 : ', response);
-          setPlanData(response.data);
+          if (response.data.length > 0) {
+            setNowPlanData([{ title: 'Now Trip', data: [response.data[0]] }]);
+
+            if (response.data.length > 1) {
+              setHistoryPlanData([
+                { title: 'Now Trip', data: response.data.slice(1) },
+              ]);
+            }
+          }
         },
         error => {
           console.log('error:', error);
@@ -111,66 +121,74 @@ const CheckTripPlan = () => {
   // console.log('plan data: ', planData);
   //console.log(planData.length());
   console.log(someData);
+  console.log('now plan: ', nowPlanData);
+  console.log('history plan: ', historyPlanData);
 
   return (
     <SafeAreaView style={[styles.container]}>
       <View style={styles.nowTravelContainer}>
-        <Text>Now Trip</Text>
-        <View style={styles.nowTravelContent}>
-          {/* <SectionList></SectionList> */}
-          <SectionList
-            sections={nowPlan}
-            keyExtractor={(item, index) => item + index}
-            renderItem={({ item }) => (
-              <View>
-                <View style={styles.travelContentTitle}>
-                  <Text style={styles.travelTitleText}>{item.name}</Text>
-                </View>
-                <View style={styles.travelContentDay}>
-                  <Text style={styles.travelContentText}>{`출발일: ${
-                    item.startDay.split('T')[0].split('-')[0]
-                  }년 ${item.startDay.split('T')[0].split('-')[1]}월 ${
-                    item.startDay.split('T')[0].split('-')[2]
-                  }일 `}</Text>
-                  <Text style={styles.travelContentText}>{`도착일: ${
-                    item.startDay.split('T')[0].split('-')[0]
-                  }년 ${item.startDay.split('T')[0].split('-')[1]}월 ${
-                    item.startDay.split('T')[0].split('-')[2]
-                  }일`}</Text>
-                </View>
+        {/* <SectionList></SectionList> */}
+        <SectionList
+          sections={nowPlanData}
+          keyExtractor={(item, index) => item + index}
+          renderSectionHeader={({ section: { title } }) => <Text>{title}</Text>}
+          renderItem={({ item }) => (
+            <View style={styles.nowTravelContent}>
+              {/* <TouchableOpacity>
+
+              </TouchableOpacity> */}
+              <View style={styles.travelContentTitle}>
+                <Text style={styles.travelTitleText}>{item.name}</Text>
               </View>
-            )}
-          ></SectionList>
-        </View>
+              <View style={styles.travelContentDay}>
+                <Text style={styles.travelContentText}>{`출발일: ${
+                  item.startDay.split('T')[0].split('-')[0]
+                }년 ${item.startDay.split('T')[0].split('-')[1]}월 ${
+                  item.startDay.split('T')[0].split('-')[2]
+                }일 `}</Text>
+                <Text style={styles.travelContentText}>{`도착일: ${
+                  item.startDay.split('T')[0].split('-')[0]
+                }년 ${item.startDay.split('T')[0].split('-')[1]}월 ${
+                  item.startDay.split('T')[0].split('-')[2]
+                }일`}</Text>
+              </View>
+            </View>
+          )}
+        ></SectionList>
       </View>
-      <View style={styles.historyTravelContainer}>
+      {/* <View style={styles.historyTravelContainer}>
         <Text>일정 History</Text>
-        <View style={styles.historyContentContainer}>
-          <SectionList
-            sections={totalPlan}
-            keyExtractor={(item, index) => item + index}
-            renderItem={({ item }) => (
-              <View style={styles.historyTravelContent}>
-                <View style={styles.travelContentTitle}>
-                  <Text style={styles.travelTitleText}>{item.name}</Text>
-                </View>
-                <View style={styles.travelContentHistory}>
-                  <Text style={styles.travelContentText}>{`${
-                    item.startDay.split('T')[0].split('-')[0]
-                  }.${item.startDay.split('T')[0].split('-')[1]}.${
-                    item.startDay.split('T')[0].split('-')[2]
-                  } - `}</Text>
-                  <Text style={styles.travelContentText}>{`${
-                    item.startDay.split('T')[0].split('-')[0]
-                  }.${item.startDay.split('T')[0].split('-')[1]}.${
-                    item.startDay.split('T')[0].split('-')[2]
-                  }`}</Text>
-                </View>
+        <View style={styles.historyContentContainer}> */}
+      <View>
+        <SectionList
+          style={styles.historyTravelContainer}
+          sections={historyPlanData}
+          keyExtractor={(item, index) => item + index}
+          renderSectionHeader={({ section: { title } }) => <Text>{title}</Text>}
+          renderItem={({ item }) => (
+            <View style={styles.historyTravelContent}>
+              <View style={styles.travelContentTitle}>
+                <Text style={styles.travelTitleText}>{item.name}</Text>
               </View>
-            )}
-          ></SectionList>
-        </View>
+              <View style={styles.travelContentHistory}>
+                <Text style={styles.travelContentText}>{`${
+                  item.startDay.split('T')[0].split('-')[0]
+                }.${item.startDay.split('T')[0].split('-')[1]}.${
+                  item.startDay.split('T')[0].split('-')[2]
+                } - `}</Text>
+                <Text style={styles.travelContentText}>{`${
+                  item.startDay.split('T')[0].split('-')[0]
+                }.${item.startDay.split('T')[0].split('-')[1]}.${
+                  item.startDay.split('T')[0].split('-')[2]
+                }`}</Text>
+              </View>
+            </View>
+          )}
+          scrollEnabled={true}
+        ></SectionList>
       </View>
+      {/* </View>
+      </View> */}
     </SafeAreaView>
   );
 };
@@ -188,23 +206,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#aaaaaa',
   },
   nowTravelContainer: {
-    // position: 'absolute',
-    // top: '5%',
-    // left: '10%',
-
+    position: 'absolute',
+    top: '6%',
+    left: '10%',
     flexDirection: 'column',
-    top: 100,
+    //marginTop: 50,
   },
   nowTravelContent: {
     width: (screenWidth * 80) / 100,
     height: (screenHeight * 18) / 100,
     backgroundColor: '#aaaaaa',
-    borderRadius: 14,
+    borderRadius: 26,
+    marginTop: 10,
   },
   travelContentTitle: {
     start: 220,
     marginTop: 20,
     height: (screenHeight * 4) / 100,
+    //backgroundColor: '#aaaaaa',
   },
   travelContentDay: {
     start: 140,
@@ -217,10 +236,10 @@ const styles = StyleSheet.create({
   },
   travelContentText: {},
   historyTravelContainer: {
-    top: 150,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
+    top: 220,
+    // flexDirection: 'column',
+    // justifyContent: 'center',
+    // alignItems: 'center',
     //position: 'absolute',
     margintop: 20,
     //left: '0%',

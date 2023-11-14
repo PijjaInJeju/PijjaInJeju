@@ -92,9 +92,9 @@ const SetTravelPlan = ({ navigation, route }) => {
         response => {
           console.log('응답 데이터2 : ' + response.data);
           navigation.navigate('CreateScheduleMap', {
-            travelTitle: titileText,
-            groupStyles: groupStyles,
-            travelMate: travelMate,
+            companionId: userData.backEndId,
+            name: titileText,
+            totalDay: elasedDay,
           });
         },
         error => {
