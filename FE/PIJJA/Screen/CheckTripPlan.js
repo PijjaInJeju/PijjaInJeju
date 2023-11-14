@@ -45,7 +45,7 @@ const CheckTripPlan = () => {
   //DATA[0].data = route.params.scheduleList;
   //console.log(route.params.scheduleList);
 
-  const [planData, setPlanData] = useState([]);
+  const [groupId, setGroupId] = useState(0);
   const [nowPlanData, setNowPlanData] = useState([]);
   const [historyPlanData, setHistoryPlanData] = useState([]);
 

@@ -487,9 +487,9 @@ const CreateScheduleMap = ({ navigation, route }) => {
 
   // route data
   const { companionId, name, totalDay } = route.params;
-  console.log('route data: ', companionId);
-  console.log(name);
-  console.log(totalDay);
+  //   console.log('route data: ', companionId);
+  //   console.log(name);
+  //   console.log(totalDay);
 
   // callbacks
   const handleSheetChange = useCallback(

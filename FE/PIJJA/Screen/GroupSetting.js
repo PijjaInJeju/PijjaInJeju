@@ -26,7 +26,7 @@ const GroupSetting = ({ navigation }) => {
   // 여행 메이트
   const [travelMateBtn, setTravelMateBtn] = useState([0, 0, 0, 0, 0]);
 
-  const [groupStyles, setGroupStyles] = useState('');
+  const [groupStyles, setGroupStyles] = useState([]);
   const [travelMate, setTravelMate] = useState('');
 
   const travelTargets = ['식도락 여행', '쇼핑', '레저와 체험'];
@@ -68,14 +68,14 @@ const GroupSetting = ({ navigation }) => {
       }
     }
 
-    //console.log(setStyle);
-    //console.log(setMate);
-    setGroupStyles(setStyle2);
+    setGroupStyles(setStyle);
     setTravelMate(setMate);
 
+    // console.log('그룹: ', groupStyles);
+    // console.log(travelMate);
     navigation.navigate('SetTravelPlan', {
-      groupStyles: setStyle2,
-      travelMate: setMate,
+      groupStyles: groupStyles,
+      travelMate: travelMate,
     });
   };
   return (
@@ -134,23 +134,6 @@ const GroupSetting = ({ navigation }) => {
               }}
             >
               <Text>레저 체험</Text>
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [
-                { backgroundColor: '#fcbf49' },
-                travelTargetBtn[3] && { backgroundColor: '#f77f00' },
-                styles.tasteButton,
-              ]}
-              onPress={() => {
-                setTravelStyleBtn([
-                  travelTargetBtn[0],
-                  travelTargetBtn[1],
-                  travelTargetBtn[2],
-                  !travelTargetBtn[3],
-                ]);
-              }}
-            >
-              <Text>먹거리</Text>
             </Pressable>
           </ScrollView>
         </View>
@@ -285,11 +268,11 @@ const GroupSetting = ({ navigation }) => {
             <Pressable
               style={({ pressed }) => [
                 { backgroundColor: '#fcbf49' },
-                travelMateBtn[3] && { backgroundColor: '#f77f00' },
+                travelMateBtn[4] && { backgroundColor: '#f77f00' },
                 styles.tasteButton,
               ]}
               onPress={() => {
-                setTravelMateBtn([0, 0, 0, 0, !travelMateBtn[3]]);
+                setTravelMateBtn([0, 0, 0, 0, !travelMateBtn[4]]);
               }}
             >
               <Text>아이</Text>

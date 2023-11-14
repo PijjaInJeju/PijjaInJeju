@@ -57,6 +57,7 @@ const SetTravelPlan = ({ navigation, route }) => {
   // 그룹 데이터
   const { groupStyles, travelMate } = route.params;
   const [userData, setUserData] = useState(new Object());
+  const [groupId, setGroupId] = useState(0);
 
   const load = async () => {
     try {
@@ -92,9 +93,9 @@ const SetTravelPlan = ({ navigation, route }) => {
           memberId: userData.backEndId,
         },
         response => {
-          console.log('응답 데이터2 : ' + response.data);
+          //console.log('응답 데이터2 id: ' + response.data.id);
           navigation.navigate('CreateScheduleMap', {
-            companionId: userData.backEndId,
+            companionId: response.data.id,
             name: titileText,
             totalDay: elasedDay,
           });
@@ -125,8 +126,8 @@ const SetTravelPlan = ({ navigation, route }) => {
   // 입력 시간
   const [travelStartData, setTravelStartData] = useState(false);
   const [travelEndData, setTravelEndData] = useState(false);
-  const [travelStart, setTravelStart] = useState("");
-  const [travelEnd, setTravelEnd] = useState("");
+  const [travelStart, setTravelStart] = useState('');
+  const [travelEnd, setTravelEnd] = useState('');
   const [elasedDay, setElasedDay] = useState(false);
 
   // 입력 시간 text
@@ -236,7 +237,7 @@ const SetTravelPlan = ({ navigation, route }) => {
           width: screenWidth * 0.5,
           alignSelf: 'center',
         }}
-        placeholder='여행 계획명을 입력하세요.'
+        placeholder="여행 계획명을 입력하세요."
         placeholderTextColor={'#d3d3d3'}
         onChangeText={nowText => setText(nowText)}
         defaultValue={titileText}
@@ -250,7 +251,6 @@ const SetTravelPlan = ({ navigation, route }) => {
       >
         <View
           style={{
-            
             flexDirection: 'row',
           }}
         >
@@ -261,7 +261,7 @@ const SetTravelPlan = ({ navigation, route }) => {
                 alignItems: 'center',
                 marginLeft: '10%',
                 textAlign: 'center',
-                marginLeft: screenWidth * 0.1
+                marginLeft: screenWidth * 0.1,
               }}
             >
               시작일
@@ -274,7 +274,7 @@ const SetTravelPlan = ({ navigation, route }) => {
                 height: screenHeight * 0.05,
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginLeft: screenWidth * 0.1
+                marginLeft: screenWidth * 0.1,
               }}
               onPress={showDatePicker1}
             >
@@ -307,7 +307,7 @@ const SetTravelPlan = ({ navigation, route }) => {
                 height: screenHeight * 0.05,
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginLeft: screenWidth * 0.3
+                marginLeft: screenWidth * 0.3,
               }}
               onPress={showDatePicker2}
             >
@@ -335,10 +335,9 @@ const SetTravelPlan = ({ navigation, route }) => {
           }
         }}
       >
-        
         <Text
           style={{
-            width:  screenWidth * 0.3,
+            width: screenWidth * 0.3,
             textAlign: 'center',
             alignSelf: 'center',
           }}
@@ -346,7 +345,7 @@ const SetTravelPlan = ({ navigation, route }) => {
           다음
         </Text>
       </TouchableOpacity>
-      
+
       <DateTimePickerModal
         isVisible={dateModelShow1}
         mode="date"
