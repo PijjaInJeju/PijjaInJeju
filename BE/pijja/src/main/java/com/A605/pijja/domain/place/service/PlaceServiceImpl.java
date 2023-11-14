@@ -34,6 +34,8 @@ public class PlaceServiceImpl implements PlaceService {
                     .id(place.getId())
                     .address(place.getAddress())
                     .title(place.getTitle())
+                    .latitude(place.getLatitude())
+                    .longitude(place.getLongitude())
                     .build());
         }
         return response;
