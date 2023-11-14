@@ -25,28 +25,43 @@ const SaveProfile = async data => {
 
 const kakaoLogin = async ({ navigation }) => {
   try {
-    let profile = await KakaoLogin.getProfile();
-    //const addIdprofile = await BackEndLogin(profile); 
+    const profile = await KakaoLogin.getProfile();
     console.log('카카오 프로 파일 : ', profile);
-    let id = new Number();
-    await Rest("/api/members/sign-up", "POST",
+
+    let id = null; // 기본값을 null로 설정
+
+    // Rest 함수를 사용하여 서버에 로그인 요청
+    await Rest(
+      '/api/members/sign-up',
+      'POST',
       {
-        "nickname": profile.nickname,
-        "email": profile.email,
-        "snsType": "kakao",
-        "originalId": profile.id, 
+        nickname: profile.nickname,
+        email: profile.email,
+        snsType: 'kakao',
+        originalId: profile.id,
       },
-      (response) => id = response.data.id,
+      (response) => {
+        // 서버 응답에서 id 추출
+        id = response.data.id;
+      },
       (error) => {
-        console.log("error:", error)
-        if( error.data.id !== undefined )
+        console.log('error:', error);
+        // 서버 응답에서 id가 있는 경우에만 id 설정
+        if (error.data && error.data.id !== undefined) {
           id = error.data.id;
+        }
       }
     );
-    profile = {...profile,backEndId: id};
-    console.log("수정된 프로파일 : " , profile);
-    SaveProfile(profile);
-    navigation.push('Main', profile);
+
+    // 프로필에 백엔드에서 얻은 id 추가
+    const updatedProfile = { ...profile, backEndId: id };
+    console.log('수정된 프로파일 : ', updatedProfile);
+
+    // 수정된 프로필을 저장
+    SaveProfile(updatedProfile);
+
+    // Main 화면으로 이동하며 프로필 정보 전달
+    navigation.push('Main', updatedProfile);
   } catch (error) {
     console.log('로그인 실패: ', error);
   }
