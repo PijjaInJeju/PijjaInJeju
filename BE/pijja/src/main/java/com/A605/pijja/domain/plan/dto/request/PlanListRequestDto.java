@@ -6,9 +6,6 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class TmapRequestDto {
-    private double endX; //lon이 X
-    private double endY; //lat이 Y
-    private double startX;
-    private double startY;
+public class PlanListRequestDto {
+    Long memberId;
 }

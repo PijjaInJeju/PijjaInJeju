@@ -6,6 +6,7 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
+  Linking, 
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/AntDesign';
@@ -127,7 +128,7 @@ const DATA = [
   },
 ];
 
-const Item = ({ id, title, address, navigation }) => (
+const Item = ({ id, title, address, longitude, latitude, navigation }) => (
   <View
     style={{
       alignItems: 'center',
@@ -138,6 +139,7 @@ const Item = ({ id, title, address, navigation }) => (
     <TouchableOpacity
       onPress={() => {
         console.log(id, title, address, '클릭되었습니다.');
+        Linking.openURL(`geo:0,0?q=${encodeURIComponent(address)}`) 
       }}
       style={{
         borderWidth: 1,
@@ -172,7 +174,7 @@ const RecommendSchedule = ({ route }) => {
         sections={DATA}
         keyExtractor={(item, index) => item + index}
         renderItem={({ item }) => (
-          <Item id={item.id} title={item.title} address={item.address} />
+          <Item id={item.id} title={item.title} address={item.address} longitude={item.longitude} latitude={item.latitude}/>
         )}
         renderSectionHeader={({ section: { title, start, end } }) => (
           <View

@@ -13,6 +13,7 @@ import {
   TextInput,
   Image,
   Alert,
+  SafeAreaView,
 } from 'react-native';
 
 import JoinGroup from './JoinGroup.js';
@@ -22,6 +23,7 @@ import Rest from '../lib/Rest.js';
 import { Calendar, LocaleConfig } from 'react-native-calendars';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { rgbaColor } from 'react-native-reanimated/lib/typescript/reanimated2/Colors.js';
 
 screenWidth = Dimensions.get('window').width;
 screenHeight = Dimensions.get('window').height;
@@ -123,8 +125,8 @@ const SetTravelPlan = ({ navigation, route }) => {
   // 입력 시간
   const [travelStartData, setTravelStartData] = useState(false);
   const [travelEndData, setTravelEndData] = useState(false);
-  const [travelStart, setTravelStart] = useState(false);
-  const [travelEnd, setTravelEnd] = useState(false);
+  const [travelStart, setTravelStart] = useState("");
+  const [travelEnd, setTravelEnd] = useState("");
   const [elasedDay, setElasedDay] = useState(false);
 
   // 입력 시간 text
@@ -203,48 +205,126 @@ const SetTravelPlan = ({ navigation, route }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView
+      style={{
+        width: screenWidth,
+        height: screenHeight,
+        flex: 1,
+      }}
+    >
       <View style={styles.outerRectangle} />
       <View style={styles.outerCircle} />
       <Image
-        style={styles.setPlanImg}
+        style={{
+          position: 'absolute',
+          marginTop: screenHeight * 0.05,
+          marginLeft: screenWidth * 0.275,
+          width: screenWidth * 0.45,
+          height: screenHeight * 0.3,
+          resizeMode: 'stretch',
+          borderRadius: 3,
+        }}
         source={require('../Image/k_setPlanLogo.png')}
       />
       <TextInput
-        style={[
-          styles.planContentText,
-          {
-            top: screenHeight * 0.4,
-          },
-        ]}
+        style={{
+          backgroundColor: '#FFFFFF',
+          borderRadius: pixelRatio * 5,
+          top: screenHeight * 0.35,
+          textAlign: 'center',
+          color: '#000000',
+          width: screenWidth * 0.5,
+          alignSelf: 'center',
+        }}
+        placeholder='여행 계획명을 입력하세요.'
+        placeholderTextColor={'#d3d3d3'}
         onChangeText={nowText => setText(nowText)}
         defaultValue={titileText}
-      ></TextInput>
-      <TouchableOpacity
-        onPress={showDatePicker1}
-        style={[
-          styles.planContentText,
-          {
-            top: screenHeight * 0.58,
-            left: screenWidth * 0.1,
-          },
-        ]}
+      />
+      <View
+        style={{
+          marginTop: '60%',
+          width: screenWidth,
+          flexDirection: 'column',
+        }}
       >
-        <Text>{startTextContent}</Text>
-      </TouchableOpacity>
+        <View
+          style={{
+            
+            flexDirection: 'row',
+          }}
+        >
+          <View>
+            <Text
+              style={{
+                width: screenWidth * 0.25,
+                alignItems: 'center',
+                marginLeft: '10%',
+                textAlign: 'center',
+                marginLeft: screenWidth * 0.1
+              }}
+            >
+              시작일
+            </Text>
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: pixelRatio * 5,
+                width: screenWidth * 0.25,
+                height: screenHeight * 0.05,
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginLeft: screenWidth * 0.1
+              }}
+              onPress={showDatePicker1}
+            >
+              <Text
+                style={{
+                  color: '#000000',
+                  width: screenWidth * 0.25,
+                  textAlign: 'center',
+                }}
+              >
+                {startTextContent}
+              </Text>
+            </TouchableOpacity>
+          </View>
+          <View>
+            <Text
+              style={{
+                width: screenWidth * 0.25,
+                alignItems: 'center',
+                marginLeft: screenWidth * 0.3,
+              }}
+            >
+              종료일
+            </Text>
+            <TouchableOpacity
+              style={{
+                backgroundColor: '#FFFFFF',
+                borderRadius: pixelRatio * 5,
+                width: screenWidth * 0.25,
+                height: screenHeight * 0.05,
+                flexDirection: 'row',
+                alignItems: 'center',
+                marginLeft: screenWidth * 0.3
+              }}
+              onPress={showDatePicker2}
+            >
+              <Text
+                style={{
+                  color: '#000000',
+                  width: screenWidth * 0.25,
+                  textAlign: 'center',
+                }}
+              >
+                {endTextContent}
+              </Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      </View>
 
-      <TouchableOpacity
-        onPress={showDatePicker2}
-        style={[
-          styles.planContentText,
-          {
-            top: screenHeight * 0.58,
-            left: screenWidth * 0.56,
-          },
-        ]}
-      >
-        <Text>{endTextContent}</Text>
-      </TouchableOpacity>
       <TouchableOpacity
         style={styles.travelPlanButton}
         onPress={() => {
@@ -255,9 +335,18 @@ const SetTravelPlan = ({ navigation, route }) => {
           }
         }}
       >
-        <Text style={styles.travelPlanText}>다음</Text>
+        
+        <Text
+          style={{
+            width:  screenWidth * 0.3,
+            textAlign: 'center',
+            alignSelf: 'center',
+          }}
+        >
+          다음
+        </Text>
       </TouchableOpacity>
-
+      
       <DateTimePickerModal
         isVisible={dateModelShow1}
         mode="date"
@@ -272,23 +361,18 @@ const SetTravelPlan = ({ navigation, route }) => {
         onCancel={dateModelCancle2}
         display="default"
       />
-    </View>
+    </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
   outerRectangle: {
     position: 'absolute',
     top: screenHeight * 0,
     width: screenWidth,
     height: screenHeight * 0.4,
     backgroundColor: 'rgb(254, 196, 38)',
+    zIndex: -1,
   },
   outerCircle: {
     position: 'absolute',
@@ -300,42 +384,19 @@ const styles = StyleSheet.create({
     height: screenWidth * 0.84,
     borderRadius: screenWidth,
     backgroundColor: 'rgb(254, 196, 38)',
-  },
-  planContentText: {
-    position: 'absolute',
-    alignSelf: 'center',
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: 140,
-    height: 60,
-    backgroundColor: '#ffffff',
-    borderRadius: 10,
+    zIndex: -1,
   },
   travelPlanButton: {
-    position: 'absolute',
-    top: screenHeight * 0.7,
-    flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-around',
-    width: 320,
-    height: 60,
+    alignContent: 'space-around',
+    top: screenHeight * 0.3,
+    left: screenWidth * 0.35,
+    width: '30%',
+    height: '5%',
     backgroundColor: '#f77f00',
-    borderRadius: 16,
-    marginTop: 34,
+    borderRadius: pixelRatio * 5,
+    flexDirection: 'row',
   },
-  travelPlanText: {
-    fontSize: 24,
-    color: '#ffffff',
-  },
-  setPlanImg: {
-    position: 'absolute',
-    top: screenHeight * 0.07,
-    width: screenWidth * 0.46,
-    height: screenHeight * 0.3,
-    resizeMode: 'stretch',
-    borderRadius: 3,
-  },
-  buttonComplete: {},
 });
 
 export default SetTravelPlan;

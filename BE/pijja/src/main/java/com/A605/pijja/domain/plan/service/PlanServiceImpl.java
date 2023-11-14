@@ -1,14 +1,20 @@
 package com.A605.pijja.domain.plan.service;
 
 import com.A605.pijja.domain.member.entity.Companion;
+import com.A605.pijja.domain.member.entity.Member;
+import com.A605.pijja.domain.member.entity.MemberCompanion;
 import com.A605.pijja.domain.member.repository.CompanionRepository;
+import com.A605.pijja.domain.member.repository.MemberCompanionRepository;
+import com.A605.pijja.domain.member.repository.MemberRepository;
+import com.A605.pijja.domain.place.entity.Place;
+import com.A605.pijja.domain.place.repository.PlaceRepository;
 import com.A605.pijja.domain.plan.dto.request.KruskalRequestDto;
 import com.A605.pijja.domain.plan.dto.request.MakePlanRequestDto;
 import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
+import com.A605.pijja.domain.plan.dto.request.PlanListRequestDto;
 import com.A605.pijja.domain.plan.dto.response.*;
 import com.A605.pijja.domain.plan.entity.DayPlan;
 import com.A605.pijja.domain.plan.entity.DayPlanPlace;
-import com.A605.pijja.domain.plan.entity.PlaceTest;
 import com.A605.pijja.domain.plan.entity.Plan;
 import com.A605.pijja.domain.plan.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -17,7 +23,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -30,8 +35,10 @@ public class PlanServiceImpl implements PlanService {
     private final PathService pathService;
     private final DayPlanRepository dayPlanRepository;
     private final DayPlanPlaceRepository dayPlanPlaceRepository;
-    private final PlaceTestRepository placeTestRepository;
     private final CompanionRepository companionRepository;
+    private final PlaceRepository placeRepository;
+    private final MemberRepository memberRepository;
+    private final MemberCompanionRepository memberCompanionRepository;
     @Override
     @Transactional
     public List<PlanGroupingResponseDto> planGrouping(MakePlanRequestDto requestDto) {
@@ -127,9 +134,9 @@ public class PlanServiceImpl implements PlanService {
         Companion companion=companionRepository.findById(requestDto.getCompanionId()).get();
         Plan plan=Plan.builder()
                 .name(requestDto.getName())
-                .endDay(requestDto.getEndDay())
+                .endDay(companion.getEndDay())
                 .companion(companion)
-                .startDay(requestDto.getStartDay())
+                .startDay(companion.getStartDay())
                 .dayPlanList(new ArrayList<>())
                 .build();
         planRepository.save(plan);
@@ -152,9 +159,6 @@ public class PlanServiceImpl implements PlanService {
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonPath=objectMapper.writeValueAsString(kruskalResponse.getPathList() );
 
-            for(int j=0;j<kruskalResponse.getPlaceList().size();j++){
-                System.out.print(kruskalResponse.getPlaceList().get(j).getId());
-            }
 
             DayPlan dayPlan= DayPlan.builder()
                     .day(planGroup.getDay())
@@ -166,7 +170,7 @@ public class PlanServiceImpl implements PlanService {
             plan.addPlanAndDayPlan(dayPlan);
             List<MakePlanResonseDto.PlaceDto> placeDtoList=new ArrayList<>();
             for(int j=0;j<kruskalResponse.getPlaceList().size();j++){
-                PlaceTest place=placeTestRepository.findById(kruskalResponse.getPlaceList().get(j).getId()).get();
+                Place place=placeRepository.findById(kruskalResponse.getPlaceList().get(j).getId()).get();
                 DayPlanPlace dayPlanPlace= DayPlanPlace.builder()
                         .place(place)
                         .orderNumber(j)
@@ -177,13 +181,13 @@ public class PlanServiceImpl implements PlanService {
                 place.addDayPlanPlace(dayPlanPlace);
                 MakePlanResonseDto.PlaceDto placeDto=MakePlanResonseDto.PlaceDto.builder()
                         .id(place.getId())
-                        .title(place.getName())
+                        .title(place.getTitle())
                         .build();
                 placeDtoList.add(placeDto);
             }
             if(kruskalResponse.getPlaceList().size()==0) {
                 for (int j = 0; j < dayPlanPlaceList.size(); j++) {
-                    PlaceTest place = placeTestRepository.findById(dayPlanPlaceList.get(j).getId()).get();
+                    Place place = placeRepository.findById(dayPlanPlaceList.get(j).getId()).get();
                     DayPlanPlace dayPlanPlace = DayPlanPlace.builder()
                             .place(place)
                             .orderNumber(j)
@@ -195,7 +199,8 @@ public class PlanServiceImpl implements PlanService {
 
                     MakePlanResonseDto.PlaceDto placeDto = MakePlanResonseDto.PlaceDto.builder()
                             .id(place.getId())
-                            .title(place.getName())
+                            .title(place.getTitle())
+                            .address(place.getAddress())
                             .build();
                     placeDtoList.add(placeDto);
                 }
@@ -213,5 +218,26 @@ public class PlanServiceImpl implements PlanService {
                 .planList(planList)
                 .build();
 
+    }
+
+    @Override
+    @Transactional
+    public List<PlanListResponseDto> planList(PlanListRequestDto requestDto) {
+        List<PlanListResponseDto> responseDto=new ArrayList<>();
+        Member member=memberRepository.findById(requestDto.getMemberId()).get();
+        List<MemberCompanion> companionList=memberCompanionRepository.findByMemberOrderByCompanion_StartDayAsc(member);
+        for(int i=0;i<companionList.size();i++){
+            Plan plan=planRepository.findByCompanionId(companionList.get(i).getId());
+
+            responseDto.add(PlanListResponseDto.builder()
+                    .plan(PlanListResponseDto.PlanDto.builder()
+                            .id(plan.getId())
+                            .name(plan.getName())
+                            .startDay(plan.getStartDay())
+                            .endDay(plan.getEndDay())
+                            .build())
+                    .build());
+        }
+        return responseDto;
     }
 }
