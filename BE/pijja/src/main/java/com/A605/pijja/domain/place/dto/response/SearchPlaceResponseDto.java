@@ -10,4 +10,6 @@ public class SearchPlaceResponseDto {
     Long id;
     String title;
     String address;
+    Double latitude;
+    Double longitude;
 }
