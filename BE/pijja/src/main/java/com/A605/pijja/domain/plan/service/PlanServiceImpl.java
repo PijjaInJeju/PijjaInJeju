@@ -8,13 +8,11 @@ import com.A605.pijja.domain.member.repository.MemberCompanionRepository;
 import com.A605.pijja.domain.member.repository.MemberRepository;
 import com.A605.pijja.domain.place.entity.Place;
 import com.A605.pijja.domain.place.repository.PlaceRepository;
-import com.A605.pijja.domain.plan.dto.request.KruskalRequestDto;
-import com.A605.pijja.domain.plan.dto.request.MakePlanRequestDto;
-import com.A605.pijja.domain.plan.dto.request.GetRouteTmapRequestDto;
-import com.A605.pijja.domain.plan.dto.request.PlanListRequestDto;
+import com.A605.pijja.domain.plan.dto.request.*;
 import com.A605.pijja.domain.plan.dto.response.*;
 import com.A605.pijja.domain.plan.entity.DayPlan;
 import com.A605.pijja.domain.plan.entity.DayPlanPlace;
+import com.A605.pijja.domain.plan.entity.Path;
 import com.A605.pijja.domain.plan.entity.Plan;
 import com.A605.pijja.domain.plan.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -23,9 +21,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.PriorityQueue;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -43,7 +39,9 @@ public class PlanServiceImpl implements PlanService {
     @Transactional
     public List<PlanGroupingResponseDto> planGrouping(MakePlanRequestDto requestDto) {
         ArrayList<PlanGroupingResponseDto> planGroupingplanList=new ArrayList<>();
-        ArrayList<MakePlanRequestDto.PlaceDto>[] placeGroup=new ArrayList[requestDto.getTotalDay()];
+        ArrayList<PlanGroupingResponseDto.PlaceDto>[] placeGroup=new ArrayList[requestDto.getTotalDay()];
+        HashMap<Long,Integer> map=new HashMap<>();
+
         for(int i=0;i< placeGroup.length;i++){
             placeGroup[i]=new ArrayList<>();
         }
@@ -51,53 +49,39 @@ public class PlanServiceImpl implements PlanService {
         combinationPlan(requestDto.getPlaceList(),new int[2],0,0);
 
         boolean[] ch=new boolean[requestDto.getPlaceList().size()];
+
         for(int i=0;i< requestDto.getPlaceList().size();i++){
-            if(!ch[i]) {
-                placeGroup[day].add(requestDto.getPlaceList().get(i));
-                ch[i]=true;
-                for (int j = i + 1; j < requestDto.getPlaceList().size(); j++) {
-                    float distance=pathRepository.findByStartPlaceAndEndPlace(requestDto.getPlaceList().get(i).getId(),requestDto.getPlaceList().get(j).getId()).getDistance();
-                    if(distance<=20000 && !ch[j]){
-                        ch[j]=true;
-                        placeGroup[day].add(requestDto.getPlaceList().get(j));
-                    }
-                }
+            Long startPlaceId=requestDto.getPlaceList().get(i).getId();
+            if(!map.containsKey(startPlaceId)) {
+                map.put(startPlaceId, day);
                 day+=1;
             }
-            if(day>= requestDto.getTotalDay()){
-                break;
-            }
-        }
-        for(int i=0;i<requestDto.getPlaceList().size();i++){
-            float min=Float.MAX_VALUE;
-            int targetDay=0;
-            if(!ch[i]){
-                for(int j=0;j< requestDto.getTotalDay();j++){
-                    for(int k=0;k<placeGroup[j].size();k++){
-                        float distance=pathRepository.findByStartPlaceAndEndPlace(requestDto.getPlaceList().get(i).getId(),placeGroup[j].get(k).getId()).getDistance();
-                        if(min>distance){
-                            min=distance;
-                            targetDay=j;
-                        }
-                    }
+            for(int j=i+1;j<requestDto.getPlaceList().size();j++){
+                Long endPlaceId=requestDto.getPlaceList().get(j).getId();
+                double distance=pathRepository.findByStartPlaceAndEndPlace(startPlaceId,endPlaceId).getDistance();
+
+                if(distance<=20000){
+                    int tempDay=map.get(startPlaceId);
+                    map.put(endPlaceId,tempDay);
                 }
-                placeGroup[targetDay].add(requestDto.getPlaceList().get(i));
-                ch[i]=true;
             }
         }
 
-        for(int i=0;i<day;i++){
-            List<PlanGroupingResponseDto.PlaceDto> placeList=new ArrayList<>();
-            for(int j=0;j<placeGroup[i].size();j++) {
-                placeList.add(PlanGroupingResponseDto.PlaceDto.builder()
-                        .id(placeGroup[i].get(j).getId())
-                        .build());
-            }
+
+        for(int i=0;i<requestDto.getPlaceList().size();i++){
+
+            int nowDay=map.get(requestDto.getPlaceList().get(i).getId());
+            placeGroup[nowDay].add(PlanGroupingResponseDto.PlaceDto.builder()
+                    .id(requestDto.getPlaceList().get(i).getId())
+                    .build());
+
+        }
+        for(int i=0;i< requestDto.getTotalDay();i++){
             planGroupingplanList.add(PlanGroupingResponseDto.builder()
                     .day(i+1)
-                    .placeOrderList(placeList)
-                    .build());
+                    .placeList(placeGroup[i]).build());
         }
+
         return planGroupingplanList;
     }
 
@@ -143,10 +127,10 @@ public class PlanServiceImpl implements PlanService {
 
 
         List<PlanGroupingResponseDto> planGroupingResponse = planGrouping(requestDto);
-        ArrayList<PathDto> pathList=new ArrayList<>();
+
         for(int i=0;i<planGroupingResponse.size();i++){
             PlanGroupingResponseDto planGroup=planGroupingResponse.get(i);
-            List<PlanGroupingResponseDto.PlaceDto> dayPlanPlaceList=planGroup.getPlaceOrderList();
+            List<PlanGroupingResponseDto.PlaceDto> dayPlanPlaceList=planGroup.getPlaceList();
             List<GetRouteTmapRequestDto> pathCombinationRequest=new ArrayList<>();
 
             for(int j=0;j<dayPlanPlaceList.size();j++){
@@ -157,16 +141,16 @@ public class PlanServiceImpl implements PlanService {
             PriorityQueue<KruskalRequestDto> pq=pathService.combination(pathCombinationRequest,new int[2],0,0, pathCombinationRequest.size(),new PriorityQueue<>());
             GetRouteResponseDto kruskalResponse=pathService.kruskal(pq,pathCombinationRequest);
             ObjectMapper objectMapper = new ObjectMapper();
-            String jsonPath=objectMapper.writeValueAsString(kruskalResponse.getPathList() );
+//            String jsonPath=objectMapper.writeValueAsString(kruskalResponse.getPathList() );
 
 
             DayPlan dayPlan= DayPlan.builder()
                     .day(planGroup.getDay())
                     .dayPlanPlaceList(new ArrayList<>())
                     .plan(plan)
-                    .path(jsonPath)
+//                    .path(jsonPath)
                     .build();
-            dayPlanRepository.save(dayPlan);
+//            dayPlanRepository.save(dayPlan);
             plan.addPlanAndDayPlan(dayPlan);
             List<MakePlanResonseDto.PlaceDto> placeDtoList=new ArrayList<>();
             for(int j=0;j<kruskalResponse.getPlaceList().size();j++){
@@ -176,12 +160,13 @@ public class PlanServiceImpl implements PlanService {
                         .orderNumber(j)
                         .dayPlan(dayPlan)
                         .build();
-                dayPlanPlaceRepository.save(dayPlanPlace);
+//                dayPlanPlaceRepository.save(dayPlanPlace);
                 dayPlan.addDayPlan(dayPlanPlace);
                 place.addDayPlanPlace(dayPlanPlace);
                 MakePlanResonseDto.PlaceDto placeDto=MakePlanResonseDto.PlaceDto.builder()
                         .id(place.getId())
                         .title(place.getTitle())
+                        .address(place.getAddress())
                         .build();
                 placeDtoList.add(placeDto);
             }
@@ -193,7 +178,7 @@ public class PlanServiceImpl implements PlanService {
                             .orderNumber(j)
                             .dayPlan(dayPlan)
                             .build();
-                    dayPlanPlaceRepository.save(dayPlanPlace);
+//                    dayPlanPlaceRepository.save(dayPlanPlace);
                     dayPlan.addDayPlan(dayPlanPlace);
                     place.addDayPlanPlace(dayPlanPlace);
 
@@ -206,9 +191,9 @@ public class PlanServiceImpl implements PlanService {
                 }
             }
             planList.add(MakePlanResonseDto.PlanDto.builder()
-                    .day(Integer.toString(dayPlan.getDay())+"일차")
+                    .day(dayPlan.getDay())
                     .data(placeDtoList)
-                    .pathList(kruskalResponse.getPathList())
+//                    .pathList(kruskalResponse.getPathList())
                     .build());
         }
 
@@ -218,6 +203,70 @@ public class PlanServiceImpl implements PlanService {
                 .planList(planList)
                 .build();
 
+    }
+
+    @Override
+    @Transactional
+    public MakePlanResonseDto addRecommendPlace(AddRecommendPlaceRequestDto requestDto) {
+        Stack<MakePlanResonseDto.PlaceDto> tmpPlaceStack=new Stack<>();
+        Place recommendPlace=placeRepository.findById(requestDto.getRecommendPlace().getId()).get();
+        Place firstPlace=placeRepository.findById(requestDto.getFirstPlace().getId()).get();
+        Place secondPlace=placeRepository.findById(requestDto.getSecondPlace().getId()).get();
+        int targetDay= requestDto.getTargetDay()-1;
+        List<MakePlanResonseDto.PlaceDto> planTmpList=requestDto.getPlanList().get(targetDay).getData();
+        Stack<MakePlanResonseDto.PlaceDto> planStack=new Stack<>();
+        List<MakePlanResonseDto.PlaceDto> planList=new ArrayList<>();
+        int size=planTmpList.size();
+        int firstPlaceIdx=0;
+        int secondPlaceIdx=0;
+        for(int i=0;i<size;i++){
+            if(planTmpList.get(i).getId()== firstPlace.getId()){
+                firstPlaceIdx=i;
+            }
+            if(planTmpList.get(i).getId()== secondPlace.getId()){
+                secondPlaceIdx=i;
+            }
+            planStack.add(planTmpList.get(i));
+        }
+        for(int i=secondPlaceIdx;i<size;i++){
+            tmpPlaceStack.add(planStack.pop());
+        }
+        planStack.add(MakePlanResonseDto.PlaceDto.builder()
+                .address(recommendPlace.getAddress())
+                .title(recommendPlace.getTitle())
+                .id(recommendPlace.getId()).build());
+        while(!tmpPlaceStack.isEmpty()){
+            planStack.add(tmpPlaceStack.pop());
+        }
+        size+=1;
+        MakePlanResonseDto.PlaceDto[] places=new MakePlanResonseDto.PlaceDto[size];
+        for(int i=size-1;i>=0;i--){
+            places[i]=planStack.pop();
+        }
+
+        List<MakePlanResonseDto.PlanDto> planRequestList=new ArrayList<>();
+        for(int i=0;i<requestDto.getPlanList().size();i++){
+            if(i==targetDay){
+                List<MakePlanResonseDto.PlaceDto> placeDtoList=new ArrayList<>();
+                for(int j=0;j<places.length;j++){
+                    placeDtoList.add(MakePlanResonseDto.PlaceDto.builder()
+                            .title(places[j].getTitle())
+                            .id(places[j].getId())
+                            .address(places[j].getAddress()).build());
+                }
+                planRequestList.add(MakePlanResonseDto.PlanDto.builder()
+                        .day(i+1)
+                        .data(placeDtoList)
+                        .build());
+            }else{
+                planRequestList.add(requestDto.getPlanList().get(i));
+            }
+        }
+        return MakePlanResonseDto.builder()
+                .name(requestDto.getName())
+                .companionId(requestDto.getCompanionId())
+                .planList(planRequestList)
+                .build();
     }
 
     @Override

@@ -19,9 +19,9 @@ public class MakePlanResonseDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class PlanDto{
-        private String day;
+        private int day;
         private List<PlaceDto> data;
-        private List<PathDto> pathList;
+//        private List<PathDto> pathList;
     }
     @Getter
     @Builder
