@@ -1,16 +1,14 @@
-package com.A605.pijja.domain.plan.dto.response;
+package com.A605.pijja.domain.plan.dto.request;
 
 import lombok.*;
-
-import java.util.List;
 
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class PlanGroupingResponseDto {
-    private int day;
-    private List<PlaceDto> placeList;
+public class ListRecommendPlacesRequestDto {
+    private PlaceDto firstPlace;
+    private PlaceDto secondPlace;
 
     @Getter
     @Builder
