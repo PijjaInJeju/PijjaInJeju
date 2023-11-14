@@ -1,5 +1,6 @@
 package com.A605.pijja.domain.plan.controller;
 
+import com.A605.pijja.domain.plan.dto.request.AddRecommendPlaceRequestDto;
 import com.A605.pijja.domain.plan.dto.request.ListRecommendPlacesRequestDto;
 import com.A605.pijja.domain.plan.dto.request.MakePlanRequestDto;
 import com.A605.pijja.domain.plan.dto.request.PlanListRequestDto;
@@ -42,5 +43,10 @@ public class PlanController {
         return planService.planGrouping(requestDto);
     }
 
-    
+    @PostMapping("/addRecommendPlace")
+    public MakePlanResonseDto addRecommendPlace(@RequestBody AddRecommendPlaceRequestDto requestDto){
+        return planService.addRecommendPlace(requestDto);
+    }
+
+
 }

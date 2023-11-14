@@ -207,9 +207,66 @@ public class PlanServiceImpl implements PlanService {
 
     @Override
     @Transactional
-    public void AddRecommendPlace(ListRecommendPlacesRequestDto requestDto) {
-        Path path=pathRepository.findByStartPlaceAndEndPlace(requestDto.getFirstPlace().getId(), requestDto.getSecondPlace().getId());
+    public MakePlanResonseDto addRecommendPlace(AddRecommendPlaceRequestDto requestDto) {
+        Stack<MakePlanResonseDto.PlaceDto> tmpPlaceStack=new Stack<>();
+        Place recommendPlace=placeRepository.findById(requestDto.getRecommendPlace().getId()).get();
+        Place firstPlace=placeRepository.findById(requestDto.getFirstPlace().getId()).get();
+        Place secondPlace=placeRepository.findById(requestDto.getSecondPlace().getId()).get();
+        int targetDay= requestDto.getTargetDay()-1;
+        List<MakePlanResonseDto.PlaceDto> planTmpList=requestDto.getPlanList().get(targetDay).getData();
+        Stack<MakePlanResonseDto.PlaceDto> planStack=new Stack<>();
+        List<MakePlanResonseDto.PlaceDto> planList=new ArrayList<>();
+        int size=planTmpList.size();
+        int firstPlaceIdx=0;
+        int secondPlaceIdx=0;
+        for(int i=0;i<size;i++){
+            if(planTmpList.get(i).getId()== firstPlace.getId()){
+                firstPlaceIdx=i;
+            }
+            if(planTmpList.get(i).getId()== secondPlace.getId()){
+                secondPlaceIdx=i;
+            }
+            planStack.add(planTmpList.get(i));
+        }
+        for(int i=secondPlaceIdx;i<size;i++){
+            tmpPlaceStack.add(planStack.pop());
+        }
+        planStack.add(MakePlanResonseDto.PlaceDto.builder()
+                .address(recommendPlace.getAddress())
+                .title(recommendPlace.getTitle())
+                .id(recommendPlace.getId()).build());
+        while(!tmpPlaceStack.isEmpty()){
+            planStack.add(tmpPlaceStack.pop());
+        }
+        size+=1;
+        MakePlanResonseDto.PlaceDto[] places=new MakePlanResonseDto.PlaceDto[size];
+        for(int i=size-1;i>=0;i--){
+            places[i]=planStack.pop();
+        }
 
+        List<MakePlanResonseDto.PlanDto> planRequestList=new ArrayList<>();
+        for(int i=0;i<requestDto.getPlanList().size();i++){
+            if(i==targetDay){
+                List<MakePlanResonseDto.PlaceDto> placeDtoList=new ArrayList<>();
+                for(int j=0;j<places.length;j++){
+                    placeDtoList.add(MakePlanResonseDto.PlaceDto.builder()
+                            .title(places[j].getTitle())
+                            .id(places[j].getId())
+                            .address(places[j].getAddress()).build());
+                }
+                planRequestList.add(MakePlanResonseDto.PlanDto.builder()
+                        .day(i+1)
+                        .data(placeDtoList)
+                        .build());
+            }else{
+                planRequestList.add(requestDto.getPlanList().get(i));
+            }
+        }
+        return MakePlanResonseDto.builder()
+                .name(requestDto.getName())
+                .companionId(requestDto.getCompanionId())
+                .planList(planRequestList)
+                .build();
     }
 
     @Override
