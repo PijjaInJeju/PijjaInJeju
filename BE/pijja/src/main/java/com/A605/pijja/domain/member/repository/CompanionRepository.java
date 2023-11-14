@@ -11,5 +11,5 @@ public interface CompanionRepository extends JpaRepository<Companion, Long> {
 
     Optional<Companion> findByCode(String code);
 
-    List<Companion> findAllByOrderByStartDayAsc();
+    List<Companion> findAllByOrderByStartDayDesc();
 }
