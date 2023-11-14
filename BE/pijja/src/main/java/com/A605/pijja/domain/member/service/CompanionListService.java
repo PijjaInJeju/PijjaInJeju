@@ -25,7 +25,7 @@ public class CompanionListService {
      */
     public ResponseEntity getAllCompanions() {
         // 모든 그룹을 데이터베이스에서 조회합니다.
-        List<Companion> companionList = companionRepository.findAllByOrderByStartDayAsc();
+        List<Companion> companionList = companionRepository.findAllByOrderByStartDayDesc();
 
         // CompanionListDto 객체로 변환하여 반환
         List<CompanionListDto> companionListDto = companionList.stream()
