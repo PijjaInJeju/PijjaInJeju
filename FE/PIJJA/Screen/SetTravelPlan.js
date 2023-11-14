@@ -85,7 +85,7 @@ const SetTravelPlan = ({ navigation, route }) => {
         'POST',
         {
           name: titileText,
-          tendency: groupStyles,
+          tendencies: groupStyles,
           mate: travelMate,
           startDay: travelStartData,
           endDay: travelEndData,
@@ -94,9 +94,9 @@ const SetTravelPlan = ({ navigation, route }) => {
         response => {
           console.log('응답 데이터2 : ' + response.data);
           navigation.navigate('CreateScheduleMap', {
-            travelTitle: titileText,
-            groupStyles: groupStyles,
-            travelMate: travelMate,
+            companionId: userData.backEndId,
+            name: titileText,
+            totalDay: elasedDay,
           });
         },
         error => {
@@ -109,11 +109,11 @@ const SetTravelPlan = ({ navigation, route }) => {
     }
   };
 
-  console.log(groupStyles);
-  console.log(travelMate);
-  console.log(travelStartData);
-  console.log(travelEndData);
-  console.log(userData.backEndId);
+  // console.log(groupStyles);
+  // console.log(travelMate);
+  // console.log(travelStartData);
+  // console.log(travelEndData);
+  // console.log(userData.backEndId);
 
   // 여행 제목
   const [titileText, setText] = useState(0);
