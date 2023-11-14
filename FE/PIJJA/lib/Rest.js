@@ -10,7 +10,7 @@ const Rest = async(url, method, data, thenFun, catchFun) => {
     },
     body: JSON.stringify(data),
   })
-  .then( (res) => ( res.json().then(thenFun).catch(catchFun)))
+  .then( async(res) => ( await res.json().then(thenFun).catch(catchFun)))
   .catch(catchFun);
 }
 
