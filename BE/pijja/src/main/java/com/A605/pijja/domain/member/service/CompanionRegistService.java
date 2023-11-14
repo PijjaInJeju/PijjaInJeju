@@ -135,6 +135,7 @@ public class CompanionRegistService {
         }
 
         CompanionCreateDto create = CompanionCreateDto.builder()
+                .id(companion.getId())
                 .name(companion.getName())
                 .code(companion.getCode())
                 .isStart(isStart)
