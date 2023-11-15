@@ -2,14 +2,13 @@ package com.A605.pijja.domain.plan.dto.response;
 
 import lombok.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class MakePlanResonseDto {
+public class CompleteMakePlanResonseDto {
     private Long planId;
     private String name;
     private Long companionId;
@@ -29,7 +28,9 @@ public class MakePlanResonseDto {
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
     @AllArgsConstructor
     public static class PathDto{
-        private String path;
+        private float latitude;
+        private float longitude;
+
     }
     @Getter
     @Builder
