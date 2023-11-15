@@ -23,9 +23,10 @@ const zeroLengthGroupComponent = () => {};
 const fullLengthGroupCompoent = () => {};
 
 const backGroundImageList = [
-  require('../../Image/s_landingImage.jpg'),
-  require('../../Image/s_landingImage2.jpg'),
-  require('../../Image/s_landingImage3.jpg'),
+  require('../../Image/jeju1.jpg'),
+  require('../../Image/jeju2.jpg'),
+  require('../../Image/jeju3.jpg'),
+  require('../../Image/jeju4.jpg'),
 ];
 
 const One = ({ data }) => {
@@ -34,6 +35,7 @@ const One = ({ data }) => {
   let setGroupList = data.setGroupList;
   const [activeSlide, setActiveSlide] = useState(0);
   const activeRef = useRef(null);
+  const renderDots = () => null;
 
   console.log('one Data : ', data);
 
@@ -70,7 +72,6 @@ const One = ({ data }) => {
         }}
         ref={activeRef}
       />
-      <Header title={'fsafsa'} />
       <Pagination
         dotsLength={backGroundImageList.length}
         activeDotIndex={activeSlide}
@@ -94,55 +95,61 @@ const One = ({ data }) => {
         inactiveDotScale={0.6}
         tappableDots={true}
         carouselRef={activeRef}
+        renderDots={renderDots}
       />
       <View
-        style={{
-          position: 'absolute',
-          alignItems: 'center',
-          flexDirection: 'column',
-          height: screenHeight * 0.5,
-          width: screenWidth,
-          marginTop: screenHeight * 0.06,
-        }}
-      >
-        <Text
-          style={{
-            color: 'black',
-            width: '90%',
-            alignSelf: 'center',
-            textAlign: 'left',
-            fontSize: pixelRatio * 6,
-          }}
-        >
-          {profile.nickname}님 환영합니다.
-        </Text>
-        <View
-          style={{
-            borderTopWidth: 2,
-            alignSelf: 'center',
-            width: '90%',
-          }}
-        />
-      </View>
+  style={{
+    position: 'absolute',
+    alignItems: 'center',
+    flexDirection: 'column',
+    height: screenHeight * 0.5,
+    width: screenWidth,
+    marginTop: screenHeight * 0.06,
+    fontWeight: 'bold',
+  }}
+>
+  <Text
+    style={{
+      color: 'white',
+      width: '90%',
+      alignSelf: 'center',
+      textAlign: 'left',
+      fontSize: pixelRatio * 6,
+    }}
+  >
+    <Text style={{ color: 'orange' }}>{profile.nickname}</Text> 님 환영합니다.
+  </Text>
+  <View
+    style={{
+      borderTopWidth: 2,
+      borderTopColor: 'orange',
+      alignSelf: 'center',
+      width: '90%',
+    }}
+  />
+</View>
       <View
-        style={{
-          position: 'absolute',
-          alignItems: 'center',
-          flexDirection: 'row',
-          height: screenHeight,
-        }}
-      >
-        <Text
-          style={{
-            width: screenWidth,
-            textAlign: 'center',
-            fontSize: pixelRatio * 8,
-          }}
-        >
-          가을 바람과 함께하는{'\n'}
-          특별한 제주 여행
-        </Text>
-      </View>
+  style={{
+    position: 'absolute',
+    alignItems: 'center',
+    flexDirection: 'row',
+    height: screenHeight,
+  }}
+>
+  <Text
+    style={{
+      width: screenWidth,
+      textAlign: 'center',
+      fontSize: pixelRatio * 8,
+      fontWeight: 'bold', // 볼드체 스타일 추가
+      color: 'whitesmoke', // 흰색으로 설정
+      marginBottom: screenHeight * 0.5,
+    }}
+  >
+    가을 바람과 함께하는{'\n'}
+    특별한 제주 여행
+  </Text>
+</View>
     </View>
   );
 };
