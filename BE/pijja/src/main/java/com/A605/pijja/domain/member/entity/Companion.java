@@ -54,4 +54,8 @@ public class Companion {
 
     @OneToMany(mappedBy = "companion")
     private List<CompanionTendency> companionTendencies = new ArrayList<>();
+
+    public void assignPlan(Plan plan){
+        this.plan=plan;
+    }
 }

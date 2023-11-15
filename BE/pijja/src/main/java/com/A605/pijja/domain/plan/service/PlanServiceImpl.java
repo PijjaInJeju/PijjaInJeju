@@ -146,7 +146,7 @@ public class PlanServiceImpl implements PlanService {
                 .build();
         planRepository.save(plan);
         Long planId=plan.getId();
-
+        plan.assignCompanion(companion);
         List<PlanGroupingResponseDto> planGroupingResponse = planGrouping(requestDto);
 
         for(int i=0;i<planGroupingResponse.size();i++){
