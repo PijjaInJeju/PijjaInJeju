@@ -14,6 +14,7 @@ import {
 
 import GetRest from '../lib/GetRest.js';
 import Fontisto from 'react-native-vector-icons/Fontisto';
+import CheckTripPlanDetail from './CheckTripPlanDetail.js';
 
 nowTrip = false;
 moreTrip = false;
@@ -41,7 +42,7 @@ const nowTripScreen = () => {
   );
 };
 
-const CheckTripPlan = () => {
+const CheckTripPlan = ({ navigation }) => {
   //DATA[0].data = route.params.scheduleList;
   //console.log(route.params.scheduleList);
 
@@ -120,9 +121,9 @@ const CheckTripPlan = () => {
   // const historyData = [];
   // console.log('plan data: ', planData);
   //console.log(planData.length());
-  console.log(someData);
-  console.log('now plan: ', nowPlanData);
-  console.log('history plan: ', historyPlanData);
+  //console.log(someData);
+  //console.log('now plan: ', nowPlan[0].data);
+  // console.log('history plan: ', historyPlanData);
 
   return (
     <SafeAreaView style={[styles.container]}>
@@ -135,7 +136,15 @@ const CheckTripPlan = () => {
             <Text style={styles.nowTravelTitle}>{title}</Text>
           )}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.nowTravelContent}>
+            <TouchableOpacity
+              style={styles.nowTravelContent}
+              onPress={() => {
+                //console.log(item);
+                navigation.navigate('CheckTripPlanDetail', {
+                  companionId: item.id,
+                });
+              }}
+            >
               <View style={styles.travelContentTitle}>
                 <Text style={styles.travelTitleText}>{item.name}</Text>
               </View>
@@ -173,7 +182,14 @@ const CheckTripPlan = () => {
             <Text style={styles.historyTravelTitle}>{title}</Text>
           )}
           renderItem={({ item }) => (
-            <TouchableOpacity style={styles.historyTravelContent}>
+            <TouchableOpacity
+              style={styles.historyTravelContent}
+              onPress={() => {
+                navigation.navigate('CheckTripPlanDetail', {
+                  companionId: item.id,
+                });
+              }}
+            >
               <View style={styles.travelContentTitle}>
                 <Text style={styles.travelTitleText}>{item.name}</Text>
               </View>

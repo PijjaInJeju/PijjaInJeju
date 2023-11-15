@@ -15,7 +15,10 @@ import {
 import GetRest from '../lib/GetRest.js';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 
-const CheckTripPlanDetail = () => {};
+const CheckTripPlanDetail = ({ route }) => {
+  const { companionId } = route.params;
+  console.log(companionId);
+};
 const styles = StyleSheet.create({});
 
 export default CheckTripPlanDetail;
