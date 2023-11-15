@@ -475,6 +475,8 @@ const CreateScheduleMap = ({ navigation, route }) => {
   const sheetRef = useRef(null);
   const mapRef = useRef(null);
 
+  console.log("CreateScheduleMap : " , route.params);
+
   // variables
   const data = useMemo(
     () =>
@@ -486,10 +488,10 @@ const CreateScheduleMap = ({ navigation, route }) => {
   const snapPoints = useMemo(() => ['3%', '25%', '50%', '90%'], []);
 
   // route data
-  const { companionId, name, totalDay } = route.params;
-  console.log('route data: ', companionId);
-  console.log(name);
-  console.log(totalDay);
+  //const { companionId, name, totalDay } = route.params;
+  //   console.log('route data: ', companionId);
+  //   console.log(name);
+  //   console.log(totalDay);
 
   // callbacks
   const handleSheetChange = useCallback(
@@ -717,7 +719,7 @@ const CreateScheduleMap = ({ navigation, route }) => {
             alignSelf: 'flex-start',
           }}
           ref={mapRef}
-          showsMyLocationButton={true}
+          showsMyLocationButton={false}
           center={{ ...mapCenter, zoom: 8.863083459663644 }}
           onTouch={e => console.log('onTouch', JSON.stringify(e.nativeEvent))}
           onCameraChange={e => console.log('onCameraChange', JSON.stringify(e))}
@@ -780,30 +782,29 @@ const CreateScheduleMap = ({ navigation, route }) => {
             onPress={() => {
                 console.log('일정 만들기');
                 let T = {
-                    ...route.params,
+                    totalDay: route.params.totalDay,
+                    name: route.params.name,
+                    companionId: route.params.companionId,
                     placeList: scheduleList.map(item => {
-                    //console.log("item id :", item.id);
-                    return { id: item.id };
+                        //console.log("item id :", item.id);
+                        return { id: item.id };
                     }),
                 };
-                //console.log(T);
+                console.log(T);
                 Rest(
                     "/api/plan",
                     "POST",
                     T,
                     (res) => {
-                        console.log(res);
-                        // navigation.push('RecommendSchedule', {
-                        //     scheduleList: res,
-                        // });
+                        console.log("CreateScheduleMap 일정생성 Rest 응답 : " , res);
+                        navigation.push('RecommendSchedule', {
+                            scheduleList: res,
+                        });
                     },
                     (error) => {
                         console.error(error);
                     }
                 )
-                navigation.push('RecommendSchedule', {
-                    scheduleList: undefined,
-                });
             }}
           >
             <Icon name="calendar" size={closeSize} color="#f77f00" />
