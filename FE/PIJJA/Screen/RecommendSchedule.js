@@ -7,141 +7,27 @@ import {
   Text,
   StyleSheet,
   TouchableOpacity,
-  Linking, 
+  Linking,
+  Button, 
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/AntDesign';
 
-import Carousel, { Pagination } from 'react-native-snap-carousel';
+const RecommendSchedule = ({ route, navigation }) => {
 
-const DATA = [
-  {
-    title: '1일차',
-    start: true,
-    end: false,
-    data: [
-      {
-        id: 1,
-        title: '해녀의 집',
-        address: '제주도특별시 제주도 애월읍 애월해안로',
-      },
-      {
-        id: 22,
-        title: '해녀의 집2',
-        address: '제주도특별시 제주도 애월읍 애월해안로',
-      },
-      {
-        id: 11,
-        title: '해녀의 집3',
-        address: '제주도특별시 제주도 애월읍 애월해안로',
-      },
-      {
-        id: 32,
-        title: '해녀의 집4',
-        address: '제주도특별시 제주도 애월읍 애월해안로',
-      },
-    ],
-  },
-  {
-    title: '2일차',
-    start: false,
-    end: false,
-    data: [
-      {
-        id: 1,
-        title: '해녀의 집',
-        address: '제주도특별시 제주도 애월읍 애월해안로',
-      },
-      {
-        id: 22,
-        title: '해녀의 집2',
-        address: '제주도특별시 제주도 애월읍 애월해안로',
-      },
-      {
-        id: 11,
-        title: '해녀의 집3',
-        address: '제주도특별시 제주도 애월읍 애월해안로',
-      },
-      {
-        id: 32,
-        title: '해녀의 집4',
-        address: '제주도특별시 제주도 애월읍 애월해안로',
-      },
-    ],
-  },
-  {
-    title: '3일차',
-    start: false,
-    end: false,
-    data: [
-      {
-        id: 1,
-        title: '해녀의 집',
-        address: '제주도특별시 제주도 애월읍 애월해안로',
-      },
-      {
-        id: 22,
-        title: '해녀의 집2',
-        address: '제주도특별시 제주도 애월읍 애월해안로',
-      },
-      {
-        id: 11,
-        title: '해녀의 집3',
-        address: '제주도특별시 제주도 애월읍 애월해안로',
-      },
-      {
-        id: 32,
-        title: '해녀의 집4',
-        address: '제주도특별시 제주도 애월읍 애월해안로',
-      },
-    ],
-  },
-  {
-    title: '4일차',
-    start: false,
-    end: false,
-    data: [
-      {
-        id: 1,
-        title: '해녀의 집',
-        address: '제주도특별시 제주도 애월읍 애월해안로',
-      },
-      {
-        id: 22,
-        title: '해녀의 집2',
-        address: '제주도특별시 제주도 애월읍 애월해안로',
-      },
-      {
-        id: 11,
-        title: '해녀의 집3',
-        address: '제주도특별시 제주도 애월읍 애월해안로',
-      },
-      {
-        id: 32,
-        title: '해녀의 집4',
-        address: '제주도특별시 제주도 애월읍 애월해안로',
-      },
-    ],
-  },
-  {
-    title: '5일차',
-    start: false,
-    end: true,
-    data: [],
-  },
-];
+  console.log("라우트로 받은 데이터 ", route.params.scheduleList);
 
+  if(route.params.scheduleList.planList.length< 5){
+    for(let i = 5 - route.params.scheduleList.planList.length; i > 0; i--){
+      route.params.scheduleList.planList.push({});
+    }
+  }
+  
+  const [DATA,setDATA] = useState(route.params.scheduleList.planList);
 
-
-const RecommendSchedule = ({ route }) => {
-
-  const [selectDay,setSelectDay] = useState(DATA[0].title);
+  const [selectDay,setSelectDay] = useState(DATA[0].day);
 
   const [schedule,setSchedule] = useState(DATA[0].data);
-
-  const renderSchedule = ({ item }) => (
-    <scheduleItem title={item.title} address={item.address} />
-  );
 
   const Item = ({ item }) => (
     <View
@@ -211,7 +97,37 @@ const RecommendSchedule = ({ route }) => {
             return (
               <View>
                 {
-                  item.title === selectDay
+                  item.day === undefined
+                  ?
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      alignItems:'center',
+                      width: screenWidth * 0.20,
+                      height: screenHeight * 0.05,
+                      marginTop: 5,
+                      marginLeft: 5,
+                      marginRight: 5,
+                      borderTopRightRadius: 10,
+                      borderTopLeftRadius: 10,
+                      borderTopWidth: 2,
+                      borderLeftWidth: 2,
+                      borderRightWidth: 2,
+                    }}
+                  >
+                    <Text
+                      style={{
+                        textAlign: 'center',
+                        borderColor: '#000000',
+                        // -4 border Width가 각 2씩 * 2
+                        width: (screenWidth * 0.20) - 4,
+                        color: "#000000"
+                      }}
+                    >
+                    </Text>
+                  </View>
+                  :
+                  item.day === selectDay
                   ?
                   <View
                     style={{
@@ -239,13 +155,13 @@ const RecommendSchedule = ({ route }) => {
                       }}
                       onPress={
                         () => {
-                          console.log(item.title, "   ", selectDay);
-                          setSelectDay(item.title);
+                          console.log(item.day, "   ", selectDay);
+                          setSelectDay(item.day);
                           setSchedule(item.data);
                         }
                       }
                     >
-                      {item.title}
+                      {item.day}일차
                     </Text>
                   </View>
                   :
@@ -258,8 +174,11 @@ const RecommendSchedule = ({ route }) => {
                       marginTop: 5,
                       marginLeft: 5,
                       marginRight: 5,
-                      borderRadius: 10,
-                      borderWidth: 2,
+                      borderTopRightRadius: 10,
+                      borderTopLeftRadius: 10,
+                      borderTopWidth: 2,
+                      borderLeftWidth: 2,
+                      borderRightWidth: 2,
                     }}
                   >
                     <Text
@@ -272,12 +191,13 @@ const RecommendSchedule = ({ route }) => {
                       }}
                       onPress={
                         () => {
-                          console.log(item.title, "   ", selectDay);
-                          setSelectDay(item.title);
+                          console.log(item.day, "   ", selectDay);
+                          setSelectDay(item.day);
+                          setSchedule(item.data);
                         }
                       }
                     >
-                      {item.title}
+                      {item.day}일차
                     </Text>
                   </View>
                 }
@@ -287,7 +207,7 @@ const RecommendSchedule = ({ route }) => {
                   }}
                 >
                   {
-                    item.title === selectDay
+                    item.day === selectDay
                     ?
                     <View
                       style={{
@@ -301,6 +221,10 @@ const RecommendSchedule = ({ route }) => {
                     :
                     <View
                       style={{
+                        marginLeft: 5,
+                        marginRight: 5,
+                        borderLeftWidth: 2,
+                        borderRightWidth: 2,
                         height: 10,
                       }}
                     />
@@ -312,7 +236,7 @@ const RecommendSchedule = ({ route }) => {
                   }}
                 >
                   {
-                    item.title === selectDay
+                    item.day === selectDay
                     ?
                     <View
                       style={{
@@ -359,13 +283,26 @@ const RecommendSchedule = ({ route }) => {
       {console.log(schedule)}
       <FlatList
         style={{
-          height: screenHeight * 0.9,
+          height: screenHeight * 0.8,
           width: screenWidth,
         }}
         data={schedule}
         renderItem={Item}
         keyExtractor={item => item.id}
       />
+      <View>
+        <Button
+          title='일정 확정하기'
+          onPress={
+            () => {
+              console.log("추천 페이지로.")
+              navigation.popToTop();
+              navigation.push("Main")
+              navigation.push("CheckTripPlan")
+            }
+          }
+        />
+      </View>
       
     </SafeAreaView>
   );

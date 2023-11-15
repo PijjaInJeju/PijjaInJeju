@@ -21,6 +21,7 @@ import RecommendSchedule from './Screen/RecommendSchedule.js';
 import SetTravelPlan from './Screen/SetTravelPlan.js';
 import Gallery from './Screen/Gallery.js';
 import JoinGroup from './Screen/JoinGroup.js';
+import CheckTripPlan from './Screen/CheckTripPlan.js';
 //import DeviceInfo from 'react-native-device-info';
 
 //DeviceInfo.setPreferredOrientations(['ko-KR']);
@@ -85,13 +86,11 @@ const App = () => {
         <Stack.Screen
           name="Login"
           component={Login}
-          options={{ headerShown: false }}
         />
         {/* <Stack.Screen name="MakeGroup" component={MakeGroup} /> */}
         <Stack.Screen
           name="Main"
           component={Main}
-          options={{ headerShown: false }}
         />
         <Stack.Screen name="InviteMember" component={InviteMember} />
         <Stack.Screen name="GroupSetting" component={GroupSetting} />
@@ -100,6 +99,7 @@ const App = () => {
         <Stack.Screen name="CreateScheduleMap" component={CreateScheduleMap} />
         <Stack.Screen name="RecommendSchedule" component={RecommendSchedule} />
         <Stack.Screen name="SetTravelPlan" component={SetTravelPlan} />
+        <Stack.Screen name="CheckTripPlan" component={CheckTripPlan} />
       </Stack.Navigator>
     </NavigationContainer>
   );

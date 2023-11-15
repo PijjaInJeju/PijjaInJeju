@@ -9,7 +9,7 @@ const pixelRatio = PixelRatio.get();
 
 const noImage = require('../../Image/s_noImage.jpg');
 
-const back = require('../../Image/s_back2.jpg');
+const back = require('../../Image/clouds.jpg');
 
 const Two = ({data}) =>{
     const [ activeSlide, setActiveSlide ] = useState(0);

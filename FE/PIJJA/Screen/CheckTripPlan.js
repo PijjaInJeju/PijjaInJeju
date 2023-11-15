@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 
 import GetRest from '../lib/GetRest.js';
+import Fontisto from 'react-native-vector-icons/Fontisto';
 
 nowTrip = false;
 moreTrip = false;
@@ -44,7 +45,7 @@ const CheckTripPlan = () => {
   //DATA[0].data = route.params.scheduleList;
   //console.log(route.params.scheduleList);
 
-  const [planData, setPlanData] = useState([]);
+  const [groupId, setGroupId] = useState(0);
   const [nowPlanData, setNowPlanData] = useState([]);
   const [historyPlanData, setHistoryPlanData] = useState([]);
 
@@ -96,7 +97,7 @@ const CheckTripPlan = () => {
 
             if (response.data.length > 1) {
               setHistoryPlanData([
-                { title: 'Now Trip', data: response.data.slice(1) },
+                { title: 'Trip History', data: response.data.slice(1) },
               ]);
             }
           }
@@ -131,58 +132,71 @@ const CheckTripPlan = () => {
         <SectionList
           sections={nowPlanData}
           keyExtractor={(item, index) => item + index}
-          renderSectionHeader={({ section: { title } }) => <Text>{title}</Text>}
+          renderSectionHeader={({ section: { title } }) => (
+            <Text style={styles.nowTravelTitle}>{title}</Text>
+          )}
           renderItem={({ item }) => (
-            <View style={styles.nowTravelContent}>
-              {/* <TouchableOpacity>
-
-              </TouchableOpacity> */}
+            <TouchableOpacity style={styles.nowTravelContent}>
               <View style={styles.travelContentTitle}>
                 <Text style={styles.travelTitleText}>{item.name}</Text>
               </View>
               <View style={styles.travelContentDay}>
-                <Text style={styles.travelContentText}>{`출발일: ${
+                <Fontisto
+                  name="ship"
+                  size={26}
+                  style={{ start: 40 }}
+                  color="#003049"
+                />
+                <Text style={styles.travelContentText}>{`여행 출발: ${
                   item.startDay.split('T')[0].split('-')[0]
                 }년 ${item.startDay.split('T')[0].split('-')[1]}월 ${
                   item.startDay.split('T')[0].split('-')[2]
                 }일 `}</Text>
-                <Text style={styles.travelContentText}>{`도착일: ${
+                <Text style={styles.travelContentText}>{`여행 도착: ${
                   item.startDay.split('T')[0].split('-')[0]
                 }년 ${item.startDay.split('T')[0].split('-')[1]}월 ${
                   item.startDay.split('T')[0].split('-')[2]
                 }일`}</Text>
               </View>
-            </View>
+            </TouchableOpacity>
           )}
         ></SectionList>
       </View>
       {/* <View style={styles.historyTravelContainer}>
         <Text>일정 History</Text>
         <View style={styles.historyContentContainer}> */}
-      <View>
+      <View style={styles.historyTravelWrapper}>
         <SectionList
           style={styles.historyTravelContainer}
           sections={historyPlanData}
           keyExtractor={(item, index) => item + index}
-          renderSectionHeader={({ section: { title } }) => <Text>{title}</Text>}
+          renderSectionHeader={({ section: { title } }) => (
+            <Text style={styles.historyTravelTitle}>{title}</Text>
+          )}
           renderItem={({ item }) => (
-            <View style={styles.historyTravelContent}>
+            <TouchableOpacity style={styles.historyTravelContent}>
               <View style={styles.travelContentTitle}>
                 <Text style={styles.travelTitleText}>{item.name}</Text>
               </View>
               <View style={styles.travelContentHistory}>
-                <Text style={styles.travelContentText}>{`${
+                <Fontisto
+                  name="ship"
+                  size={22}
+                  style={{ start: 40 }}
+                  color="#003049"
+                />
+                <Text style={styles.historyContentText}>{`${
                   item.startDay.split('T')[0].split('-')[0]
                 }.${item.startDay.split('T')[0].split('-')[1]}.${
                   item.startDay.split('T')[0].split('-')[2]
                 } - `}</Text>
-                <Text style={styles.travelContentText}>{`${
+                <Text style={styles.historyContentText}>{`${
                   item.startDay.split('T')[0].split('-')[0]
                 }.${item.startDay.split('T')[0].split('-')[1]}.${
                   item.startDay.split('T')[0].split('-')[2]
                 }`}</Text>
               </View>
-            </View>
+            </TouchableOpacity>
           )}
           scrollEnabled={true}
         ></SectionList>
@@ -212,36 +226,51 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     //marginTop: 50,
   },
+  nowTravelTitle: {
+    color: 'black',
+    fontWeight: '200',
+    fontSize: 18,
+    marginLeft: 10,
+  },
   nowTravelContent: {
+    //width: (screenWidth * 80) / 100,
     width: (screenWidth * 80) / 100,
     height: (screenHeight * 18) / 100,
-    backgroundColor: '#aaaaaa',
+    backgroundColor: '#f77f00',
     borderRadius: 26,
     marginTop: 10,
   },
   travelContentTitle: {
-    start: 220,
-    marginTop: 20,
+    start: 30,
+    marginTop: 18,
     height: (screenHeight * 4) / 100,
     //backgroundColor: '#aaaaaa',
   },
   travelContentDay: {
-    start: 140,
-    marginTop: 10,
+    marginTop: 6,
   },
   travelTitleText: {
     color: 'black',
-    fontWeight: '200',
+    fontWeight: '100',
     fontSize: 18,
   },
-  travelContentText: {},
+  travelContentText: {
+    start: 120,
+  },
+  historyTravelWrapper: {
+    height: 310,
+    top: 100,
+  },
   historyTravelContainer: {
-    top: 220,
     // flexDirection: 'column',
     // justifyContent: 'center',
     // alignItems: 'center',
     //position: 'absolute',
-    margintop: 20,
+    borderWidth: 2,
+    borderRadius: 16,
+    paddingVertical: 20,
+    paddingHorizontal: 14,
+    borderColor: '#C5C5C5',
     //left: '0%',
     //left: '10%',
   },
@@ -252,17 +281,27 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     //start: ,
   },
+  historyTravelTitle: {
+    alignSelf: 'center',
+    color: 'black',
+    fontWeight: '200',
+    fontSize: 18,
+  },
   historyTravelContent: {
-    backgroundColor: '#aaaaaa',
+    backgroundColor: '#eae2b7',
     width: 260,
     height: (screenHeight * 14) / 100,
     borderRadius: 14,
     marginTop: 20,
+    marginBottom: 10,
   },
   travelContentHistory: {
     flexDirection: 'row',
+    marginTop: 6,
+  },
+  historyContentText: {
+    start: 70,
     marginTop: 10,
-    start: 80,
   },
 });
 
