@@ -21,9 +21,6 @@ public class PlaceServiceImpl implements PlaceService {
     private final PlaceRepository placeRepository;
     private final VisitRepository visitRepository;
 
-    //AWS S3
-    private final AmazonS3 awsS3Client;
-    private final String bucketName = "pijja";
 
     @Override
     @Transactional(readOnly = true)
