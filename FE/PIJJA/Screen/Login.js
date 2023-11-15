@@ -125,7 +125,7 @@ const Login = ({ navigation }) => {
         style={[
           styles.img,
           {
-            top: screenHeight * 0.1,
+            top: screenHeight * 0.22,
           },
         ]}
       />
@@ -167,7 +167,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     resizeMode: 'stretch',
     width: screenWidth * 0.52,
-    height: screenHeight * 0.36,
+    height: screenHeight * 0.2,
   },
 });
 
