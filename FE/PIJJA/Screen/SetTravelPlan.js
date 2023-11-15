@@ -15,6 +15,7 @@ import {
   Alert,
   SafeAreaView,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import JoinGroup from './JoinGroup.js';
 import CreateScheduleMap from './CreateScheduleMap.js';
@@ -24,6 +25,7 @@ import { Calendar, LocaleConfig } from 'react-native-calendars';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { rgbaColor } from 'react-native-reanimated/lib/typescript/reanimated2/Colors.js';
+import { ScreenHeight } from 'react-native-elements/dist/helpers/index.js';
 
 screenWidth = Dimensions.get('window').width;
 screenHeight = Dimensions.get('window').height;
@@ -236,6 +238,7 @@ const SetTravelPlan = ({ navigation, route }) => {
           color: '#000000',
           width: screenWidth * 0.5,
           alignSelf: 'center',
+          marginTop: screenHeight * 0.05,
         }}
         placeholder="여행 계획명을 입력하세요."
         placeholderTextColor={'#d3d3d3'}
@@ -250,27 +253,32 @@ const SetTravelPlan = ({ navigation, route }) => {
         }}
       >
         <View
-          style={{
-            flexDirection: 'row',
-          }}
-        >
-          <View>
-            <Text
-              style={{
-                width: screenWidth * 0.25,
-                alignItems: 'center',
-                marginLeft: '10%',
-                textAlign: 'center',
-                marginLeft: screenWidth * 0.1,
-              }}
-            >
-              시작일
-            </Text>
+        style={{
+          flexDirection: 'column',
+          justifyContent: 'center',
+          textAlign: 'center',
+        marginLeft: screenWidth * 0.2,
+        }}
+      >
+        <View>
+          <Text
+            style={{
+              width: screenWidth * 0.25,
+              alignItems: 'center',
+              marginLeft: '10%',
+              textAlign: 'center',
+              marginLeft: screenWidth * 0.1,
+              marginTop: screenHeight * 0.1,
+            }}
+          >
+            시작일
+          </Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <TouchableOpacity
               style={{
                 backgroundColor: '#FFFFFF',
                 borderRadius: pixelRatio * 5,
-                width: screenWidth * 0.25,
+                width: screenWidth * 0.4,  // 흰색 공간 확장
                 height: screenHeight * 0.05,
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -278,73 +286,81 @@ const SetTravelPlan = ({ navigation, route }) => {
               }}
               onPress={showDatePicker1}
             >
+              <Icon name="calendar" size={20} color="orange" />
               <Text
                 style={{
-                  color: '#000000',
-                  width: screenWidth * 0.25,
+                  color: 'orange',
+                  width: screenWidth * 0.3,  // 흰색 공간 확장
                   textAlign: 'center',
+                  marginLeft: screenWidth * 0.01,
                 }}
               >
-                {startTextContent}
+                {startTextContent ? startTextContent : ''}
               </Text>
             </TouchableOpacity>
           </View>
-          <View>
-            <Text
-              style={{
-                width: screenWidth * 0.25,
-                alignItems: 'center',
-                marginLeft: screenWidth * 0.3,
-              }}
-            >
-              종료일
-            </Text>
+        </View>
+
+        <View style={{ marginTop: screenHeight * 0.02 }}>
+          <Text
+            style={{
+              width: screenWidth * 0.25,
+              alignItems: 'center',
+              marginLeft: '10%',
+              textAlign: 'center',
+              marginLeft: screenWidth * 0.1,
+            }}
+          >
+            종료일
+          </Text>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             <TouchableOpacity
               style={{
                 backgroundColor: '#FFFFFF',
                 borderRadius: pixelRatio * 5,
-                width: screenWidth * 0.25,
+                width: screenWidth * 0.4,  // 흰색 공간 확장
                 height: screenHeight * 0.05,
                 flexDirection: 'row',
                 alignItems: 'center',
-                marginLeft: screenWidth * 0.3,
+                marginLeft: screenWidth * 0.1,
               }}
               onPress={showDatePicker2}
             >
+              <Icon name="calendar" size={20} color="orange" />
               <Text
                 style={{
-                  color: '#000000',
-                  width: screenWidth * 0.25,
+                  color: 'orange',
+                  width: screenWidth * 0.3,  // 흰색 공간 확장
                   textAlign: 'center',
+                  marginLeft: screenWidth * 0.01,
                 }}
               >
-                {endTextContent}
+                {endTextContent ? endTextContent : ''}
               </Text>
             </TouchableOpacity>
           </View>
         </View>
       </View>
+      </View>
 
       <TouchableOpacity
-        style={styles.travelPlanButton}
-        onPress={() => {
-          if (nextOk) {
-            transmitGroupStyle();
-          } else {
-            Alert.alert('여행 일정을 입력해주세요.');
-          }
-        }}
-      >
-        <Text
-          style={{
-            width: screenWidth * 0.3,
-            textAlign: 'center',
-            alignSelf: 'center',
-          }}
-        >
-          다음
-        </Text>
-      </TouchableOpacity>
+  style={{
+    ...styles.travelPlanButton,
+    top: screenHeight * 0.05,  // Adjust the top position as needed
+  }}
+  onPress={() => {
+    if (nextOk) {
+      transmitGroupStyle();
+    } else {
+      Alert.alert('여행 일정을 입력해주세요.');
+    }
+  }}
+>
+  <Text style={{ width: screenWidth * 0.3, textAlign: 'center' }}>
+    다음
+  </Text>
+</TouchableOpacity>
+
 
       <DateTimePickerModal
         isVisible={dateModelShow1}

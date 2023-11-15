@@ -23,7 +23,9 @@
     "npm": "^10.2.3",
     "react": "18.1.0",
     "react-native": "0.70.0",
+    "react-native-datepicker": "^1.7.2",
     "react-native-device-info": "^10.11.0",
+    "react-native-elements": "^3.4.3",
     "react-native-gesture-handler": "^2.13.4",
     "react-native-link": "^4.1.0",
     "react-native-modal-datetime-picker": "^17.1.0",
@@ -32,7 +34,7 @@
     "react-native-safe-area-context": "^4.7.4",
     "react-native-screens": "^3.27.0",
     "react-native-snap-carousel": "^4.0.0-beta.6",
-    "react-native-vector-icons": "^10.0.1"
+    "react-native-vector-icons": "^10.0.2"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
