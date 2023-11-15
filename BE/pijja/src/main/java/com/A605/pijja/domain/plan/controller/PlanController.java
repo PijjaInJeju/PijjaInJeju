@@ -48,5 +48,10 @@ public class PlanController {
         return planService.addRecommendPlace(requestDto);
     }
 
+    @PostMapping("/completeMakePlan")
+    public void completeMakePlan(){
+
+    }
+
 
 }

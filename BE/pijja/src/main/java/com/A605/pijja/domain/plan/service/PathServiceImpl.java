@@ -60,116 +60,13 @@ public class PathServiceImpl implements PathService {
     }
     @Override
     @Transactional
-    public GetRouteResponseDto kruskal2(PriorityQueue<KruskalRequestDto> pq,List<GetRouteTmapRequestDto> requestDto){
-        int totalDistance=0;
-        int totalTime=0;
-        ArrayList<PlaceDto> placeList=new ArrayList<>();
-        ArrayList<Integer>[] arr=new ArrayList[requestDto.size()];
-        ArrayList<PathDto> pathList=new ArrayList<>();
-        HashMap<Long,Integer> map=new HashMap<>(); //map<placeId,idx>
-        HashMap<Integer,Long> map2=new HashMap<>(); //map<placeId,idx>
-        ObjectMapper objectMapper=new ObjectMapper();
-        int[] parent=new int[requestDto.size()];
-        for(int i=0;i<requestDto.size();i++){
-            arr[i]=new ArrayList<>();
-            if(!map.containsKey(requestDto.get(i).getId())){
-                map.put(requestDto.get(i).getId(),i);
-                map2.put(i,requestDto.get(i).getId());
-                parent[i]=i;
-            }
-        }
-        while(!pq.isEmpty()){
-            KruskalRequestDto now=pq.poll();
-            int place1=map.get(now.getPlace1());
-            int place2=map.get(now.getPlace2());
-
-            if(find(parent[place1],parent)!=find(parent[place2],parent)){
-
-                arr[place1].add(place2);
-                arr[place2].add(place1);
-                union(place1,place2,parent);
-                totalDistance+=now.getDist();
-                totalTime+=now.getTime();
-
-            }
-        }
-
-        ArrayDeque<Integer> q=new ArrayDeque<>();
-        int[] ch=new int[requestDto.size()];
-
-        for(int i=0;i<requestDto.size();i++){
-
-            if(arr[i].size()==1){
-                q.add(i);
-                break;
-            }
-        }
-
-        while(!q.isEmpty()){
-            int now=q.poll();
-            Place place =placeRepository.findById(map2.get(now)).get();
-            placeList.add(PlaceDto.builder()
-                    .id(place.getId())
-                    .name(place.getTitle())
-                    .latitude(place.getLatitude())
-                    .longitude(place.getLongitude()).build());
-
-            ch[now]=1;
-            for(int i=0;i<arr[now].size();i++){
-                int next=arr[now].get(i);
-                if(ch[next]==0){
-                    q.add(next);
-                }
-            }
-        }
-        for(int j=0;j<placeList.size()-1;j++){
-            Long startPlace=placeList.get(j).getId();
-            Long endPlace=placeList.get(j+1).getId();
-            Path path=pathRepository.findByStartPlaceAndEndPlace(startPlace,endPlace);
-            //시작place랑 endplace가 바뀌면 거꾸로
-
-            try {
-                JsonNode pathJson = objectMapper.readTree(path.getPath());
-                if(path.getStartPlace().getId()==endPlace){
-                    for (int i = pathJson.size()-1; i >= 0; i--) {
-                        float latitude = pathJson.at("/" + i + "/latitude").floatValue();
-                        float longitude = pathJson.at("/" + i + "/longitude").floatValue();
-                        pathList.add(PathDto.builder()
-                                .latitude(latitude)
-                                .longitude(longitude).build());
-                    }
-                }else {
-                    for (int i = 0; i < pathJson.size(); i++) {
-                        float latitude = pathJson.at("/" + i + "/latitude").floatValue();
-                        float longitude = pathJson.at("/" + i + "/longitude").floatValue();
-                        pathList.add(PathDto.builder()
-                                .latitude(latitude)
-                                .longitude(longitude).build());
-                    }
-                }
-            } catch (Exception e) {
-                // JSON 파싱 오류 처리
-            }
-        }
-
-        return GetRouteResponseDto.builder()
-                .placeList(placeList)
-                .totalTime(totalTime)
-                .totalDistance(totalDistance)
-                .pathList(pathList).build();
-    }
-
-    @Override
-    @Transactional
     public GetRouteResponseDto kruskal(PriorityQueue<KruskalRequestDto> pq,List<GetRouteTmapRequestDto> requestDto){
         int totalDistance=0;
         int totalTime=0;
         ArrayList<PlaceDto> placeList=new ArrayList<>();
         ArrayList<Integer>[] arr=new ArrayList[requestDto.size()];
-        ArrayList<PathDto> pathList=new ArrayList<>();
         HashMap<Long,Integer> map=new HashMap<>(); //map<placeId,idx>
         HashMap<Integer,Long> map2=new HashMap<>(); //map<placeId,idx>
-        ObjectMapper objectMapper=new ObjectMapper();
         int[] parent=new int[requestDto.size()];
         for(int i=0;i<requestDto.size();i++){
             arr[i]=new ArrayList<>();
@@ -223,42 +120,14 @@ public class PathServiceImpl implements PathService {
                 }
             }
         }
-        for(int j=0;j<placeList.size()-1;j++){
-            Long startPlace=placeList.get(j).getId();
-            Long endPlace=placeList.get(j+1).getId();
-            Path path=pathRepository.findByStartPlaceAndEndPlace(startPlace,endPlace);
-            //시작place랑 endplace가 바뀌면 거꾸로
-
-            try {
-                JsonNode pathJson = objectMapper.readTree(path.getPath());
-                if(path.getStartPlace().getId()==endPlace){
-                    for (int i = pathJson.size()-1; i >= 0; i--) {
-                        float latitude = pathJson.at("/" + i + "/latitude").floatValue();
-                        float longitude = pathJson.at("/" + i + "/longitude").floatValue();
-                        pathList.add(PathDto.builder()
-                                .latitude(latitude)
-                                .longitude(longitude).build());
-                    }
-                }else {
-                    for (int i = 0; i < pathJson.size(); i++) {
-                        float latitude = pathJson.at("/" + i + "/latitude").floatValue();
-                        float longitude = pathJson.at("/" + i + "/longitude").floatValue();
-                        pathList.add(PathDto.builder()
-                                .latitude(latitude)
-                                .longitude(longitude).build());
-                    }
-                }
-            } catch (Exception e) {
-                // JSON 파싱 오류 처리
-            }
-        }
 
         return GetRouteResponseDto.builder()
                 .placeList(placeList)
                 .totalTime(totalTime)
                 .totalDistance(totalDistance)
-                .pathList(pathList).build();
+                .build();
     }
+
     public int find(int x,int[] parent){
         if(x==parent[x]){
             return x;
