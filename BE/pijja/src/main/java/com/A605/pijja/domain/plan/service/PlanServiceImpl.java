@@ -16,6 +16,7 @@ import com.A605.pijja.domain.plan.entity.Path;
 import com.A605.pijja.domain.plan.entity.Plan;
 import com.A605.pijja.domain.plan.repository.*;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -52,6 +53,9 @@ public class PlanServiceImpl implements PlanService {
 
         for(int i=0;i< requestDto.getPlaceList().size();i++){
             Long startPlaceId=requestDto.getPlaceList().get(i).getId();
+            if(day>=requestDto.getTotalDay() && !map.containsKey(startPlaceId)){
+                continue;
+            }
             if(!map.containsKey(startPlaceId)) {
                 map.put(startPlaceId, day);
                 day+=1;
@@ -66,8 +70,25 @@ public class PlanServiceImpl implements PlanService {
                 }
             }
         }
+        System.out.println(map);
 
+        for(int i=0;i<requestDto.getPlaceList().size();i++){
+            Long nowPlaceId=requestDto.getPlaceList().get(i).getId();
+            int targetDay=0;
+            double min=Double.MAX_VALUE;
+            if(!map.containsKey(nowPlaceId)){
+                for(Long key:map.keySet()){
+                    double distance=pathRepository.findByStartPlaceAndEndPlace(nowPlaceId,key).getDistance();
+                    if(min>distance){
+                        min=distance;
+                        targetDay=map.get(key);
+                    }
+                }
+                map.put(nowPlaceId,targetDay);
+            }
 
+        }
+        System.out.println(map);
         for(int i=0;i<requestDto.getPlaceList().size();i++){
 
             int nowDay=map.get(requestDto.getPlaceList().get(i).getId());
@@ -124,7 +145,7 @@ public class PlanServiceImpl implements PlanService {
                 .dayPlanList(new ArrayList<>())
                 .build();
         planRepository.save(plan);
-
+        Long planId=plan.getId();
 
         List<PlanGroupingResponseDto> planGroupingResponse = planGrouping(requestDto);
 
@@ -198,11 +219,98 @@ public class PlanServiceImpl implements PlanService {
         }
 
         return MakePlanResonseDto.builder()
+                .planId(planId)
                 .name(requestDto.getName())
                 .companionId(requestDto.getCompanionId())
                 .planList(planList)
                 .build();
 
+    }
+
+    @Override
+    @Transactional
+    public CompleteMakePlanResonseDto completeMakePlan(CompleteMakePlanRequestDto requestDto) throws JsonProcessingException {
+        Companion companion=companionRepository.findById(requestDto.getCompanionId()).get();
+        Plan plan=planRepository.findById(requestDto.getPlanId()).get();
+        List<CompleteMakePlanResonseDto.PlanDto> responsePlanList=new ArrayList<>();
+        ObjectMapper objectMapper=new ObjectMapper();
+
+        List<MakePlanResonseDto.PlanDto> planList = requestDto.getPlanList();
+
+
+        for(int i=0;i<planList.size();i++){ //여기서 i가 day임
+            List<MakePlanResonseDto.PlaceDto> data=planList.get(i).getData();
+            List<CompleteMakePlanResonseDto.PlaceDto> responseData=new ArrayList<>();
+            ArrayList<CompleteMakePlanResonseDto.PathDto> pathList=new ArrayList<>();
+            for(int j=0;j<data.size()-1;j++){
+                Long startPlaceId=data.get(j).getId();
+                Long endPlaceId=data.get(j+1).getId();
+                Path path=pathRepository.findByStartPlaceAndEndPlace(startPlaceId,endPlaceId);
+
+                try {
+                    JsonNode pathJson = objectMapper.readTree(path.getPath());
+                    if(path.getStartPlace().getId()==endPlaceId){ //거꾸로
+                        for (int k = pathJson.size()-1; k >= 0; k--) {
+                            float latitude = pathJson.at("/" + k + "/latitude").floatValue();
+                            float longitude = pathJson.at("/" + k + "/longitude").floatValue();
+                            pathList.add(CompleteMakePlanResonseDto.PathDto.builder()
+                                    .latitude(latitude)
+                                    .longitude(longitude).build());
+                        }
+                    }else {
+                        for (int k = 0; k < pathJson.size(); k++) {
+                            float latitude = pathJson.at("/" + k + "/latitude").floatValue();
+                            float longitude = pathJson.at("/" + k + "/longitude").floatValue();
+                            pathList.add(CompleteMakePlanResonseDto.PathDto.builder()
+                                    .latitude(latitude)
+                                    .longitude(longitude).build());
+                        }
+                    }
+                } catch (Exception e) {
+                    // JSON 파싱 오류 처리
+                }
+
+            }
+            String jsonPath=objectMapper.writeValueAsString(pathList);
+            DayPlan dayPlan= DayPlan.builder()
+                    .day(i+1)
+                    .path(jsonPath)
+                    .dayPlanPlaceList(new ArrayList<>())
+                    .plan(plan)
+                    .build();
+            dayPlanRepository.save(dayPlan);
+            plan.addPlanAndDayPlan(dayPlan);
+            for(int j=0;j<data.size();j++){
+                responseData.add(CompleteMakePlanResonseDto.PlaceDto.builder()
+                        .id(data.get(j).getId())
+                        .address(data.get(j).getAddress())
+                        .title(data.get(j).getTitle())
+                        .build());
+                Place place=placeRepository.findById(data.get(j).getId()).get();
+                DayPlanPlace dayPlanPlace=DayPlanPlace.builder()
+                        .dayPlan(dayPlan)
+                        .place(place)
+                        .orderNumber(j)
+                        .build();
+                dayPlanPlaceRepository.save(dayPlanPlace);
+                dayPlan.addDayPlan(dayPlanPlace);
+                place.addDayPlanPlace(dayPlanPlace);
+            }
+            responsePlanList.add(CompleteMakePlanResonseDto.PlanDto.builder()
+                    .day(i+1)
+                    .data(responseData)
+                    .pathList(pathList)
+                    .build());
+        }
+
+
+
+        return CompleteMakePlanResonseDto.builder()
+                .planId(plan.getId())
+                .companionId(companion.getId())
+                .name(requestDto.getName())
+                .planList(responsePlanList)
+                .build();
     }
 
     @Override
@@ -263,6 +371,7 @@ public class PlanServiceImpl implements PlanService {
             }
         }
         return MakePlanResonseDto.builder()
+                .planId(requestDto.getPlanId())
                 .name(requestDto.getName())
                 .companionId(requestDto.getCompanionId())
                 .planList(planRequestList)
