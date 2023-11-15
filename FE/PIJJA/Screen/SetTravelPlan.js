@@ -93,7 +93,7 @@ const SetTravelPlan = ({ navigation, route }) => {
           memberId: userData.backEndId,
         },
         response => {
-          //console.log('응답 데이터2 id: ' + response.data.id);
+          console.log('응답 데이터2 id: ' + response.data.id);
           navigation.navigate('CreateScheduleMap', {
             companionId: response.data.id,
             name: titileText,
