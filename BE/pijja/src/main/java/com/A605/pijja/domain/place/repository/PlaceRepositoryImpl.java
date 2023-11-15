@@ -15,4 +15,10 @@ public class PlaceRepositoryImpl implements PlaceRepositoryCustom {
     private final JPAQueryFactory queryFactory;
     private QPlace place = new QPlace("place");
 
+    @Override
+    public List<Place> searchPlace(String title) {
+        return queryFactory.selectFrom(place)
+                .where(place.title.contains(title))
+                .fetch();
+    }
 }

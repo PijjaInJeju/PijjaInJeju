@@ -1,13 +1,14 @@
 package com.A605.pijja.domain.place.service;
 
+import com.A605.pijja.domain.place.dto.request.SearchPlaceRequestDto;
 import com.A605.pijja.domain.place.dto.response.AllPlacesResponseDto;
 import com.A605.pijja.domain.place.dto.response.PlaceDetailResponseDto;
+import com.A605.pijja.domain.place.dto.response.SearchPlaceResponseDto;
 import com.A605.pijja.domain.place.entity.Place;
 import com.A605.pijja.domain.place.entity.Visit;
 import com.A605.pijja.domain.place.repository.PlaceRepository;
 import com.A605.pijja.domain.place.repository.VisitRepository;
-import com.amazonaws.services.s3.AmazonS3;
-import lombok.Getter;
+import com.A605.pijja.domain.plan.dto.request.SearchPlaceFromTmapRequestDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,22 @@ public class PlaceServiceImpl implements PlaceService {
     private final PlaceRepository placeRepository;
     private final VisitRepository visitRepository;
 
+
+    @Override
+    @Transactional(readOnly = true)
+    public List<SearchPlaceResponseDto> searchPlace(SearchPlaceRequestDto requestDto) {
+        List<SearchPlaceResponseDto> response=new ArrayList<>();
+        List<Place> repositoryResponse=placeRepository.searchPlace(requestDto.getTitle());
+        for(int i=0;i<repositoryResponse.size();i++){
+            Place place=repositoryResponse.get(i);
+            response.add(SearchPlaceResponseDto.builder()
+                    .id(place.getId())
+                    .address(place.getAddress())
+                    .title(place.getTitle())
+                    .build());
+        }
+        return response;
+    }
 
     @Override
     @Transactional(readOnly = true)
@@ -104,4 +121,5 @@ public class PlaceServiceImpl implements PlaceService {
 
         return responseDto;
     }
+
 }
