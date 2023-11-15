@@ -475,7 +475,7 @@ const CreateScheduleMap = ({ navigation, route }) => {
   const sheetRef = useRef(null);
   const mapRef = useRef(null);
 
-  console.log("CreateScheduleMap : " , route.params);
+  console.log('CreateScheduleMap : ', route.params);
 
   // variables
   const data = useMemo(
@@ -780,31 +780,31 @@ const CreateScheduleMap = ({ navigation, route }) => {
               marginTop: '1%',
             }}
             onPress={() => {
-                console.log('일정 만들기');
-                let T = {
-                    totalDay: route.params.totalDay,
-                    name: route.params.name,
-                    companionId: route.params.companionId,
-                    placeList: scheduleList.map(item => {
-                        //console.log("item id :", item.id);
-                        return { id: item.id };
-                    }),
-                };
-                console.log(T);
-                Rest(
-                    "/api/plan",
-                    "POST",
-                    T,
-                    (res) => {
-                        console.log("CreateScheduleMap 일정생성 Rest 응답 : " , res);
-                        navigation.push('RecommendSchedule', {
-                            scheduleList: res,
-                        });
-                    },
-                    (error) => {
-                        console.error(error);
-                    }
-                )
+              console.log('일정 만들기');
+              let T = {
+                totalDay: route.params.totalDay,
+                name: route.params.name,
+                companionId: route.params.companionId,
+                placeList: scheduleList.map(item => {
+                  //console.log("item id :", item.id);
+                  return { id: item.id };
+                }),
+              };
+              console.log(T);
+              Rest(
+                '/api/plan',
+                'POST',
+                T,
+                res => {
+                  console.log('CreateScheduleMap 일정생성 Rest 응답 : ', res);
+                  navigation.push('RecommendSchedule', {
+                    scheduleList: res,
+                  });
+                },
+                error => {
+                  console.error(error);
+                },
+              );
             }}
           >
             <Icon name="calendar" size={closeSize} color="#f77f00" />

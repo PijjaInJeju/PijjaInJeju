@@ -22,27 +22,27 @@ public class RecommendRepositoryImpl implements RecommendRepositoryCustom {
         List<Place> result;
         if("가족".equals(mate)){
             result = queryFactory.selectFrom(place)
-                    .where(place.tag.eq(tag).and(companion.mate.eq(mate)))
+                    .where(place.tag.eq(tag).and(place.visit.family.eq(1)))
                     .orderBy(place.visit.family.desc())
                     .fetch();
         } else if("혼자".equals(mate)){
             result = queryFactory.selectFrom(place)
-                    .where(place.tag.eq(tag).and(companion.mate.eq(mate)))
+                    .where(place.tag.eq(tag).and(place.visit.alone.eq(1)))
                     .orderBy(place.visit.alone.desc())
                     .fetch();
         } else if("친구".equals(mate)){
             result = queryFactory.selectFrom(place)
-                    .where(place.tag.eq(tag).and(companion.mate.eq(mate)))
+                    .where(place.tag.eq(tag).and(place.visit.friend.eq(1)))
                     .orderBy(place.visit.friend.desc())
                     .fetch();
         } else if("연인".equals(mate)){
             result = queryFactory.selectFrom(place)
-                    .where(place.tag.eq(tag).and(companion.mate.eq(mate)))
+                    .where(place.tag.eq(tag).and(place.visit.couple.eq(1)))
                     .orderBy(place.visit.couple.desc())
                     .fetch();
         } else if("아이".equals(mate)){
             result = queryFactory.selectFrom(place)
-                    .where(place.tag.eq(tag).and(companion.mate.eq(mate)))
+                    .where(place.tag.eq(tag).and(place.visit.kid.eq(1)))
                     .orderBy(place.visit.kid.desc())
                     .fetch();
         } else {

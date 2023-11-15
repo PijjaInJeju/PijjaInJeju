@@ -25,6 +25,11 @@ import CheckTripPlan from './CheckTripPlan.js';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 const pijjaTab = createBottomTabNavigator();
+// options:{
+//   style ={
+//     backgroundColor:"#red"
+//   }
+// }
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
@@ -45,15 +50,13 @@ const MainScreen = ({ navigation }) => {
   const [groupList, setGroupList] = useState([
     {
       id: 1,
-      schedule:
-      {
+      schedule: {
         title: '1번',
       },
     },
     {
       id: 2,
-      schedule:
-      {
+      schedule: {
         title: '2번',
       },
     },
@@ -108,9 +111,9 @@ const MainScreen = ({ navigation }) => {
         <item.screen data={item.data} />
       </View>
     );
-  }
-  
-  const [ activeSlide, setActiveSlide ] = useState();
+  };
+
+  const [activeSlide, setActiveSlide] = useState();
   const activeRef = useRef(1);
   return (
     <SafeAreaView>
@@ -163,6 +166,16 @@ const Main = () => {
       initialRouteName="홈"
       screenOptions={{
         headerShown: false,
+        // color: 'red',
+        // tabBarStyle: {
+        //   position: 'absolute',
+        //   backgroundColor: 'transparent',
+        //   // top: 610,
+        //   width: '100%',
+        //   //start: 0,
+        //   //height: 50,
+        // },
+        tabBarActiveTintColor: '#fcbf49',
       }}
     >
       <pijjaTab.Screen
@@ -176,6 +189,15 @@ const Main = () => {
               size={30}
             ></MaterialCommunityIcons>
           ),
+          tabBarStyle: {
+            position: 'absolute',
+            backgroundColor: 'transparent',
+            // top: 610,
+            width: '100%',
+            //start: 0,
+            //height: 50,
+            color: 'red',
+          },
         }}
       />
       <pijjaTab.Screen
