@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Pressable,
+  Alert, // 추가: Alert 사용을 위한 import
 } from 'react-native';
 
 import SetTravelPlan from './SetTravelPlan.js';
@@ -40,30 +41,43 @@ const GroupSetting = ({ navigation }) => {
 
   const setTravelStyle = () => {
     let setStyle = [];
-    let setStyle2 = '';
     let setMate = '';
+
+    // 여행 목적 선택 여부 확인
+    if (travelTargetBtn.every(btn => btn === 0)) {
+      Alert.alert('여행의 주 목적을 선택해주세요.');
+      return;
+    }
+
+    // 여행 스타일 선택 여부 확인
+    if (travelStyleBtn.every(btn => btn === 0)) {
+      Alert.alert('여행 스타일을 선택해주세요.');
+      return;
+    }
+
+    // 여행 메이트 선택 여부 확인
+    if (travelMateBtn.every(btn => btn === 0)) {
+      Alert.alert('함께 여행할 메이트를 선택해주세요.');
+      return;
+    }
 
     let s_id = 0;
     for (let i = 0; i < 3; i++) {
-      if (travelTargetBtn[i] != 0) {
+      if (travelTargetBtn[i] !== 0) {
         setStyle[s_id] = travelTargets[i];
         s_id += 1;
-      } else {
-        //setStyle[i] = '';
       }
     }
 
     for (let i = 0; i < 4; i++) {
-      if (travelStyleBtn[i] != 0) {
+      if (travelStyleBtn[i] !== 0) {
         setStyle[s_id] = travelStyles[i];
         s_id += 1;
-      } else {
-        //setStyle[i + 3] = '';
       }
     }
 
     for (let i = 0; i < 5; i++) {
-      if (travelMateBtn[i] != 0) {
+      if (travelMateBtn[i] !== 0) {
         setMate = travelMates[i];
       }
     }
@@ -78,6 +92,7 @@ const GroupSetting = ({ navigation }) => {
       travelMate: travelMate,
     });
   };
+
   return (
     <View style={styles.container}>
       <View style={styles.travelStyleContent}>
@@ -98,10 +113,9 @@ const GroupSetting = ({ navigation }) => {
                   travelTargetBtn[1],
                   travelTargetBtn[2],
                 ]);
-                //setTravelStyle();
               }}
             >
-              <Text /**style={styles.tasteText}**/>먹거리</Text>
+              <Text>먹거리</Text>
             </Pressable>
             <Pressable
               style={({ pressed }) => [
@@ -280,14 +294,10 @@ const GroupSetting = ({ navigation }) => {
           </ScrollView>
         </View>
       </View>
-      <View>
-        <TouchableOpacity></TouchableOpacity>
-      </View>
       <TouchableOpacity
         style={styles.buttonNext}
         onPress={() => {
           setTravelStyle();
-          //navigation.navigate('CreateScheduleMap');
         }}
       >
         <Text style={styles.nextBtnText}>다음</Text>
