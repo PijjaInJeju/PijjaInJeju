@@ -45,7 +45,6 @@ const CheckTripPlan = () => {
   //DATA[0].data = route.params.scheduleList;
   //console.log(route.params.scheduleList);
 
-  const [groupId, setGroupId] = useState(0);
   const [nowPlanData, setNowPlanData] = useState([]);
   const [historyPlanData, setHistoryPlanData] = useState([]);
 
@@ -236,9 +235,10 @@ const styles = StyleSheet.create({
     //width: (screenWidth * 80) / 100,
     width: (screenWidth * 80) / 100,
     height: (screenHeight * 18) / 100,
-    backgroundColor: '#f77f00',
+    backgroundColor: '#fcbf49',
     borderRadius: 26,
     marginTop: 10,
+    color: '#747474',
   },
   travelContentTitle: {
     start: 30,
@@ -302,6 +302,7 @@ const styles = StyleSheet.create({
   historyContentText: {
     start: 70,
     marginTop: 10,
+    color: '#747474',
   },
 });
 
