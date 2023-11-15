@@ -15,6 +15,7 @@ public interface PlanService {
     List<PlanGroupingResponseDto> planGrouping(MakePlanRequestDto requestDto);
     void combinationPlan(List<MakePlanRequestDto.PlaceDto> requestDto, int[] result, int cnt, int start);
     MakePlanResonseDto makePlan(MakePlanRequestDto requestDto) throws JsonProcessingException;
+    MakePlanResonseDto completeMakePlan(MakePlanRequestDto requestDto) throws JsonProcessingException;
 
     MakePlanResonseDto addRecommendPlace(AddRecommendPlaceRequestDto requestDto);
 

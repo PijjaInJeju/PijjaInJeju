@@ -81,7 +81,7 @@ public class PathServiceImpl implements PathService {
             int place1=map.get(now.getPlace1());
             int place2=map.get(now.getPlace2());
 
-            if(find(parent[place1],parent)!=find(parent[place2],parent)){
+            if(find(place1,parent)!=find(place2,parent)){
 
                 arr[place1].add(place2);
                 arr[place2].add(place1);
@@ -142,9 +142,9 @@ public class PathServiceImpl implements PathService {
             return ;
         }
         if(parentA<parentB){
-            parent[parentB]=find(parentA,parent);
+            parent[parentB]=find(a,parent);
         }else{
-            parent[parentA]=find(parentB,parent);
+            parent[parentA]=find(b,parent);
         }
     }
 

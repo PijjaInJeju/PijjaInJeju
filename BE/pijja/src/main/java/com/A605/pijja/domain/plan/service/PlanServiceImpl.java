@@ -52,6 +52,9 @@ public class PlanServiceImpl implements PlanService {
 
         for(int i=0;i< requestDto.getPlaceList().size();i++){
             Long startPlaceId=requestDto.getPlaceList().get(i).getId();
+            if(day>=requestDto.getTotalDay() && !map.containsKey(startPlaceId)){
+                continue;
+            }
             if(!map.containsKey(startPlaceId)) {
                 map.put(startPlaceId, day);
                 day+=1;
@@ -66,8 +69,25 @@ public class PlanServiceImpl implements PlanService {
                 }
             }
         }
+        System.out.println(map);
 
+        for(int i=0;i<requestDto.getPlaceList().size();i++){
+            Long nowPlaceId=requestDto.getPlaceList().get(i).getId();
+            int targetDay=0;
+            double min=Double.MAX_VALUE;
+            if(!map.containsKey(nowPlaceId)){
+                for(Long key:map.keySet()){
+                    double distance=pathRepository.findByStartPlaceAndEndPlace(nowPlaceId,key).getDistance();
+                    if(min>distance){
+                        min=distance;
+                        targetDay=map.get(key);
+                    }
+                }
+                map.put(nowPlaceId,targetDay);
+            }
 
+        }
+        System.out.println(map);
         for(int i=0;i<requestDto.getPlaceList().size();i++){
 
             int nowDay=map.get(requestDto.getPlaceList().get(i).getId());
@@ -203,6 +223,13 @@ public class PlanServiceImpl implements PlanService {
                 .planList(planList)
                 .build();
 
+    }
+
+    @Override
+    @Transactional
+    public MakePlanResonseDto completeMakePlan(MakePlanRequestDto requestDto) throws JsonProcessingException {
+
+        return null;
     }
 
     @Override
