@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 import 'react-native-gesture-handler';
-import React,{useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { createDrawerNavigator } from '@react-navigation/drawer';
@@ -22,6 +22,7 @@ import SetTravelPlan from './Screen/SetTravelPlan.js';
 import Gallery from './Screen/Gallery.js';
 import JoinGroup from './Screen/JoinGroup.js';
 import CheckTripPlan from './Screen/CheckTripPlan.js';
+import CheckTripPlanDetail from './Screen/CheckTripPlanDetail.js';
 //import DeviceInfo from 'react-native-device-info';
 
 //DeviceInfo.setPreferredOrientations(['ko-KR']);
@@ -83,15 +84,9 @@ const App = () => {
         //   headerRight: undefined,
         // }}
       >
-        <Stack.Screen
-          name="Login"
-          component={Login}
-        />
+        <Stack.Screen name="Login" component={Login} />
         {/* <Stack.Screen name="MakeGroup" component={MakeGroup} /> */}
-        <Stack.Screen
-          name="Main"
-          component={Main}
-        />
+        <Stack.Screen name="Main" component={Main} />
         <Stack.Screen name="InviteMember" component={InviteMember} />
         <Stack.Screen name="GroupSetting" component={GroupSetting} />
         <Stack.Screen name="Gallery" component={Gallery} />
@@ -100,6 +95,10 @@ const App = () => {
         <Stack.Screen name="RecommendSchedule" component={RecommendSchedule} />
         <Stack.Screen name="SetTravelPlan" component={SetTravelPlan} />
         <Stack.Screen name="CheckTripPlan" component={CheckTripPlan} />
+        <Stack.Screen
+          name="CheckTripPlanDetail"
+          component={CheckTripPlanDetail}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

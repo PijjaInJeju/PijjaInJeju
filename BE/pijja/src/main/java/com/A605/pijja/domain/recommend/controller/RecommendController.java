@@ -1,12 +1,10 @@
 package com.A605.pijja.domain.recommend.controller;
 
+import com.A605.pijja.domain.recommend.dto.request.RecommendRequestDto;
 import com.A605.pijja.domain.recommend.dto.response.RecommendResponseDto;
 import com.A605.pijja.domain.recommend.service.RecommendService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -19,5 +17,10 @@ public class RecommendController {
     @GetMapping("/{tag}/{mate}")
     public List<RecommendResponseDto> recommendPlaces(@PathVariable String tag, @PathVariable String mate){
         return recommendService.recommendPlace(tag, mate);
+    }
+
+    @GetMapping
+    public List<RecommendResponseDto> recommendPlacesDistances(@RequestBody RecommendRequestDto recommendRequestDto){
+        return recommendService.recommendPlaceDistances(recommendRequestDto);
     }
 }
