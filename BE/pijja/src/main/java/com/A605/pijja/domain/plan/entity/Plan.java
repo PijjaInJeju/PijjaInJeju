@@ -43,5 +43,8 @@ public class Plan {
         dayPlan.assignPlan(this);
     }
 
-
+    public void assignCompanion(Companion companion){
+        this.companion=companion;
+        companion.assignPlan(this);
+    }
 }
