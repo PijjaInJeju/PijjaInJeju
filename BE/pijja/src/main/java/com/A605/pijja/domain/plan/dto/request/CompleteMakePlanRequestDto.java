@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
 public class CompleteMakePlanRequestDto {
-
+    private Long planId;
     private String name;
     private Long companionId;
     private List<MakePlanResonseDto.PlanDto> planList;

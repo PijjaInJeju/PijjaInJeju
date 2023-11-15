@@ -1,6 +1,7 @@
 package com.A605.pijja.domain.plan.controller;
 
 import com.A605.pijja.domain.plan.dto.request.*;
+import com.A605.pijja.domain.plan.dto.response.CompleteMakePlanResonseDto;
 import com.A605.pijja.domain.plan.dto.response.MakePlanResonseDto;
 import com.A605.pijja.domain.plan.dto.response.PlanGroupingResponseDto;
 import com.A605.pijja.domain.plan.dto.response.PlanListResponseDto;
@@ -46,8 +47,8 @@ public class PlanController {
     }
 
     @PostMapping("/completeMakePlan")
-    public MakePlanResonseDto completeMakePlan(@RequestBody CompleteMakePlanRequestDto requestDto){
-        return null;
+    public CompleteMakePlanResonseDto completeMakePlan(@RequestBody CompleteMakePlanRequestDto requestDto) throws JsonProcessingException {
+        return planService.completeMakePlan(requestDto);
     }
 
 
