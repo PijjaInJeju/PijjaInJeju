@@ -8,5 +8,5 @@ import lombok.*;
 @AllArgsConstructor
 public class RecommendRequestDto {
     private Long departures_id, arrivals_id, companion_id;
-
+    private String mate, tag;
 }

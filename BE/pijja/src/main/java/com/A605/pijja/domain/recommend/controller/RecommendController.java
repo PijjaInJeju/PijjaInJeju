@@ -15,8 +15,12 @@ public class RecommendController {
     private final RecommendService recommendService;
 
     @GetMapping("/{tag}/{mate}")
-    public List<RecommendResponseDto> recommendPlaces(@PathVariable String tag, @PathVariable String mate, @RequestBody RecommendRequestDto recommendRequestDto){
-        return recommendService.recommendPlace(tag, mate, recommendRequestDto);
+    public List<RecommendResponseDto> recommendPlaces(@PathVariable String tag, @PathVariable String mate){
+        return recommendService.recommendPlace(tag, mate);
     }
 
+    @GetMapping
+    public List<RecommendResponseDto> recommendPlacesDistances(@RequestBody RecommendRequestDto recommendRequestDto){
+        return recommendService.recommendPlaceDistances(recommendRequestDto);
+    }
 }
