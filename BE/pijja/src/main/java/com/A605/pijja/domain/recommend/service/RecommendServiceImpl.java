@@ -1,12 +1,10 @@
 package com.A605.pijja.domain.recommend.service;
 
 import com.A605.pijja.domain.place.entity.Place;
-import com.A605.pijja.domain.plan.dto.response.PathDto;
 import com.A605.pijja.domain.plan.entity.Path;
 import com.A605.pijja.domain.plan.repository.PathRepository;
 import com.A605.pijja.domain.recommend.dto.request.RecommendRequestDto;
 import com.A605.pijja.domain.recommend.dto.response.RecommendResponseDto;
-import com.A605.pijja.domain.recommend.dto.response.travelPathDto;
 import com.A605.pijja.domain.recommend.mapper.PathMapper;
 import com.A605.pijja.domain.recommend.repository.RecommendRepository;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -15,7 +13,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,44 +46,32 @@ public class RecommendServiceImpl implements RecommendService {
 
     @Override
     public List<RecommendResponseDto> recommendPlaceDistances(RecommendRequestDto recommendRequestDto) {
-        System.out.println("들어옴");
         String tag = recommendRequestDto.getTag();
         String mate = recommendRequestDto.getMate();
+
         List<Place> candidatesList = calculateDistanceToTravelDestination(recommendRequestDto);
         List<Place> recommendPlaces = recommendRepository.findRecommendListByTheme(tag, mate);
 
-        System.out.println("확인");
-        System.out.println(candidatesList.toString());
         return combinationRecommendAndCanditatesList(recommendPlaces, candidatesList);
     }
-
-
-
-    @Override
-    public List<RecommendResponseDto> combinationRecommendAndCanditatesList(List<Place> placeList,  List<Place> candidatesList) {
-        List<Place> filteredPlaces = placeList.stream()
-                .filter(candidatesList::contains)
-                .collect(Collectors.toList());
-
-        return pathMapper.placeToRecommendResponseDto(filteredPlaces);
-    }
-
 
     @Override
     public List<Place> calculateDistanceToTravelDestination(RecommendRequestDto recommendRequestDto) {
         float maxLatitude, minLatitude, maxLongtitude, minLongtitude;
         List<Place> candidatesList = new ArrayList<>();
-        travelPathDto travelPathDto = findTravelPath(recommendRequestDto);
+        float[] travelPathDto = findTravelPath(recommendRequestDto);
 
-        maxLatitude = travelPathDto.getMaxLatitude();
-        minLatitude = travelPathDto.getMinLatitude();
-        maxLongtitude = travelPathDto.getMaxLongitude();
-        minLongtitude = travelPathDto.getMinLongitude();
+        minLatitude = travelPathDto[0];
+        maxLatitude = travelPathDto[1];
+        minLongtitude = travelPathDto[2];
+        maxLongtitude = travelPathDto[3];
 
+        System.out.println("여기?");
         List<Place> allPlace = recommendRepository.findAll();
+        System.out.println("맞니?");
         for (Place place : allPlace) {
-            if(minLatitude <= place.getLongitude() && place.getLongitude() <= maxLatitude
-                    && minLongtitude <= place.getLongitude() && place.getLongitude() <= maxLongtitude){
+            if(minLongtitude <= place.getLongitude() && place.getLongitude() <= maxLongtitude
+                    && minLatitude <= place.getLatitude() && place.getLatitude() <= maxLatitude){
                 candidatesList.add(place);
             }
         }
@@ -95,33 +80,47 @@ public class RecommendServiceImpl implements RecommendService {
 
     //여행지 사이의 경로 list 찾기
     @Override
-    public travelPathDto findTravelPath(RecommendRequestDto recommendRequestDto) {
-        float maxLatitude = Float.MIN_VALUE;
-        float minLatitude = Float.MAX_VALUE;
-        float maxLongitude = 0;
-        float minLongitude = 0;
-        ArrayList<PathDto> pathList=new ArrayList<>();
+    public float[] findTravelPath(RecommendRequestDto recommendRequestDto) {
+        float[] pathRange = new float[4];
 
-        System.out.println("쿼리 날리기");
-        Path path = pathRepository.findByStartPlaceAndEndPlace(recommendRequestDto.getArrivals_id(), recommendRequestDto.getDepartures_id());
+        //Latitude
+        pathRange[0] = Float.MAX_VALUE;
+        pathRange[1] = Float.MIN_VALUE;
+        //Longitude
+        pathRange[2] = 0;
+        pathRange[3] = 0;
 
+        Path path = pathRepository.findByStartPlaceAndEndPlace(recommendRequestDto.getDepartures_id(), recommendRequestDto.getArrivals_id());
         try {
             JsonNode pathJson = objectMapper.readTree(path.getPath());
-            minLongitude = path.getStartPlace().getLongitude().floatValue();
-            maxLongitude = path.getEndPlace().getLongitude().floatValue();
+            //Longitude
+            pathRange[2] = path.getEndPlace().getLongitude().floatValue();
+            pathRange[3] = path.getStartPlace().getLongitude().floatValue();
+            if(pathRange[2] > pathRange[3]){
+                float tmp = pathRange[3];
+                pathRange[3] = pathRange[2];
+                pathRange[2] = tmp;
+            }
 
             for (int i = 0; i < pathJson.size()-1; i++) {
                 float latitude = pathJson.at("/" + i + "/latitude").floatValue();
-                float longitude = pathJson.at("/" + i + "/longitude").floatValue();
-                pathList.add(pathMapper.longitudeAndLatitudeToPathDto(latitude, longitude));
-                maxLatitude = Math.max(latitude, maxLatitude);
-                minLatitude = Math.min(longitude, minLatitude);
+                pathRange[1] = Math.max(latitude, pathRange[1]);
+                pathRange[0] = Math.min(latitude, pathRange[0]);
             }
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             // JSON 파싱 오류 처리
         }
 
-        return pathMapper.longitudeAndLatitudeAndPathListToTravelPathDto(maxLatitude,  minLatitude,  maxLongitude,  minLongitude,pathList);
+        return pathRange;
+    }
+    @Override
+    public List<RecommendResponseDto> combinationRecommendAndCanditatesList(List<Place> placeList,  List<Place> candidatesList) {
+        List<Place> filteredPlaces = placeList.stream()
+                .filter(candidatesList::contains)
+                .collect(Collectors.toList());
+
+        return pathMapper.placeToRecommendResponseDto(filteredPlaces);
     }
 
 }
