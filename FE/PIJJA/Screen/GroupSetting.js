@@ -71,8 +71,8 @@ const GroupSetting = ({ navigation }) => {
     setGroupStyles(setStyle);
     setTravelMate(setMate);
 
-    // console.log('그룹: ', groupStyles);
-    // console.log(travelMate);
+    console.log('그룹: ', groupStyles);
+    console.log(travelMate);
     navigation.navigate('SetTravelPlan', {
       groupStyles: groupStyles,
       travelMate: travelMate,
