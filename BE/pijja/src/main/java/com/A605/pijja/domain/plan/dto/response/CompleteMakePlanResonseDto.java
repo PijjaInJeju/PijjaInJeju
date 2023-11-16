@@ -40,5 +40,7 @@ public class CompleteMakePlanResonseDto {
         private Long id;
         private String title;
         private String address;
+        private double latitude;
+        private double longitude;
     }
 }
