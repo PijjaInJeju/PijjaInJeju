@@ -13,7 +13,7 @@ import Rest from '../lib/Rest';
 
 const SaveProfile = async data => {
   //console.log('저장하는 데이터 : ', data);
-  //console.log('profile data: ', data);
+  console.log('save profile data: ', data);
   try {
     await AsyncStorage.setItem('user', JSON.stringify(data)); // "Data" 대신 "data"를 사용
   } catch (e) {
@@ -24,6 +24,7 @@ const SaveProfile = async data => {
 
 const kakaoLogin = async ({ navigation }) => {
   try {
+    let user = await KakaoLogin.login();
     let profile = await KakaoLogin.getProfile();
     //const addIdprofile = await BackEndLogin(profile);
     console.log('카카오 프로 파일 : ', profile);
@@ -70,7 +71,7 @@ const Login = ({ navigation }) => {
   useEffect(() => {
     async function load() {
       try {
-        const json = await AsyncStorage.getItem('todos');
+        const json = await AsyncStorage.getItem('user');
         user = JSON.parse(json);
         if (user !== null) {
           navigation.push('Main', { user });
@@ -105,7 +106,7 @@ const Login = ({ navigation }) => {
       />
       <TouchableOpacity
         onPress={() => {
-          // kakaoLogin({ navigation });
+          kakaoLogin({ navigation });
           navigation.navigate('Main');
         }}
       >
