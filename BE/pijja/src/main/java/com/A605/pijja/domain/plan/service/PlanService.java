@@ -18,4 +18,6 @@ public interface PlanService {
     MakePlanResonseDto addRecommendPlace(AddRecommendPlaceRequestDto requestDto);
 
     List<PlanListResponseDto> planList(PlanListRequestDto requestDto);
+
+    CompleteMakePlanResonseDto planDetail(PlanDetailRequestDto requestDto);
 }
