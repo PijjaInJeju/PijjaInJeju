@@ -32,14 +32,13 @@ const Header = ({ navigation, title, menu }) => {
                 }}
                 onPress={
                     () => {
-                        navigation.dispatch(DrawerActions.jumpTo('MainScreen'));
-                        navigation.navigate('Main');
+                        navigation.popToTop();
                     }
                 }
                 >
                 <Image
                     style={{
-                        width: screenWidth * 0.05,
+                        width: screenWidth * 0.2,
                         height: screenWidth * 0.05,
                         resizeMode: 'stretch',
                     } }

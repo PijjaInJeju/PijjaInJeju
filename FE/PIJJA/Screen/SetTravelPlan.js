@@ -112,6 +112,8 @@ const SetTravelPlan = ({ navigation, route }) => {
     }
   };
 
+
+  
   // console.log(groupStyles);
   // console.log(travelMate);
   // console.log(travelStartData);
