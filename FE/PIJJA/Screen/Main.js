@@ -101,7 +101,6 @@ const MainScreen = ({ navigation }) => {
         profile: userData,
         groupList: groupList,
         setGroupList: setGroupList,
-        nickName: 'asd',
       },
     },
   ];

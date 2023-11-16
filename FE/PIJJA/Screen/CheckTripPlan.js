@@ -3,6 +3,7 @@ import { SectionList, StyleSheet, Text, View, SafeAreaView, TouchableOpacity, Di
 import GetRest from '../lib/GetRest.js';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import CheckTripPlanDetail from './CheckTripPlanDetail.js';
+import Rest from '../lib/Rest.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Define global variables or constants (if needed)
@@ -90,9 +91,21 @@ const CheckTripPlan = ({ navigation }) => {
             <TouchableOpacity
               style={styles.nowTravelContent}
               onPress={() => {
-                navigation.navigate('CheckTripPlanDetail', {
-                  companionId: item.id,
-                });
+                console.log("선택된 Plan : " ,item);
+                Rest(
+                  "/api/plan/planDetail",
+                  "POST",
+                  {
+                    planId: item.planId
+                  },
+                  (res) => {
+                    navigation.navigate('CheckTripPlanDetail', {
+                      plan: item,
+                      data: res
+                    });
+                  },
+                  (err) => ( console.error(err))
+                )
               }}
             >
               <View style={styles.travelContentTitle}>
