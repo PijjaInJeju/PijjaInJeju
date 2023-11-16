@@ -475,7 +475,7 @@ const CreateScheduleMap = ({ navigation, route }) => {
   const sheetRef = useRef(null);
   const mapRef = useRef(null);
 
-  console.log('CreateScheduleMap : ', route.params);
+  console.log('CreateScheduleMap route: ', route.params);
 
   // variables
   const data = useMemo(

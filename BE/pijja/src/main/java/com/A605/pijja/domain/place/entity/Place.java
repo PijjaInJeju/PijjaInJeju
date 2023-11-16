@@ -27,7 +27,7 @@ public class Place {
     private String mate1;
     private String mate2;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="VISIT_ID")
     private Visit visit;
 

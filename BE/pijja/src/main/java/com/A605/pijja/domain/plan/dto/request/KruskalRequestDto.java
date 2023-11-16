@@ -12,7 +12,7 @@ public class KruskalRequestDto implements Comparable<KruskalRequestDto>{
     private float dist;
     private float time;
     @Override
-    public int compareTo(KruskalRequestDto o){
-        return (int) (this.dist-o.dist);
+    public int compareTo(KruskalRequestDto o) {
+        return Float.compare(this.dist, o.dist);
     }
 }

@@ -15,6 +15,7 @@ import {
   Alert,
   SafeAreaView,
 } from 'react-native';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import JoinGroup from './JoinGroup.js';
 import CreateScheduleMap from './CreateScheduleMap.js';
@@ -24,6 +25,7 @@ import { Calendar, LocaleConfig } from 'react-native-calendars';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { rgbaColor } from 'react-native-reanimated/lib/typescript/reanimated2/Colors.js';
+import { ScreenHeight } from 'react-native-elements/dist/helpers/index.js';
 
 screenWidth = Dimensions.get('window').width;
 screenHeight = Dimensions.get('window').height;
@@ -66,8 +68,8 @@ const SetTravelPlan = ({ navigation, route }) => {
         console.log('there is noting');
         //navigation.push('Login');
       } else {
+        console.log('Login: ', JSON.parse(kakaoData));
         setUserData(JSON.parse(kakaoData));
-
         //return kakaoData;
       }
     } catch (e) {
@@ -90,12 +92,14 @@ const SetTravelPlan = ({ navigation, route }) => {
           mate: travelMate,
           startDay: travelStartData,
           endDay: travelEndData,
-          memberId: userData.backEndId,
+          memberId: 10,
+          // memberId: userData.backEndId,
         },
         response => {
-          console.log('응답 데이터2 id: ' + response.data.id);
+          // console.log('응답 데이터2 id: ' + userData.backEndId);
+          // console.log('응답 데이터2 id: ' + response.data);
           navigation.navigate('CreateScheduleMap', {
-            companionId: response.data.id,
+            companionId: 10,
             name: titileText,
             totalDay: elasedDay,
             travelMate: travelMate,
@@ -238,6 +242,7 @@ const SetTravelPlan = ({ navigation, route }) => {
           color: '#000000',
           width: screenWidth * 0.5,
           alignSelf: 'center',
+          marginTop: screenHeight * 0.05,
         }}
         placeholder="여행 계획명을 입력하세요."
         placeholderTextColor={'#d3d3d3'}
@@ -253,7 +258,10 @@ const SetTravelPlan = ({ navigation, route }) => {
       >
         <View
           style={{
-            flexDirection: 'row',
+            flexDirection: 'column',
+            justifyContent: 'center',
+            textAlign: 'center',
+            marginLeft: screenWidth * 0.2,
           }}
         >
           <View>
@@ -264,71 +272,86 @@ const SetTravelPlan = ({ navigation, route }) => {
                 marginLeft: '10%',
                 textAlign: 'center',
                 marginLeft: screenWidth * 0.1,
+                marginTop: screenHeight * 0.1,
               }}
             >
               시작일
             </Text>
-            <TouchableOpacity
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: pixelRatio * 5,
-                width: screenWidth * 0.25,
-                height: screenHeight * 0.05,
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginLeft: screenWidth * 0.1,
-              }}
-              onPress={showDatePicker1}
-            >
-              <Text
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <TouchableOpacity
                 style={{
-                  color: '#000000',
-                  width: screenWidth * 0.25,
-                  textAlign: 'center',
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: pixelRatio * 5,
+                  width: screenWidth * 0.4, // 흰색 공간 확장
+                  height: screenHeight * 0.05,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginLeft: screenWidth * 0.1,
                 }}
+                onPress={showDatePicker1}
               >
-                {startTextContent}
-              </Text>
-            </TouchableOpacity>
+                <Icon name="calendar" size={20} color="orange" />
+                <Text
+                  style={{
+                    color: 'orange',
+                    width: screenWidth * 0.3, // 흰색 공간 확장
+                    textAlign: 'center',
+                    marginLeft: screenWidth * 0.01,
+                  }}
+                >
+                  {startTextContent ? startTextContent : ''}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-          <View>
+
+          <View style={{ marginTop: screenHeight * 0.02 }}>
             <Text
               style={{
                 width: screenWidth * 0.25,
                 alignItems: 'center',
-                marginLeft: screenWidth * 0.3,
+                marginLeft: '10%',
+                textAlign: 'center',
+                marginLeft: screenWidth * 0.1,
               }}
             >
               종료일
             </Text>
-            <TouchableOpacity
-              style={{
-                backgroundColor: '#FFFFFF',
-                borderRadius: pixelRatio * 5,
-                width: screenWidth * 0.25,
-                height: screenHeight * 0.05,
-                flexDirection: 'row',
-                alignItems: 'center',
-                marginLeft: screenWidth * 0.3,
-              }}
-              onPress={showDatePicker2}
-            >
-              <Text
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <TouchableOpacity
                 style={{
-                  color: '#000000',
-                  width: screenWidth * 0.25,
-                  textAlign: 'center',
+                  backgroundColor: '#FFFFFF',
+                  borderRadius: pixelRatio * 5,
+                  width: screenWidth * 0.4, // 흰색 공간 확장
+                  height: screenHeight * 0.05,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginLeft: screenWidth * 0.1,
                 }}
+                onPress={showDatePicker2}
               >
-                {endTextContent}
-              </Text>
-            </TouchableOpacity>
+                <Icon name="calendar" size={20} color="orange" />
+                <Text
+                  style={{
+                    color: 'orange',
+                    width: screenWidth * 0.3, // 흰색 공간 확장
+                    textAlign: 'center',
+                    marginLeft: screenWidth * 0.01,
+                  }}
+                >
+                  {endTextContent ? endTextContent : ''}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </View>
 
       <TouchableOpacity
-        style={styles.travelPlanButton}
+        style={{
+          ...styles.travelPlanButton,
+          top: screenHeight * 0.05, // Adjust the top position as needed
+        }}
         onPress={() => {
           if (nextOk) {
             transmitGroupStyle();
@@ -337,13 +360,7 @@ const SetTravelPlan = ({ navigation, route }) => {
           }
         }}
       >
-        <Text
-          style={{
-            width: screenWidth * 0.3,
-            textAlign: 'center',
-            alignSelf: 'center',
-          }}
-        >
+        <Text style={{ width: screenWidth * 0.3, textAlign: 'center' }}>
           다음
         </Text>
       </TouchableOpacity>

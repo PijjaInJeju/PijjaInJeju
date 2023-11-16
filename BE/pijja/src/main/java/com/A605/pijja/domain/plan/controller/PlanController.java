@@ -1,9 +1,7 @@
 package com.A605.pijja.domain.plan.controller;
 
-import com.A605.pijja.domain.plan.dto.request.AddRecommendPlaceRequestDto;
-import com.A605.pijja.domain.plan.dto.request.ListRecommendPlacesRequestDto;
-import com.A605.pijja.domain.plan.dto.request.MakePlanRequestDto;
-import com.A605.pijja.domain.plan.dto.request.PlanListRequestDto;
+import com.A605.pijja.domain.plan.dto.request.*;
+import com.A605.pijja.domain.plan.dto.response.CompleteMakePlanResonseDto;
 import com.A605.pijja.domain.plan.dto.response.MakePlanResonseDto;
 import com.A605.pijja.domain.plan.dto.response.PlanGroupingResponseDto;
 import com.A605.pijja.domain.plan.dto.response.PlanListResponseDto;
@@ -46,6 +44,16 @@ public class PlanController {
     @PostMapping("/addRecommendPlace")
     public MakePlanResonseDto addRecommendPlace(@RequestBody AddRecommendPlaceRequestDto requestDto){
         return planService.addRecommendPlace(requestDto);
+    }
+
+    @PostMapping("/completeMakePlan")
+    public CompleteMakePlanResonseDto completeMakePlan(@RequestBody CompleteMakePlanRequestDto requestDto) throws JsonProcessingException {
+        return planService.completeMakePlan(requestDto);
+    }
+
+    @PostMapping("/planDetail")
+    public CompleteMakePlanResonseDto planDetail(@RequestBody PlanDetailRequestDto requestDto) throws JsonProcessingException{
+        return planService.planDetail(requestDto);
     }
 
 

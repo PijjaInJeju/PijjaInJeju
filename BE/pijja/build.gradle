@@ -52,6 +52,10 @@ dependencies {
 	//swagger (http://localhost:8080/swagger-ui/index.html)
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
 
+	//mapstruct사용
+	implementation 'org.mapstruct:mapstruct:1.4.2.Final'
+	annotationProcessor 'org.mapstruct:mapstruct-processor:1.4.2.Final'
+
 }
 
 tasks.named('test') {

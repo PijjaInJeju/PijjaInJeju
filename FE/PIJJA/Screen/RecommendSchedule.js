@@ -17,11 +17,9 @@ const RecommendSchedule = ({ route, navigation }) => {
   console.log('라우트로 받은 데이터 ', route.params.scheduleList);
   //console.log('라우트로 받은 데이터2 ', route.params.scheduleList.planList);
 
-  if (route.params.scheduleList.planList) {
-    if (route.params.scheduleList.planList.length < 5) {
-      for (let i = 5 - route.params.scheduleList.planList.length; i > 0; i--) {
-        route.params.scheduleList.planList.push({});
-      }
+  if (route.params.scheduleList.planList.length < 5) {
+    for (let i = 5 - route.params.scheduleList.planList.length; i > 0; i--) {
+      route.params.scheduleList.planList.push({});
     }
   }
 
