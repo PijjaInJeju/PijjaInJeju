@@ -73,6 +73,7 @@ const MainScreen = ({ navigation }) => {
         console.log('there is noting');
         //navigation.push('Login');
       } else {
+        console.log("hjhjhjhjhjhjhj",kakaoData);
         setUserData(JSON.parse(kakaoData));
         //return kakaoData;
       }

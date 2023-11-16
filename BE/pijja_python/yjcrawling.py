@@ -23,7 +23,7 @@ act = ActionChains(driver)
 result_data = []
 
 try:
-    for page_number in range(1, 12):  # 페이지 범위를 1부터 11까지 변경
+    for page_number in range(1, 12): 
         page_url = f"https://www.visitjeju.net/kr/recommendTour/recommendScheduleList?page={page_number}"
         driver.get(page_url)
 
@@ -31,12 +31,10 @@ try:
         titles = driver.find_elements(By.CLASS_NAME, "s_tit")
         for title in titles:
             title_text = title.text
-            title.click()  # 제목을 클릭하여 세부 내용 페이지로 이동
+            title.click() 
 
-            # 세부 내용이 로딩되는 것을 대기
             WebDriverWait(driver, 10).until(EC.presence_of_all_elements_located((By.CLASS_NAME, "name")))
             
-            # Extract p.txt, p.txt.small, and name elements
             p_txt_elements = driver.find_elements(By.CLASS_NAME, "txt")
             p_txt_tag = driver.find_elements(By.CLASS_NAME, "tag")
             

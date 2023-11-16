@@ -88,7 +88,6 @@ public class PlanServiceImpl implements PlanService {
             }
 
         }
-        System.out.println(map);
         for(int i=0;i<requestDto.getPlaceList().size();i++){
 
             int nowDay=map.get(requestDto.getPlaceList().get(i).getId());
