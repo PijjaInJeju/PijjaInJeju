@@ -51,5 +51,10 @@ public class PlanController {
         return planService.completeMakePlan(requestDto);
     }
 
+    @PostMapping("/planDetail")
+    public CompleteMakePlanResonseDto planDetail(@RequestBody PlanDetailRequestDto requestDto) throws JsonProcessingException{
+        return planService.planDetail(requestDto);
+    }
+
 
 }

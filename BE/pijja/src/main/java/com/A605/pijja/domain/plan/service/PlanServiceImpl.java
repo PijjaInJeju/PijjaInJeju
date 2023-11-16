@@ -281,12 +281,15 @@ public class PlanServiceImpl implements PlanService {
             dayPlanRepository.save(dayPlan);
             plan.addPlanAndDayPlan(dayPlan);
             for(int j=0;j<data.size();j++){
+                Place place=placeRepository.findById(data.get(j).getId()).get();
                 responseData.add(CompleteMakePlanResonseDto.PlaceDto.builder()
                         .id(data.get(j).getId())
                         .address(data.get(j).getAddress())
                         .title(data.get(j).getTitle())
+                        .latitude(place.getLatitude())
+                        .longitude(place.getLongitude())
                         .build());
-                Place place=placeRepository.findById(data.get(j).getId()).get();
+
                 DayPlanPlace dayPlanPlace=DayPlanPlace.builder()
                         .dayPlan(dayPlan)
                         .place(place)
@@ -397,5 +400,63 @@ public class PlanServiceImpl implements PlanService {
                     .build());
         }
         return responseDto;
+    }
+
+    @Override
+    public CompleteMakePlanResonseDto planDetail(PlanDetailRequestDto requestDto) {
+
+        List<CompleteMakePlanResonseDto.PlanDto> planList=new ArrayList<>();
+
+
+        ObjectMapper objectMapper=new ObjectMapper();
+
+        Plan plan=planRepository.findById(requestDto.getPlanId()).get();
+        List<DayPlan> dayPlanList=dayPlanRepository.findDayPlanListByPlanId(plan.getId());
+
+        for(int i=0;i<dayPlanList.size();i++){
+            int day=dayPlanList.get(i).getDay();
+            System.out.println(day);
+            List<DayPlanPlace> dayPlanPlaceList=dayPlanList.get(i).getDayPlanPlaceList();
+            List<CompleteMakePlanResonseDto.PlaceDto> placeDtoList=new ArrayList<>();
+            for(int j=0;j<dayPlanPlaceList.size();j++){
+                Place place=dayPlanPlaceList.get(j).getPlace();
+                placeDtoList.add(CompleteMakePlanResonseDto.PlaceDto.builder()
+                                .id(place.getId())
+                                .longitude(place.getLongitude())
+                                .latitude(place.getLatitude())
+                                .title(place.getTitle())
+                                .address(place.getAddress())
+                                .address(place.getAddress())
+                        .build());
+            }
+            List<CompleteMakePlanResonseDto.PathDto> pathList=new ArrayList<>();
+            try {
+                JsonNode pathJson = objectMapper.readTree(dayPlanList.get(i).getPath());
+
+                for (int j = 0; j < pathJson.size(); j++) {
+                    float latitude = pathJson.at("/" + j + "/latitude").floatValue();
+                    float longitude = pathJson.at("/" + j + "/longitude").floatValue();
+                    pathList.add(CompleteMakePlanResonseDto.PathDto.builder()
+                            .latitude(latitude)
+                            .longitude(longitude).build());
+                }
+
+
+            } catch (Exception e) {
+                // JSON 파싱 오류 처리
+            }
+            planList.add(CompleteMakePlanResonseDto.PlanDto.builder()
+                    .day(day)
+                    .pathList(pathList)
+                    .data(placeDtoList)
+                    .build());
+
+        }
+        return CompleteMakePlanResonseDto.builder()
+                .planId(plan.getId())
+                .name(plan.getName())
+                .companionId(plan.getCompanion().getId())
+                .planList(planList)
+                .build();
     }
 }
