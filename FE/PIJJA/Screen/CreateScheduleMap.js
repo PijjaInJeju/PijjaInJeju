@@ -746,7 +746,7 @@ const CreateScheduleMap = ({ navigation, route }) => {
           })}
           {
             //<Marker coordinate={Start} pinColor="blue" onClick={() => console.warn('onClick! Start')} />
-            //<Marker coordinate={End}   pinColor="red"  onClick={() => console.warn('onClick! End')} />
+            //<Marker coordinate={End   pinColor="red"  onClick={() => console.warn('onClick! End')} />
             <Path
               coordinates={Data.pathList}
               onClick={() => console.warn('onClick! path')}
@@ -799,6 +799,8 @@ const CreateScheduleMap = ({ navigation, route }) => {
                   console.log('CreateScheduleMap 일정생성 Rest 응답 : ', res);
                   navigation.push('RecommendSchedule', {
                     scheduleList: res,
+                    travelMate: route.params.travelMate,
+                    groupStyles: route.params.groupStyles,
                   });
                 },
                 error => {

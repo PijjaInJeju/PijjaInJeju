@@ -71,8 +71,8 @@ const GroupSetting = ({ navigation }) => {
     setGroupStyles(setStyle);
     setTravelMate(setMate);
 
-    console.log('그룹: ', groupStyles);
-    console.log(travelMate);
+    //console.log('그룹: ', groupStyles);
+    //console.log(travelMate);
     navigation.navigate('SetTravelPlan', {
       groupStyles: groupStyles,
       travelMate: travelMate,
@@ -80,218 +80,224 @@ const GroupSetting = ({ navigation }) => {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.travelStyleContent}>
-        <Text style={styles.titleTravel}>여행의 주 목적은?</Text>
-        <View style={styles.travelStyleWrapper}>
-          <ScrollView horizontal={true}>
-            <Pressable
-              style={({ pressed }) => [
-                {
-                  backgroundColor: '#fcbf49',
-                },
-                travelTargetBtn[0] && { backgroundColor: '#f77f00' },
-                styles.tasteButton,
-              ]}
-              onPress={() => {
-                setTravelTargetBtn([
-                  !travelTargetBtn[0],
-                  travelTargetBtn[1],
-                  travelTargetBtn[2],
-                ]);
-                //setTravelStyle();
-              }}
-            >
-              <Text /**style={styles.tasteText}**/>먹거리</Text>
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [
-                { backgroundColor: '#fcbf49' },
-                travelTargetBtn[1] && { backgroundColor: '#f77f00' },
-                styles.tasteButton,
-              ]}
-              onPress={() => {
-                setTravelTargetBtn([
-                  travelTargetBtn[0],
-                  !travelTargetBtn[1],
-                  travelTargetBtn[2],
-                ]);
-              }}
-            >
-              <Text>쇼핑</Text>
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [
-                { backgroundColor: '#fcbf49' },
-                travelTargetBtn[2] && { backgroundColor: '#f77f00' },
-                styles.tasteButton,
-              ]}
-              onPress={() => {
-                setTravelTargetBtn([
-                  travelTargetBtn[0],
-                  travelTargetBtn[1],
-                  !travelTargetBtn[2],
-                ]);
-              }}
-            >
-              <Text>레저 체험</Text>
-            </Pressable>
-          </ScrollView>
+      <View style={styles.travelContentWrapper}>
+        <View style={styles.travelStyleContent}>
+          <Text style={styles.titleTravel}>여행의 주 목적은?</Text>
+          <View style={styles.travelStyleWrapper}>
+            <ScrollView horizontal={true}>
+              <Pressable
+                style={({ pressed }) => [
+                  {
+                    backgroundColor: '#fcbf49',
+                  },
+                  travelTargetBtn[0] && { backgroundColor: '#f77f00' },
+                  styles.tasteButton,
+                ]}
+                onPress={() => {
+                  setTravelTargetBtn([
+                    !travelTargetBtn[0],
+                    travelTargetBtn[1],
+                    travelTargetBtn[2],
+                  ]);
+                  //setTravelStyle();
+                }}
+              >
+                <Text
+                  style={[
+                    //styles.tasteText,
+                    travelTargetBtn[0] && { color: '#ffffff' },
+                  ]}
+                >
+                  먹거리
+                </Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  { backgroundColor: '#fcbf49' },
+                  travelTargetBtn[1] && { backgroundColor: '#f77f00' },
+                  styles.tasteButton,
+                ]}
+                onPress={() => {
+                  setTravelTargetBtn([
+                    travelTargetBtn[0],
+                    !travelTargetBtn[1],
+                    travelTargetBtn[2],
+                  ]);
+                }}
+              >
+                <Text>쇼핑</Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  { backgroundColor: '#fcbf49' },
+                  travelTargetBtn[2] && { backgroundColor: '#f77f00' },
+                  styles.tasteButton,
+                ]}
+                onPress={() => {
+                  setTravelTargetBtn([
+                    travelTargetBtn[0],
+                    travelTargetBtn[1],
+                    !travelTargetBtn[2],
+                  ]);
+                }}
+              >
+                <Text>레저 체험</Text>
+              </Pressable>
+            </ScrollView>
+          </View>
         </View>
-      </View>
-      <View>
-        <Text style={styles.titleTravel}>당신의 여행 스타일은?</Text>
-        <View style={styles.travelStyleWrapper}>
-          <ScrollView horizontal={true}>
-            <Pressable
-              style={({ pressed }) => [
-                { backgroundColor: '#fcbf49' },
-                travelStyleBtn[0] && { backgroundColor: '#f77f00' },
-                styles.tasteButton,
-              ]}
-              onPress={() => {
-                setTravelStyleBtn([
-                  !travelStyleBtn[0],
-                  travelStyleBtn[1],
-                  travelStyleBtn[2],
-                  travelStyleBtn[3],
-                ]);
-              }}
-            >
-              <Text>공항</Text>
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [
-                { backgroundColor: '#fcbf49' },
-                travelStyleBtn[1] && { backgroundColor: '#f77f00' },
-                styles.tasteButton,
-              ]}
-              onPress={() => {
-                setTravelStyleBtn([
-                  travelStyleBtn[0],
-                  !travelStyleBtn[1],
-                  travelStyleBtn[2],
-                  travelStyleBtn[3],
-                ]);
-              }}
-            >
-              <Text>문화 유적</Text>
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [
-                { backgroundColor: '#fcbf49' },
-                travelStyleBtn[2] && { backgroundColor: '#f77f00' },
-                styles.tasteButton,
-              ]}
-              onPress={() => {
-                setTravelStyleBtn([
-                  travelStyleBtn[0],
-                  travelStyleBtn[1],
-                  !travelStyleBtn[2],
-                  travelStyleBtn[3],
-                ]);
-              }}
-            >
-              <Text>걷기</Text>
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [
-                { backgroundColor: '#fcbf49' },
-                travelStyleBtn[3] && { backgroundColor: '#f77f00' },
-                styles.tasteButton,
-              ]}
-              onPress={() => {
-                setTravelStyleBtn([
-                  travelStyleBtn[0],
-                  travelStyleBtn[1],
-                  travelStyleBtn[2],
-                  !travelStyleBtn[3],
-                ]);
-              }}
-            >
-              <Text>힐링</Text>
-            </Pressable>
-          </ScrollView>
+        <View style={styles.travelStyleContent}>
+          <Text style={styles.titleTravel}>당신의 여행 스타일은?</Text>
+          <View style={styles.travelStyleWrapper}>
+            <ScrollView horizontal={true}>
+              <Pressable
+                style={({ pressed }) => [
+                  { backgroundColor: '#fcbf49' },
+                  travelStyleBtn[0] && { backgroundColor: '#f77f00' },
+                  styles.tasteButton,
+                ]}
+                onPress={() => {
+                  setTravelStyleBtn([
+                    !travelStyleBtn[0],
+                    travelStyleBtn[1],
+                    travelStyleBtn[2],
+                    travelStyleBtn[3],
+                  ]);
+                }}
+              >
+                <Text>공항</Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  { backgroundColor: '#fcbf49' },
+                  travelStyleBtn[1] && { backgroundColor: '#f77f00' },
+                  styles.tasteButton,
+                ]}
+                onPress={() => {
+                  setTravelStyleBtn([
+                    travelStyleBtn[0],
+                    !travelStyleBtn[1],
+                    travelStyleBtn[2],
+                    travelStyleBtn[3],
+                  ]);
+                }}
+              >
+                <Text>문화 유적</Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  { backgroundColor: '#fcbf49' },
+                  travelStyleBtn[2] && { backgroundColor: '#f77f00' },
+                  styles.tasteButton,
+                ]}
+                onPress={() => {
+                  setTravelStyleBtn([
+                    travelStyleBtn[0],
+                    travelStyleBtn[1],
+                    !travelStyleBtn[2],
+                    travelStyleBtn[3],
+                  ]);
+                }}
+              >
+                <Text>걷기</Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  { backgroundColor: '#fcbf49' },
+                  travelStyleBtn[3] && { backgroundColor: '#f77f00' },
+                  styles.tasteButton,
+                ]}
+                onPress={() => {
+                  setTravelStyleBtn([
+                    travelStyleBtn[0],
+                    travelStyleBtn[1],
+                    travelStyleBtn[2],
+                    !travelStyleBtn[3],
+                  ]);
+                }}
+              >
+                <Text>힐링</Text>
+              </Pressable>
+            </ScrollView>
+          </View>
         </View>
-      </View>
-      <View>
-        <Text style={styles.titleTravel}>함께 여행할 메이트</Text>
-        <View style={styles.travelStyleWrapper}>
-          <ScrollView horizontal={true}>
-            <Pressable
-              style={({ pressed }) => [
-                { backgroundColor: '#fcbf49' },
-                travelMateBtn[0] && { backgroundColor: '#f77f00' },
-                styles.tasteButton,
-              ]}
-              onPress={() => {
-                setTravelMateBtn([!travelMateBtn[0], 0, 0, 0, 0]);
-              }}
-            >
-              <Text>친구</Text>
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [
-                { backgroundColor: '#fcbf49' },
-                travelMateBtn[1] && { backgroundColor: '#f77f00' },
-                styles.tasteButton,
-              ]}
-              onPress={() => {
-                setTravelMateBtn([0, !travelMateBtn[1], 0, 0, 0]);
-              }}
-            >
-              <Text>연인</Text>
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [
-                { backgroundColor: '#fcbf49' },
-                travelMateBtn[2] && { backgroundColor: '#f77f00' },
-                styles.tasteButton,
-              ]}
-              onPress={() => {
-                setTravelMateBtn([0, 0, !travelMateBtn[2], 0, 0]);
-              }}
-            >
-              <Text>가족</Text>
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [
-                { backgroundColor: '#fcbf49' },
-                travelMateBtn[3] && { backgroundColor: '#f77f00' },
-                styles.tasteButton,
-              ]}
-              onPress={() => {
-                setTravelMateBtn([0, 0, 0, !travelMateBtn[3], 0]);
-              }}
-            >
-              <Text>혼자</Text>
-            </Pressable>
-            <Pressable
-              style={({ pressed }) => [
-                { backgroundColor: '#fcbf49' },
-                travelMateBtn[4] && { backgroundColor: '#f77f00' },
-                styles.tasteButton,
-              ]}
-              onPress={() => {
-                setTravelMateBtn([0, 0, 0, 0, !travelMateBtn[4]]);
-              }}
-            >
-              <Text>아이</Text>
-            </Pressable>
-          </ScrollView>
+        <View style={styles.travelStyleContent}>
+          <Text style={styles.titleTravel}>함께 여행할 메이트</Text>
+          <View style={styles.travelStyleWrapper}>
+            <ScrollView horizontal={true}>
+              <Pressable
+                style={({ pressed }) => [
+                  { backgroundColor: '#fcbf49' },
+                  travelMateBtn[0] && { backgroundColor: '#f77f00' },
+                  styles.tasteButton,
+                ]}
+                onPress={() => {
+                  setTravelMateBtn([!travelMateBtn[0], 0, 0, 0, 0]);
+                }}
+              >
+                <Text>친구</Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  { backgroundColor: '#fcbf49' },
+                  travelMateBtn[1] && { backgroundColor: '#f77f00' },
+                  styles.tasteButton,
+                ]}
+                onPress={() => {
+                  setTravelMateBtn([0, !travelMateBtn[1], 0, 0, 0]);
+                }}
+              >
+                <Text>연인</Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  { backgroundColor: '#fcbf49' },
+                  travelMateBtn[2] && { backgroundColor: '#f77f00' },
+                  styles.tasteButton,
+                ]}
+                onPress={() => {
+                  setTravelMateBtn([0, 0, !travelMateBtn[2], 0, 0]);
+                }}
+              >
+                <Text>가족</Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  { backgroundColor: '#fcbf49' },
+                  travelMateBtn[3] && { backgroundColor: '#f77f00' },
+                  styles.tasteButton,
+                ]}
+                onPress={() => {
+                  setTravelMateBtn([0, 0, 0, !travelMateBtn[3], 0]);
+                }}
+              >
+                <Text>혼자</Text>
+              </Pressable>
+              <Pressable
+                style={({ pressed }) => [
+                  { backgroundColor: '#fcbf49' },
+                  travelMateBtn[4] && { backgroundColor: '#f77f00' },
+                  styles.tasteButton,
+                ]}
+                onPress={() => {
+                  setTravelMateBtn([0, 0, 0, 0, !travelMateBtn[4]]);
+                }}
+              >
+                <Text>아이</Text>
+              </Pressable>
+            </ScrollView>
+          </View>
         </View>
+        <TouchableOpacity
+          style={styles.buttonNext}
+          onPress={() => {
+            setTravelStyle();
+            //navigation.navigate('CreateScheduleMap');
+          }}
+        >
+          <Text style={styles.nextBtnText}>다음</Text>
+        </TouchableOpacity>
       </View>
-      <View>
-        <TouchableOpacity></TouchableOpacity>
-      </View>
-      <TouchableOpacity
-        style={styles.buttonNext}
-        onPress={() => {
-          setTravelStyle();
-          //navigation.navigate('CreateScheduleMap');
-        }}
-      >
-        <Text style={styles.nextBtnText}>다음</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -299,15 +305,20 @@ const GroupSetting = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: '#ffffff',
+  },
+  travelContentWrapper: {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ffffff',
+    marginTop: 6,
   },
   titleTravel: {
     fontSize: 20,
     marginLeft: 24,
     marginTop: 40,
+    color: '#003049',
+    fontWeight: '200',
   },
   travelStyleWrapper: {
     flexDirection: 'row',
@@ -340,19 +351,19 @@ const styles = StyleSheet.create({
     //borderWidth: 4,
     borderColor: '#f77f00',
     borderRadius: 16,
-    marginVertical: 40,
+    marginVertical: 30,
   },
   nextBtnText: {
     fontSize: 24,
     color: '#ffffff',
   },
   travelStyleContent: {
-    marginTop: 24,
-    marginBottom: 10,
+    marginTop: 10,
   },
   tasteText: {
-    fontSize: 10,
-    color: '#ffffff',
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: '#f77f00',
   },
 });
 

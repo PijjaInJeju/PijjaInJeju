@@ -98,6 +98,8 @@ const SetTravelPlan = ({ navigation, route }) => {
             companionId: response.data.id,
             name: titileText,
             totalDay: elasedDay,
+            travelMate: travelMate,
+            groupStyles: groupStyles,
           });
         },
         error => {

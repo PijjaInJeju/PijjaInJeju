@@ -15,20 +15,31 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 const RecommendSchedule = ({ route, navigation }) => {
   console.log('라우트로 받은 데이터 ', route.params.scheduleList);
+  //console.log('라우트로 받은 데이터2 ', route.params.scheduleList.planList);
 
-  if (route.params.scheduleList.planList.length < 5) {
-    for (let i = 5 - route.params.scheduleList.planList.length; i > 0; i--) {
-      route.params.scheduleList.planList.push({});
+  if (route.params.scheduleList.planList) {
+    if (route.params.scheduleList.planList.length < 5) {
+      for (let i = 5 - route.params.scheduleList.planList.length; i > 0; i--) {
+        route.params.scheduleList.planList.push({});
+      }
     }
   }
 
   const [DATA, setDATA] = useState(route.params.scheduleList.planList);
-
   const [selectDay, setSelectDay] = useState(DATA[0].day);
-
   const [schedule, setSchedule] = useState(DATA[0].data);
+  const travelMate = route.params.travelMate;
+  const groupStyles = route.params.groupStyles;
+  const groupStyle = '';
 
-  const Item = ({ item }) => (
+  for (let i = 0; i < groupStyle.length; i++) {
+    if (groupStyle[i] != '') {
+      groupstyle = groupStyle[i];
+      break;
+    }
+  }
+
+  const Item = ({ item, index }) => (
     <View
       style={{
         alignItems: 'center',
@@ -58,7 +69,11 @@ const RecommendSchedule = ({ route, navigation }) => {
           name="pluscircleo"
           size={30}
           color="#000000"
-          onPress={() => console.log('추천해주세요')}
+          onPress={() => {
+            console.log('추천해주세요');
+            //console.log(index);
+            navigation.navigate('RecommendScheduleDeatil', {});
+          }}
         />
       )}
     </View>
@@ -248,13 +263,16 @@ const RecommendSchedule = ({ route, navigation }) => {
         }}
       />
       {console.log(schedule)}
+      {/* lastFlat */}
       <FlatList
         style={{
           height: screenHeight * 0.8,
           width: screenWidth,
         }}
         data={schedule}
-        renderItem={Item}
+        renderItem={({ item, index }) => {
+          <Item></Item>;
+        }}
         keyExtractor={item => item.id}
       />
       <View>

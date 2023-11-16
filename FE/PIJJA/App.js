@@ -23,6 +23,8 @@ import Gallery from './Screen/Gallery.js';
 import JoinGroup from './Screen/JoinGroup.js';
 import CheckTripPlan from './Screen/CheckTripPlan.js';
 import CheckTripPlanDetail from './Screen/CheckTripPlanDetail.js';
+import RecommendScheduleDeatil from './Screen/RecommendScheduleDeatil.js';
+
 //import DeviceInfo from 'react-native-device-info';
 
 //DeviceInfo.setPreferredOrientations(['ko-KR']);
@@ -98,6 +100,10 @@ const App = () => {
         <Stack.Screen
           name="CheckTripPlanDetail"
           component={CheckTripPlanDetail}
+        />
+        <Stack.Screen
+          name="RecommendScheduleDeatil"
+          component={RecommendScheduleDeatil}
         />
       </Stack.Navigator>
     </NavigationContainer>
