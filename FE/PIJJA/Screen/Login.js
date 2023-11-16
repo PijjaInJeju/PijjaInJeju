@@ -24,6 +24,7 @@ const SaveProfile = async data => {
 
 const kakaoLogin = async ({ navigation }) => {
   try {
+    let user = await KakaoLogin.login();
     let profile = await KakaoLogin.getProfile();
     //const addIdprofile = await BackEndLogin(profile);
     console.log('카카오 프로 파일 : ', profile);
