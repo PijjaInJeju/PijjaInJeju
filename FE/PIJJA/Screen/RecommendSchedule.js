@@ -12,6 +12,7 @@ import {
 } from 'react-native';
 
 import Icon from 'react-native-vector-icons/AntDesign';
+import Rest from '../lib/Rest.js';
 
 const RecommendSchedule = ({ route, navigation }) => {
   console.log('라우트로 받은 데이터 ', route.params.scheduleList);
@@ -276,6 +277,18 @@ const RecommendSchedule = ({ route, navigation }) => {
         <Button
           title="일정 확정하기"
           onPress={() => {
+            Rest(
+              '/api/plan/completeMakePlan',
+              'POST',
+              route.params.scheduleList,
+              res => {
+                console.log('여행 전체 일정 등록: ', res);
+              },
+              error => {
+                console.error(error);
+              },
+            );
+
             console.log('추천 페이지로.');
             navigation.popToTop();
             navigation.push('Main');

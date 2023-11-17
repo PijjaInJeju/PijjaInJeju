@@ -19,6 +19,8 @@ const back = require('../../Image/clouds.jpg');
 
 const Two = ({ data }) => {
   const [activeSlide, setActiveSlide] = useState(0);
+
+  // 추천 여행 데이터
   let profile = data.profile;
   let groupList = data.groupList;
   let setGroupList = data.setGroupList;
