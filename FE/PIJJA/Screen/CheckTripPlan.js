@@ -15,6 +15,7 @@ import {
 import GetRest from '../lib/GetRest.js';
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import CheckTripPlanDetail from './CheckTripPlanDetail.js';
+import Rest from '../lib/Rest.js';
 
 nowTrip = false;
 moreTrip = false;
@@ -139,10 +140,21 @@ const CheckTripPlan = ({ navigation }) => {
             <TouchableOpacity
               style={styles.nowTravelContent}
               onPress={() => {
-                //console.log(item);
-                navigation.navigate('CheckTripPlanDetail', {
-                  ...item,
-                });
+                console.log('선택된 Plan : ', item);
+                Rest(
+                  '/api/plan/planDetail',
+                  'POST',
+                  {
+                    planId: item.planId,
+                  },
+                  res => {
+                    navigation.navigate('CheckTripPlanDetail', {
+                      plan: item,
+                      data: res,
+                    });
+                  },
+                  err => console.error(err),
+                );
               }}
             >
               <View style={styles.travelContentTitle}>
