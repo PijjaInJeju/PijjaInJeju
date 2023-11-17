@@ -140,21 +140,21 @@ const CheckTripPlan = ({ navigation }) => {
             <TouchableOpacity
               style={styles.nowTravelContent}
               onPress={() => {
-                console.log('선택된 Plan : ', item);
+                console.log("선택된 Plan : " ,item);
                 Rest(
-                  '/api/plan/planDetail',
-                  'POST',
+                  "/api/plan/planDetail",
+                  "POST",
                   {
-                    planId: item.planId,
+                    planId: item.planId
                   },
-                  res => {
+                  (res) => {
                     navigation.navigate('CheckTripPlanDetail', {
                       plan: item,
-                      data: res,
+                      data: res
                     });
                   },
-                  err => console.error(err),
-                );
+                  (err) => ( console.error(err))
+                )
               }}
             >
               <View style={styles.travelContentTitle}>
@@ -197,9 +197,21 @@ const CheckTripPlan = ({ navigation }) => {
             <TouchableOpacity
               style={styles.historyTravelContent}
               onPress={() => {
-                navigation.navigate('CheckTripPlanDetail', {
-                  companionId: item.id,
-                });
+                console.log("선택된 Plan : " ,item);
+                Rest(
+                  "/api/plan/planDetail",
+                  "POST",
+                  {
+                    planId: item.planId
+                  },
+                  (res) => {
+                    navigation.navigate('CheckTripPlanDetail', {
+                      plan: item,
+                      data: res
+                    });
+                  },
+                  (err) => ( console.error(err))
+                )
               }}
             >
               <View style={styles.travelContentTitle}>
