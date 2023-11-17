@@ -15,6 +15,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 const RecommendSchedule = ({ route, navigation }) => {
   console.log('라우트로 받은 데이터 ', route.params.scheduleList);
+  console.log('라우트로 받은 데이터 len ', route.params.scheduleList.length);
   //console.log('라우트로 받은 데이터2 ', route.params.scheduleList.planList);
 
   if (route.params.scheduleList.planList.length < 5) {
@@ -37,7 +38,7 @@ const RecommendSchedule = ({ route, navigation }) => {
     }
   }
 
-  const Item = ({ item, index }) => (
+  const Item = ({ item }) => (
     <View
       style={{
         alignItems: 'center',
@@ -268,9 +269,7 @@ const RecommendSchedule = ({ route, navigation }) => {
           width: screenWidth,
         }}
         data={schedule}
-        renderItem={({ item, index }) => {
-          <Item></Item>;
-        }}
+        renderItem={Item}
         keyExtractor={item => item.id}
       />
       <View>

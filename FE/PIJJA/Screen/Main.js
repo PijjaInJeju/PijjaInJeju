@@ -99,6 +99,7 @@ const MainScreen = ({ navigation }) => {
       data: {
         profile: userData,
         groupList: groupList,
+
         setGroupList: setGroupList,
         nickName: 'asd',
       },

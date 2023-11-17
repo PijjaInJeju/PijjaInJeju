@@ -303,14 +303,6 @@ const GroupSetting = ({ navigation }) => {
           <Text style={styles.nextBtnText}>다음</Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity
-        style={styles.buttonNext}
-        onPress={() => {
-          setTravelStyle();
-        }}
-      >
-        <Text style={styles.nextBtnText}>다음</Text>
-      </TouchableOpacity>
     </View>
   );
 };
@@ -325,6 +317,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginTop: 6,
+  },
+  travelStyleContent: {
+    marginTop: 10,
   },
   titleTravel: {
     fontSize: 20,
@@ -365,13 +360,11 @@ const styles = StyleSheet.create({
     borderColor: '#f77f00',
     borderRadius: 16,
     marginVertical: 30,
+    alignSelf: 'center',
   },
   nextBtnText: {
     fontSize: 24,
     color: '#ffffff',
-  },
-  travelStyleContent: {
-    marginTop: 10,
   },
   tasteText: {
     fontSize: 14,

@@ -92,14 +92,13 @@ const SetTravelPlan = ({ navigation, route }) => {
           mate: travelMate,
           startDay: travelStartData,
           endDay: travelEndData,
-          memberId: 10,
-          // memberId: userData.backEndId,
+          memberId: userData.backEndId,
         },
         response => {
-          // console.log('응답 데이터2 id: ' + userData.backEndId);
-          // console.log('응답 데이터2 id: ' + response.data);
+          console.log('멤버 데이터 id: ' + userData.backEndId);
+          console.log('컴패니언 데이터 id: ' + response.data.id);
           navigation.navigate('CreateScheduleMap', {
-            companionId: 10,
+            companionId: response.data.id,
             name: titileText,
             totalDay: elasedDay,
             travelMate: travelMate,
@@ -174,7 +173,9 @@ const SetTravelPlan = ({ navigation, route }) => {
 
     setTravelStartData(confirmDate);
     setTravelStart(confirmDate.getTime());
-    setStartTextContent(date.getMonth() + '월 ' + date.getDate() + '일');
+    setStartTextContent(date.getMonth() + 1 + '월 ' + date.getDate() + '일');
+    //console.log(date.getMonth() + 1 + '월 ' + date.getDate() + '일');
+    console.log(confirmDate);
     dateModelCancle1();
   };
 
@@ -203,7 +204,7 @@ const SetTravelPlan = ({ navigation, route }) => {
 
     if (conNextOk === true) {
       setNextOk(true);
-      setEndTextContent(date.getMonth() + '월 ' + date.getDate() + '일');
+      setEndTextContent(date.getMonth() + 1 + '월 ' + date.getDate() + '일');
       setElasedDay(elasedDay);
     } else {
       setNextOk(false);

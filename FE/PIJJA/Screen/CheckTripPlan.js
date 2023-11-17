@@ -141,7 +141,7 @@ const CheckTripPlan = ({ navigation }) => {
               onPress={() => {
                 //console.log(item);
                 navigation.navigate('CheckTripPlanDetail', {
-                  companionId: item.id,
+                  ...item,
                 });
               }}
             >

@@ -37,9 +37,9 @@ const pixelRatio = PixelRatio.get();
 
 const closeSize = 7 * pixelRatio;
 
-console.log('Pixel Ratio: ', pixelRatio);
-console.log('Screen Width: ', screenWidth);
-console.log('Screen Height: ', screenHeight);
+// console.log('Pixel Ratio: ', pixelRatio);
+// console.log('Screen Width: ', screenWidth);
+// console.log('Screen Height: ', screenHeight);
 
 const Data = {
   placeList: [
@@ -475,7 +475,7 @@ const CreateScheduleMap = ({ navigation, route }) => {
   const sheetRef = useRef(null);
   const mapRef = useRef(null);
 
-  console.log('CreateScheduleMap route: ', route.params);
+  //console.log('CreateScheduleMap route: ', route.params);
 
   // variables
   const data = useMemo(
@@ -722,7 +722,7 @@ const CreateScheduleMap = ({ navigation, route }) => {
           showsMyLocationButton={false}
           center={{ ...mapCenter, zoom: 8.863083459663644 }}
           onTouch={e => console.log('onTouch', JSON.stringify(e.nativeEvent))}
-          onCameraChange={e => console.log('onCameraChange', JSON.stringify(e))}
+          // onCameraChange={/**e => console.log('onCameraChange', JSON.stringify(e))**/}
           onMapClick={e => console.log('onMapClick', JSON.stringify(e))}
         >
           {
@@ -735,7 +735,7 @@ const CreateScheduleMap = ({ navigation, route }) => {
           }
 
           {Data.placeList.map(coordinate => {
-            console.log(coordinate);
+            //console.log(coordinate);
             return (
               <Marker
                 coordinate={coordinate}
@@ -797,10 +797,11 @@ const CreateScheduleMap = ({ navigation, route }) => {
                 T,
                 res => {
                   console.log('CreateScheduleMap 일정생성 Rest 응답 : ', res);
+                  console.log('여행 코스 id: ', res.planId);
                   navigation.push('RecommendSchedule', {
                     scheduleList: res,
-                    travelMate: route.params.travelMate,
-                    groupStyles: route.params.groupStyles,
+                    // travelMate: route.params.travelMate,
+                    // groupStyles: route.params.groupStyles,
                   });
                 },
                 error => {
@@ -846,7 +847,7 @@ const CreateScheduleMap = ({ navigation, route }) => {
                 color: '#000000',
               }}
               onChangeText={keyword => {
-                console.log(keyword);
+                //console.log(keyword);
                 setSearch(keyword);
                 Rest(
                   '/api/places/serachPlace',
@@ -855,7 +856,7 @@ const CreateScheduleMap = ({ navigation, route }) => {
                     title: keyword,
                   },
                   res => {
-                    console.log(res);
+                    //console.log(res);
                     setSearchList(res);
                   },
                   e => {
