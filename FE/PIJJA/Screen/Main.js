@@ -24,6 +24,8 @@ import GroupSetting from './GroupSetting.js';
 import CheckTripPlan from './CheckTripPlan.js';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Rest from '../lib/Rest';
+
 const pijjaTab = createBottomTabNavigator();
 // options:{
 //   style ={
@@ -64,7 +66,11 @@ const MainScreen = ({ navigation }) => {
   // let route.params;
   //console.log("Main Profile  :  ", route.params.profile);
 
+  const [nowTravelData, setNowTravelData] = useState([]);
+  const [travelReco, setTravelReco] = useState([]);
   const [userData, setUserData] = useState(new Object());
+  //let groupData = {};
+  //let recoData = {};
 
   const load = async () => {
     try {
@@ -79,11 +85,113 @@ const MainScreen = ({ navigation }) => {
     } catch (e) {
       console.log('Profile 불러오기 실패. : ', e);
     }
+    try {
+      const getTravelData = async () => {
+        const groupData = await Rest(
+          '/api/companions/list',
+          'GET',
+          undefined,
+          res => {
+            return res.data;
+            //setGroupData(res.data).then(console.log('all 그룹 data:', groupData));
+            //console.log('all 그룹 data:', groupData);
+          },
+          err => console.error(err),
+        );
+        let nowGroupData = [];
+        let latestGroupData = {};
+        //setNowTravelData(groupData);
+        console.log('all 그룹 data:', groupData);
+
+        // 오늘 부터인 그룹중 가장 최근인 그룹
+        let nowDate = new Date();
+        let nowDay = new Date(
+          nowDate.getFullYear(),
+          nowDate.getMonth(),
+          nowDate.getDate(),
+        ).getTime();
+        console.log(nowDay);
+
+        let groupDay = new Date();
+        // groupDay = new Date(groupData[0].startDay);
+        // console.log(groupData[0].startDay);
+        // console.log(groupData.length);
+
+        for (ti = groupData.length - 1; ti > -1; ti--) {
+          // groupDay = new Date(groupData[ti].startDay).getTime();
+          groupDay = new Date(groupData[ti].startDay);
+          // console.log(groupDay);
+
+          if (groupDay >= nowDay) {
+            // console.log(new Date(groupData[ti].startDay));
+            nowGroupData = [groupData[ti]];
+            break;
+          }
+        }
+
+        setNowTravelData(nowGroupData);
+        if (groupData.length > 0) {
+          latestGroupData = groupData[0];
+        }
+
+        let tag = latestGroupData.tendencies[0];
+        let mate = latestGroupData.mate;
+
+        //console.log('all 그룹 data:', groupData);
+        // console.log('오늘 여행: ', nowGroupData[0].startDay);
+        // console.log('최근 여행: ', latestGroupData.startDay);
+        const getRecoData = async () => {
+          const recoData = await Rest(
+            `/api/recommends/${tag}/${mate}`,
+            'GET',
+            undefined,
+            res => {
+              // console.log('추천데이터:', res.length);
+              //setTravelReco(res);
+              return res.splice(0, 5);
+              //setGroupData(res.data).then(console.log('all 그룹 data:', groupData));
+              //console.log('all 그룹 data:', groupData);
+            },
+            err => console.error(err),
+          );
+          //console.log('추천2: ', recoData.length);
+          setTravelReco(recoData);
+        };
+        getRecoData();
+      };
+      getTravelData();
+      //console.log(travelReco.length());
+      // try {
+      //   Rest(
+      //     '/api/companions/list',
+      //     'GET',
+      //     undefined,
+      //     res => {
+      //       setGroupData(res.data);
+      //       console.log('all 그룹 data:', groupData);
+      //     },
+      //     err => console.error(err),
+      //   );
+      // } catch (e) {
+      //   console.log('group data get error'), e;
+      // }
+    } catch (e) {
+      console.log('group data get error'), e;
+    }
   };
+
+  // console.log('추천데이터2:', travelReco);
+  // console.log('다가올 여행:', nowTravelData);
 
   useEffect(() => {
     load();
+    //loadPlan();
   }, []);
+
+  const nowPlan = [];
+  // for (let i=groupData.size();  )
+  const placeStart = 0;
+  const placeEnd = 0;
 
   const data = [
     {
@@ -91,16 +199,16 @@ const MainScreen = ({ navigation }) => {
       data: {
         profile: userData,
         groupList: groupList,
-        setGroupList: setGroupList,
+        //setGroupList: setGroupList,
       },
     },
     {
       screen: Two,
       data: {
         profile: userData,
-        groupList: groupList,
-
-        setGroupList: setGroupList,
+        nowTravelData: nowTravelData,
+        travelReco: travelReco,
+        //setGroupList: setGroupList,
       },
     },
   ];

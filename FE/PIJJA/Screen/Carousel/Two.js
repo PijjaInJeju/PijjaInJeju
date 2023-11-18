@@ -13,8 +13,9 @@ import Header from '../../component/Header';
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const pixelRatio = PixelRatio.get();
-
-const noImage = require('../../Image/s_noImage.jpg');
+// https://api.cdn.visitjeju.net/photomng/imgpath/201804/30/34a6fc15-1aae-4781-9db2-7c32ffd3a3be.jpg
+// const noImage = require('../../Image/s_noImage.jpg');
+const travelReadyImg = require('../../Image/k_travelReady.png');
 const back = require('../../Image/clouds.jpg');
 
 const Two = ({ data }) => {
@@ -22,9 +23,99 @@ const Two = ({ data }) => {
 
   // 추천 여행 데이터
   let profile = data.profile;
-  let groupList = data.groupList;
+  let nowTravelList = data.nowTravelData;
+  let travelRecoList = data.travelReco;
   let setGroupList = data.setGroupList;
-  const groupListItem = ({ item }) => {
+
+  // console.log(nowTravelList[0].title);
+
+  const nowTravelItem = ({ item }) => {
+    //console.log(item);
+    return (
+      <View
+        style={{
+          alignItems: 'center',
+          width: screenWidth * 0.7,
+          height: screenHeight * 0.3,
+        }}
+      >
+        <Image
+          style={{
+            width: screenWidth * 0.2,
+            height: screenHeight * 0.2,
+            resizeMode: 'contain',
+            position: 'absolute',
+            top: '10%',
+            left: '62%',
+            zIndex: -1,
+          }}
+          source={travelReadyImg}
+        />
+        <View
+          style={{
+            width: screenWidth * 0.6,
+            flexDirection: 'column',
+            //alignItems: 'center',
+          }}
+        >
+          <Text
+            style={{
+              marginTop: '9%',
+              fontSize: 22,
+              color: '#f77f00',
+              start: '2%',
+            }}
+          >
+            Upcoming Trip
+          </Text>
+          <Text
+            style={{
+              color: 'black',
+              marginTop: '6%',
+              start: '5%',
+              fontSize: 18,
+            }}
+          >
+            {nowTravelList[0].name}
+          </Text>
+          <View
+            style={{
+              marginTop: '16%',
+              start: '26%',
+            }}
+          >
+            {/* <Text>{nowTravelList[0].startDay}</Text>
+              <Text>{nowTravelList[0].endDay}</Text> */}
+            <Text
+              style={{
+                fontSize: 14,
+              }}
+            >{`출발:  ${
+              nowTravelList[0].startDay.split('T')[0].split('-')[0]
+            }년 ${nowTravelList[0].startDay.split('T')[0].split('-')[1]}월 ${
+              nowTravelList[0].startDay.split('T')[0].split('-')[2]
+            }일 `}</Text>
+            <Text
+              style={{
+                fontSize: 14,
+              }}
+            >{`도착:  ${
+              nowTravelList[0].endDay.split('T')[0].split('-')[0]
+            }년 ${nowTravelList[0].endDay.split('T')[0].split('-')[1]}월 ${
+              nowTravelList[0].endDay.split('T')[0].split('-')[2]
+            }일`}</Text>
+          </View>
+          <View
+            style={{
+              flex: 1,
+            }}
+          ></View>
+        </View>
+      </View>
+    );
+  };
+
+  const travelRecoItem = ({ item }) => {
     //console.log(item);
     return (
       <View
@@ -37,9 +128,10 @@ const Two = ({ data }) => {
           style={{
             width: screenWidth * 0.7,
             height: screenHeight * 0.3,
+            borderRadius: 25,
             resizeMode: 'contain',
           }}
-          source={noImage}
+          source={{ uri: item.image }}
         />
         <TouchableOpacity
           style={{
@@ -63,7 +155,7 @@ const Two = ({ data }) => {
                 color: 'black',
               }}
             >
-              {item.schedule.title}
+              {item.title}
             </Text>
             <View
               style={{
@@ -76,7 +168,7 @@ const Two = ({ data }) => {
                   color: 'black',
                 }}
               >
-                자세히 보기
+                {item.tag}
               </Text>
             </View>
           </View>
@@ -107,14 +199,16 @@ const Two = ({ data }) => {
             color: 'black',
             fontSize: pixelRatio * 9,
             paddingLeft: '10%',
+            marginTop: 10,
           }}
         >
-          나의 여행지 보기
+          다가오는 여행
         </Text>
         <View
           style={{
             width: screenWidth * 0.7,
-            height: screenHeight * 0.4,
+            height: screenHeight * 0.26,
+            marginTop: 16,
             borderWidth: 1,
             borderRadius: 25,
             borderColor: 'gray',
@@ -122,7 +216,7 @@ const Two = ({ data }) => {
             backgroundColor: 'white',
           }}
         >
-          {groupList.length === 0 ? (
+          {nowTravelList.length === 0 ? (
             <Text
               style={{
                 width: screenWidth * 0.6,
@@ -131,7 +225,7 @@ const Two = ({ data }) => {
                 fontSize: pixelRatio * 3.5,
               }}
             >
-              여행 가는곳이 없어요 ㅠㅠ..
+              여행 일정을 등록해주세요.
             </Text>
           ) : (
             <View
@@ -140,8 +234,8 @@ const Two = ({ data }) => {
               }}
             >
               <Carousel
-                data={groupList}
-                renderItem={groupListItem}
+                data={nowTravelList}
+                renderItem={nowTravelItem}
                 sliderWidth={screenWidth * 0.7}
                 itemWidth={screenWidth * 0.7}
                 sliderHeight={screenHeight}
@@ -159,23 +253,24 @@ const Two = ({ data }) => {
             color: 'black',
             fontSize: pixelRatio * 9,
             paddingLeft: '10%',
-            marginTop: '5%',
+            marginTop: 26,
           }}
         >
-          여행지 추천
+          여행 추천
         </Text>
         <View
           style={{
             width: screenWidth * 0.7,
-            height: screenHeight * 0.3,
+            height: screenHeight * 0.37,
             borderWidth: 1,
             borderRadius: 25,
             borderColor: 'gray',
             alignSelf: 'center',
             backgroundColor: 'white',
+            marginTop: 16,
           }}
         >
-          {groupList.length === 0 ? (
+          {travelRecoList.length === 0 ? (
             <Text
               style={{
                 width: screenWidth * 0.6,
@@ -184,7 +279,7 @@ const Two = ({ data }) => {
                 fontSize: pixelRatio * 3.5,
               }}
             >
-              여행 가는곳이 없어요 ㅠㅠ..
+              여행 일정을 만들어 주세요.
             </Text>
           ) : (
             <View
@@ -193,8 +288,8 @@ const Two = ({ data }) => {
               }}
             >
               <Carousel
-                data={groupList}
-                renderItem={groupListItem}
+                data={travelRecoList}
+                renderItem={travelRecoItem}
                 sliderWidth={screenWidth * 0.7}
                 itemWidth={screenWidth * 0.7}
                 sliderHeight={screenHeight}

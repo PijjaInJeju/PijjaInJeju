@@ -173,9 +173,9 @@ const CheckTripPlan = ({ navigation }) => {
                   item.startDay.split('T')[0].split('-')[2]
                 }일 `}</Text>
                 <Text style={styles.travelContentText}>{`여행 도착: ${
-                  item.startDay.split('T')[0].split('-')[0]
-                }년 ${item.startDay.split('T')[0].split('-')[1]}월 ${
-                  item.startDay.split('T')[0].split('-')[2]
+                  item.endDay.split('T')[0].split('-')[0]
+                }년 ${item.endDay.split('T')[0].split('-')[1]}월 ${
+                  item.endDay.split('T')[0].split('-')[2]
                 }일`}</Text>
               </View>
             </TouchableOpacity>
