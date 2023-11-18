@@ -296,14 +296,16 @@ const CreateScheduleMap = ({ navigation, route }) => {
           // onCameraChange={/**e => console.log('onCameraChange', JSON.stringify(e))**/}
           onMapClick={e => console.log('onMapClick', JSON.stringify(e))}
         >
-          {
-            searchList.map( (coordinate)=>{
-              console.log(coordinate);
-              return (
-                <Marker coordinate={coordinate} pinColor="blue" onClick={() => console.warn('coordinate' , coordinate.title)} />
-              );
-            })
-          }
+          {searchList.map(coordinate => {
+            console.log(coordinate);
+            return (
+              <Marker
+                coordinate={coordinate}
+                pinColor="blue"
+                onClick={() => console.warn('coordinate', coordinate.title)}
+              />
+            );
+          })}
         </NaverMapView>
         <View
           style={{
@@ -392,7 +394,7 @@ const CreateScheduleMap = ({ navigation, route }) => {
                 color: '#000000',
               }}
               onChangeText={keyword => {
-                console.log("검색 키워드 : ", keyword);
+                console.log('검색 키워드 : ', keyword);
                 setSearch(keyword);
                 Rest(
                   '/api/places/serachPlace',
@@ -401,7 +403,7 @@ const CreateScheduleMap = ({ navigation, route }) => {
                     title: keyword,
                   },
                   res => {
-                    console.log("검색결과 : " , res);
+                    console.log('검색결과 : ', res);
                     setSearchList(res);
                   },
                   e => {

@@ -22,21 +22,19 @@ import NaverMapView, {
   Polygon,
 } from 'react-native-nmap';
 
-
-let markerImg = require('../Image/marker.png')
-
+let markerImg = require('../Image/marker.png');
 
 const { width: screenWidth, height: screenHeight } = Dimensions.get('window');
 
 const pixelRatio = PixelRatio.get();
 
 const CheckTripPlanDetail = ({ route }) => {
-  console.log("CheckTripPlanDetail : ", route.params);
+  console.log('CheckTripPlanDetail : ', route.params);
 
   let plan = route.params.plan;
 
-  let startDay = new Date(plan.startDay)
-  let endDay = new Date(plan.endDay)
+  let startDay = new Date(plan.startDay);
+  let endDay = new Date(plan.endDay);
 
   let difMicroSecond = Math.abs(startDay.getTime() - endDay.getTime());
   let difDay = Math.floor(difMicroSecond / (24 * 60 * 60 * 1000));
@@ -55,7 +53,7 @@ const CheckTripPlanDetail = ({ route }) => {
 
   const [schedule, setSchedule] = useState(DATA.planList[0].data);
 
-  const dayPickItem = ({index,item}) => {
+  const dayPickItem = ({ index, item }) => {
     //console.log("dayPiacker : ", item);
     return (
       <View
@@ -63,38 +61,10 @@ const CheckTripPlanDetail = ({ route }) => {
           backgroundColor: '#FFFFFF',
         }}
       >
-      {
-        //더미용
-        item.day === undefined
-        ?
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-              width: screenWidth * 0.2,
-              height: screenHeight * 0.05,
-              marginTop: 5,
-              marginLeft: 5,
-              marginRight: 5,
-              borderTopRightRadius: 10,
-              borderTopLeftRadius: 10,
-            }}
-          >
-            <Text
-              style={{
-                textAlign: 'center',
-                borderColor: '#000000',
-                // -4 border Width가 각 2씩 * 2
-                width: screenWidth * 0.2 - 4,
-                color: '#000000',
-              }}
-            />
-          </View>
-        :
-        //셀렉트된 아이템
-          item.day === day
-          ?
-            <TouchableOpacity
+        {
+          //더미용
+          item.day === undefined ? (
+            <View
               style={{
                 flexDirection: 'row',
                 alignItems: 'center',
@@ -105,47 +75,6 @@ const CheckTripPlanDetail = ({ route }) => {
                 marginRight: 5,
                 borderTopRightRadius: 10,
                 borderTopLeftRadius: 10,
-                borderTopWidth: 2,
-                borderLeftWidth: 2,
-                borderRightWidth: 2,
-                backgroundColor: '#eae2b7'
-              }}
-            >
-              <Text
-                style={{
-                  textAlign: 'center',
-                  // -4 border Width가 각 2씩 * 2
-                  width: screenWidth * 0.2 - 4,
-                  color: '#000000',
-                }}
-                onPress={
-                  () => {
-                    setDay(item.day);
-                    setPath(item.pathList);
-                    setSchedule(item.data);
-                  }
-                }
-              >
-                {item.day}일차
-              </Text>
-            </TouchableOpacity>
-          :
-          //논 셀레트 아이템
-            <TouchableOpacity
-              style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                width: screenWidth * 0.2,
-                height: screenHeight * 0.05,
-                marginTop: 5,
-                marginLeft: 5,
-                marginRight: 5,
-                borderTopRightRadius: 10,
-                borderTopLeftRadius: 10,
-                borderTopWidth: 2,
-                borderLeftWidth: 2,
-                borderRightWidth: 2,
-                backgroundColor: '#fcbf49'
               }}
             >
               <Text
@@ -156,25 +85,86 @@ const CheckTripPlanDetail = ({ route }) => {
                   width: screenWidth * 0.2 - 4,
                   color: '#000000',
                 }}
-                onPress={
-                  () => {
-                    setDay(item.day);
-                    setPath(item.pathList);
-                    setSchedule(item.data);
-                  }
-                }
+              />
+            </View>
+          ) : //셀렉트된 아이템
+          item.day === day ? (
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: screenWidth * 0.2,
+                height: screenHeight * 0.05,
+                marginTop: 5,
+                marginLeft: 5,
+                marginRight: 5,
+                borderTopRightRadius: 10,
+                borderTopLeftRadius: 10,
+                borderTopWidth: 2,
+                borderLeftWidth: 2,
+                borderRightWidth: 2,
+                backgroundColor: '#eae2b7',
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                  // -4 border Width가 각 2씩 * 2
+                  width: screenWidth * 0.2 - 4,
+                  color: '#000000',
+                }}
+                onPress={() => {
+                  setDay(item.day);
+                  setPath(item.pathList);
+                  setSchedule(item.data);
+                }}
               >
                 {item.day}일차
               </Text>
             </TouchableOpacity>
+          ) : (
+            //논 셀레트 아이템
+            <TouchableOpacity
+              style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                width: screenWidth * 0.2,
+                height: screenHeight * 0.05,
+                marginTop: 5,
+                marginLeft: 5,
+                marginRight: 5,
+                borderTopRightRadius: 10,
+                borderTopLeftRadius: 10,
+                borderTopWidth: 2,
+                borderLeftWidth: 2,
+                borderRightWidth: 2,
+                backgroundColor: '#fcbf49',
+              }}
+            >
+              <Text
+                style={{
+                  textAlign: 'center',
+                  borderColor: '#000000',
+                  // -4 border Width가 각 2씩 * 2
+                  width: screenWidth * 0.2 - 4,
+                  color: '#000000',
+                }}
+                onPress={() => {
+                  setDay(item.day);
+                  setPath(item.pathList);
+                  setSchedule(item.data);
+                }}
+              >
+                {item.day}일차
+              </Text>
+            </TouchableOpacity>
+          )
         }
-        
+
         {
-        // 아래 라인
-          item.day === day
-          ?
-          //선택일
-          (
+          // 아래 라인
+          item.day === day ? (
+            //선택일
             <View
               style={{
                 flexDirection: 'row',
@@ -205,19 +195,20 @@ const CheckTripPlanDetail = ({ route }) => {
                 }}
               />
             </View>
-            //비 선택일
           ) : (
+            //비 선택일
             <View
               style={{
                 borderTopWidth: 2,
               }}
             />
-          )}
+          )
+        }
       </View>
-    )
-  }
+    );
+  };
 
-  const sheduleItem = ({index, item}) =>{
+  const sheduleItem = ({ index, item }) => {
     //console.log(index," ", schedule.length );
 
     return (
@@ -247,7 +238,7 @@ const CheckTripPlanDetail = ({ route }) => {
                 height: screenHeight * 0.05,
                 width: screenHeight * 0.05,
                 borderRadius: pixelRatio * 99999,
-                backgroundColor: "#5382e8",
+                backgroundColor: '#5382e8',
                 flexDirection: 'row',
                 alignItems: 'center',
               }}
@@ -258,7 +249,7 @@ const CheckTripPlanDetail = ({ route }) => {
                   width: screenHeight * 0.05,
                   fontSize: pixelRatio * 7,
                   alignSelf: 'center',
-                  color: '#FFFFFF'
+                  color: '#FFFFFF',
                 }}
               >
                 {index + 1}
@@ -279,15 +270,14 @@ const CheckTripPlanDetail = ({ route }) => {
                 borderBottomWidth: 2,
                 borderColor: '#777777',
                 height: screenWidth * 0.05,
-                width: screenWidth * 0.9
+                width: screenWidth * 0.9,
               }}
             />
           </View>
         </TouchableOpacity>
-        
-    </View>
-    )
-  }
+      </View>
+    );
+  };
 
   if (DATA.planList.length < 5) {
     for (let i = 5 - DATA.planList.length; i > 0; i--) {
@@ -297,14 +287,14 @@ const CheckTripPlanDetail = ({ route }) => {
   return (
     <SafeAreaView>
       <FlatList
-          style={{
-            //6%의 높이와 2의 border높이.
-            height: (screenHeight * 0.06) - 2,
-          }}
-          horizontal={true}
-          data={DATA.planList}
-          renderItem={dayPickItem}
-        />
+        style={{
+          //6%의 높이와 2의 border높이.
+          height: screenHeight * 0.06 - 2,
+        }}
+        horizontal={true}
+        data={DATA.planList}
+        renderItem={dayPickItem}
+      />
       <NaverMapView
         style={{
           width: '100%',
@@ -321,48 +311,45 @@ const CheckTripPlanDetail = ({ route }) => {
       >
         {
           //N일차 마커
-          schedule.map(
-            (item) => {
-              return (
-                <Marker coordinate={item} width={screenWidth * 0.3} height={screenHeight * 0.12}>
-                  <View>
-                    <Text
-                      style={{
-                        color: '#000000',
-                        height: screenHeight * 0.02,
-                        fontSize: screenHeight * 0.01,
-                        textAlign: 'center',
-                      }}
-                    >
-                      {item.title}
-                    </Text>
-                    <Image 
-                      source={markerImg}
-                      style={{
-                        width: screenWidth * 0.3,
-                        height: screenHeight * 0.1,
-                        resizeMode: 'contain',
-                      }}
-                    />
-                  </View>
-                </Marker>
-              )
-            }
-          )
+          schedule.map(item => {
+            return (
+              <Marker
+                coordinate={item}
+                width={screenWidth * 0.3}
+                height={screenHeight * 0.12}
+              >
+                <View>
+                  <Text
+                    style={{
+                      color: '#000000',
+                      height: screenHeight * 0.02,
+                      fontSize: screenHeight * 0.01,
+                      textAlign: 'center',
+                    }}
+                  >
+                    {item.title}
+                  </Text>
+                  <Image
+                    source={markerImg}
+                    style={{
+                      width: screenWidth * 0.3,
+                      height: screenHeight * 0.1,
+                      resizeMode: 'contain',
+                    }}
+                  />
+                </View>
+              </Marker>
+            );
+          })
         }
-        {
-          path.length !== 0
-          ?
-            <Path
-              coordinates={path}
-              onClick={() => {
-              }}
-              color={'rgba(255,0,0,0.3)'}
-              width={4}
-            />
-          :
-            undefined
-        }
+        {path.length !== 0 ? (
+          <Path
+            coordinates={path}
+            onClick={() => {}}
+            color={'rgba(255,0,0,0.3)'}
+            width={4}
+          />
+        ) : undefined}
       </NaverMapView>
       <View
         style={{
@@ -377,7 +364,9 @@ const CheckTripPlanDetail = ({ route }) => {
             paddingLeft: '5%',
           }}
         >
-          {difDay}박{difDay+1}일        {startDay.getFullYear()}년 {startDay.getMonth()}월 {startDay.getDay()+1}일 ~ {endDay.getFullYear()}년 {endDay.getMonth()}월 {endDay.getDay()+1}일
+          {difDay}박{difDay + 1}일 {startDay.getFullYear()}년{' '}
+          {startDay.getMonth()}월 {startDay.getDay() + 1}일 ~{' '}
+          {endDay.getFullYear()}년 {endDay.getMonth()}월 {endDay.getDay() + 1}일
         </Text>
       </View>
       <View
@@ -386,37 +375,35 @@ const CheckTripPlanDetail = ({ route }) => {
           padding: screenWidth * 0.02,
         }}
       >
-        {
-          schedule.length === 0
-          ?
-            <View
+        {schedule.length === 0 ? (
+          <View
+            style={{
+              width: '100%',
+              height: screenHeight * 0.4,
+              flexDirection: 'row',
+              alignItems: 'center',
+            }}
+          >
+            <Text
               style={{
                 width: '100%',
-                height: screenHeight * 0.4,
-                flexDirection: 'row',
-                alignItems: 'center',
+                textAlign: 'center',
+                color: '#000000',
+                fontSize: pixelRatio * 10,
               }}
             >
-              <Text
-                style={{
-                  width: '100%',
-                  textAlign: 'center',
-                  color: '#000000',
-                  fontSize: pixelRatio * 10,
-                }}
-              >
-                여행지가 없어요 ㅠㅠ
-              </Text>
-            </View>
-          :
-            <FlatList
-              style={{
-                height: screenHeight * 0.6,
-              }}
-              data={schedule}
-              renderItem={sheduleItem}
-            />
-        }
+              여행지가 없어요 ㅠㅠ
+            </Text>
+          </View>
+        ) : (
+          <FlatList
+            style={{
+              height: screenHeight * 0.6,
+            }}
+            data={schedule}
+            renderItem={sheduleItem}
+          />
+        )}
       </View>
     </SafeAreaView>
   );
@@ -427,7 +414,6 @@ const styles = StyleSheet.create({
     color: '#000000',
     textAlign: 'left',
     marginLeft: screenWidth * 0.01,
-
   },
   address: {
     fontSize: pixelRatio * 4,
@@ -436,10 +422,10 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   stick: {
-    width: (screenHeight * 0.025) + 1,
+    width: screenHeight * 0.025 + 1,
     height: screenHeight * 0.05,
     borderRightWidth: 2,
-    borderColor: "#a0e0eb"
+    borderColor: '#a0e0eb',
   },
 });
 

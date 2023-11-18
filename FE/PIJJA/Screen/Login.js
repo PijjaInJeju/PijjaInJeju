@@ -75,11 +75,10 @@ const Login = ({ navigation }) => {
         const json = await AsyncStorage.getItem('todos');
         user = JSON.parse(json);
         if (user !== null) {
-          console.log("자동로그인 성공");
+          console.log('자동로그인 성공');
           navigation.push('Main', { user });
-        }
-        else{
-          console.log("자동 로그인 실패");
+        } else {
+          console.log('자동 로그인 실패');
         }
       } catch (e) {
         console.log('Profile 불러오기 실패. : ', e);

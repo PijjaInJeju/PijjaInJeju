@@ -23,16 +23,6 @@ moreTrip = false;
 screenWidth = Dimensions.get('window').width;
 screenHeight = Dimensions.get('window').height;
 
-const planHistory = ({ name, startDay, endDay }) => {
-  // return (
-  //   <View>
-  //     <Text>name</Text>
-  //     <Text>startDay</Text>
-  //     <Text>endDay</Text>
-  //   </View>
-  // );
-};
-
 const nowTripScreen = () => {
   return (
     <View>
@@ -49,56 +39,49 @@ const CheckTripPlan = ({ navigation }) => {
 
   const [nowPlanData, setNowPlanData] = useState([]);
   const [historyPlanData, setHistoryPlanData] = useState([]);
-
-  let someData = {
-    name: 'Io',
-    tendencies: ['레저와 체험', '공항', '천천히 걷기'],
-    mate: '가족',
-    startDay: '2023-11-14T00:00:00.000Z',
-    endDay: '2023-11-15T00:00:00.000Z',
-    memberId: 1,
-  };
-
-  let totalData = [
-    {
-      name: 'Io1',
-      tendencies: ['레저와 체험', '공항', '천천히 걷기'],
-      mate: '가족',
-      startDay: '2023-11-14T00:00:00.000Z',
-      endDay: '2023-11-15T00:00:00.000Z',
-      memberId: 1,
-    },
-    {
-      name: 'Io2',
-      tendencies: ['레저와 체험', '공항', '천천히 걷기'],
-      mate: '가족',
-      startDay: '2023-11-14T00:00:00.000Z',
-      endDay: '2023-11-15T00:00:00.000Z',
-      memberId: 1,
-    },
-    {
-      name: 'Io3',
-      tendencies: ['레저와 체험', '공항', '천천히 걷기'],
-      mate: '가족',
-      startDay: '2023-11-14T00:00:00.000Z',
-      endDay: '2023-11-15T00:00:00.000Z',
-      memberId: 1,
-    },
-  ];
-
   const getPlanList = async () => {
     try {
-      await GetRest(
+      GetRest(
         '/api/companions/list',
         'GET',
         response => {
           console.log('응답 데이터3 : ', response);
-          if (response.data.length > 0) {
-            setNowPlanData([{ title: 'Now Trip', data: [response.data[0]] }]);
+
+          const groupData = response.data;
+
+          console.log('응답 데이터3 : ', response);
+          if (groupData.length > 0) {
+            let nowId = 0;
+
+            // 오늘 부터인 그룹중 가장 최근인 그룹
+            let nowDate = new Date();
+            let nowDay = new Date(
+              nowDate.getFullYear(),
+              nowDate.getMonth(),
+              nowDate.getDate(),
+            ).getTime();
+            console.log(nowDay);
+
+            let groupDay = new Date();
+
+            for (ti = groupData.length - 1; ti > -1; ti--) {
+              groupDay = new Date(groupData[ti].startDay);
+
+              if (groupDay >= nowDay) {
+                nowId = ti;
+                break;
+              }
+            }
+            setNowPlanData([{ title: 'Now Trip', data: [groupData[nowId]] }]);
 
             if (response.data.length > 1) {
               setHistoryPlanData([
-                { title: 'Trip History', data: response.data.slice(1) },
+                {
+                  title: 'Trip History',
+                  data: groupData
+                    .slice(0, nowId)
+                    .concat(groupData.slice(nowId + 1)),
+                },
               ]);
             }
           }
@@ -117,8 +100,8 @@ const CheckTripPlan = ({ navigation }) => {
     getPlanList();
   }, []);
   //someData = {};
-  const nowPlan = [{ title: 'nowData', data: [someData] }];
-  const totalPlan = [{ title: 'totalData', data: totalData }];
+  const nowPlan = [{ title: 'nowData', data: nowPlanData }];
+  const totalPlan = [{ title: 'totalData', data: historyPlanData }];
   // const historyData = [];
   // console.log('plan data: ', planData);
   //console.log(planData.length());
@@ -140,21 +123,21 @@ const CheckTripPlan = ({ navigation }) => {
             <TouchableOpacity
               style={styles.nowTravelContent}
               onPress={() => {
-                console.log("선택된 Plan : " ,item);
+                console.log('선택된 Plan : ', item);
                 Rest(
-                  "/api/plan/planDetail",
-                  "POST",
+                  '/api/plan/planDetail',
+                  'POST',
                   {
-                    planId: item.planId
+                    planId: item.planId,
                   },
-                  (res) => {
+                  res => {
                     navigation.navigate('CheckTripPlanDetail', {
                       plan: item,
-                      data: res
+                      data: res,
                     });
                   },
-                  (err) => ( console.error(err))
-                )
+                  err => console.error(err),
+                );
               }}
             >
               <View style={styles.travelContentTitle}>
@@ -197,21 +180,21 @@ const CheckTripPlan = ({ navigation }) => {
             <TouchableOpacity
               style={styles.historyTravelContent}
               onPress={() => {
-                console.log("선택된 Plan : " ,item);
+                console.log('선택된 Plan : ', item);
                 Rest(
-                  "/api/plan/planDetail",
-                  "POST",
+                  '/api/plan/planDetail',
+                  'POST',
                   {
-                    planId: item.planId
+                    planId: item.planId,
                   },
-                  (res) => {
+                  res => {
                     navigation.navigate('CheckTripPlanDetail', {
                       plan: item,
-                      data: res
+                      data: res,
                     });
                   },
-                  (err) => ( console.error(err))
-                )
+                  err => console.error(err),
+                );
               }}
             >
               <View style={styles.travelContentTitle}>

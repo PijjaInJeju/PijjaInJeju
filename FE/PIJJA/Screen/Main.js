@@ -113,17 +113,11 @@ const MainScreen = ({ navigation }) => {
         console.log(nowDay);
 
         let groupDay = new Date();
-        // groupDay = new Date(groupData[0].startDay);
-        // console.log(groupData[0].startDay);
-        // console.log(groupData.length);
 
         for (ti = groupData.length - 1; ti > -1; ti--) {
-          // groupDay = new Date(groupData[ti].startDay).getTime();
           groupDay = new Date(groupData[ti].startDay);
-          // console.log(groupDay);
 
           if (groupDay >= nowDay) {
-            // console.log(new Date(groupData[ti].startDay));
             nowGroupData = [groupData[ti]];
             break;
           }
