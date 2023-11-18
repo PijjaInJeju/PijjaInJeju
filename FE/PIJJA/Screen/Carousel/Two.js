@@ -81,7 +81,7 @@ const Two = ({ data }) => {
           <View
             style={{
               marginTop: '16%',
-              start: '26%',
+              start: '35%',
             }}
           >
             {/* <Text>{nowTravelList[0].startDay}</Text>
@@ -89,6 +89,7 @@ const Two = ({ data }) => {
             <Text
               style={{
                 fontSize: 14,
+                color: '#747474',
               }}
             >{`출발:  ${
               nowTravelList[0].startDay.split('T')[0].split('-')[0]
@@ -98,6 +99,7 @@ const Two = ({ data }) => {
             <Text
               style={{
                 fontSize: 14,
+                color: '#747474',
               }}
             >{`도착:  ${
               nowTravelList[0].endDay.split('T')[0].split('-')[0]
@@ -120,7 +122,6 @@ const Two = ({ data }) => {
     return (
       <View
         style={{
-          alignItems: 'center',
           width: screenWidth * 0.7,
         }}
       >
@@ -128,51 +129,39 @@ const Two = ({ data }) => {
           style={{
             width: screenWidth * 0.7,
             height: screenHeight * 0.3,
-            borderRadius: 25,
+            borderTopLeftRadius: 25,
+            borderTopRightRadius: 25,
             resizeMode: 'contain',
           }}
           source={{ uri: item.image }}
         />
-        <TouchableOpacity
+        <View
           style={{
-            borderTopWidth: 1,
-            borderColor: 'black',
             width: screenWidth * 0.7,
-            height: screenHeight * 0.2,
-            alignItems: 'center', // 수직 가운데 정렬을 위해 추가
+            height: screenHeight * 0.07,
+            flexDirection: 'row',
+            alignItems: 'center',
           }}
         >
-          <View
+          <Text
             style={{
-              width: screenWidth * 0.6,
-              height: screenHeight * 0.1,
-              flexDirection: 'row',
-              alignItems: 'center',
+              top: 0,
+              start: '60%',
+              color: '#003049',
             }}
           >
-            <Text
-              style={{
-                color: 'black',
-              }}
-            >
-              {item.title}
-            </Text>
-            <View
-              style={{
-                flex: 1,
-              }}
-            >
-              <Text
-                style={{
-                  alignSelf: 'flex-end',
-                  color: 'black',
-                }}
-              >
-                {item.tag}
-              </Text>
-            </View>
-          </View>
-        </TouchableOpacity>
+            {item.title}
+          </Text>
+
+          <Text
+            style={{
+              start: '300%',
+              color: '#003049',
+            }}
+          >
+            {item.tag}
+          </Text>
+        </View>
       </View>
     );
   };
@@ -213,7 +202,8 @@ const Two = ({ data }) => {
             borderRadius: 25,
             borderColor: 'gray',
             alignSelf: 'center',
-            backgroundColor: 'white',
+            backgroundColor: '#EEDED3',
+            //747474
           }}
         >
           {nowTravelList.length === 0 ? (

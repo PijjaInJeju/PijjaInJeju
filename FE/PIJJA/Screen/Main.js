@@ -101,7 +101,7 @@ const MainScreen = ({ navigation }) => {
         let nowGroupData = [];
         let latestGroupData = {};
         //setNowTravelData(groupData);
-        console.log('all 그룹 data:', groupData);
+        //console.log('all 그룹 data:', groupData);
 
         // 오늘 부터인 그룹중 가장 최근인 그룹
         let nowDate = new Date();
@@ -124,8 +124,13 @@ const MainScreen = ({ navigation }) => {
         }
 
         setNowTravelData(nowGroupData);
-        if (groupData.length > 0) {
+        if (
+          nowGroupData.length == 0 ||
+          nowGroupData[0].tendencies.length == 0
+        ) {
           latestGroupData = groupData[0];
+        } else {
+          latestGroupData = nowGroupData[0];
         }
 
         let tag = latestGroupData.tendencies[0];
@@ -294,11 +299,7 @@ const Main = () => {
           tabBarStyle: {
             position: 'absolute',
             backgroundColor: 'transparent',
-            // top: 610,
             width: '100%',
-            //start: 0,
-            //height: 50,
-            color: 'red',
           },
         }}
       />

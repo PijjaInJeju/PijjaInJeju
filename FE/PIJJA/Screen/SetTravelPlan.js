@@ -105,6 +105,7 @@ const SetTravelPlan = ({ navigation, route }) => {
             endDay: travelEndData,
             memberId: userData.backEndId,
           });
+          console.log('그룹 데이터2: ', response.data);
           navigation.navigate('CreateScheduleMap', {
             companionId: response.data.id,
             name: titileText,
