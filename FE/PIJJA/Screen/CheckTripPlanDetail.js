@@ -365,8 +365,9 @@ const CheckTripPlanDetail = ({ route }) => {
           }}
         >
           {difDay}박{difDay + 1}일 {startDay.getFullYear()}년{' '}
-          {startDay.getMonth()}월 {startDay.getDay() + 1}일 ~{' '}
-          {endDay.getFullYear()}년 {endDay.getMonth()}월 {endDay.getDay() + 1}일
+          {startDay.getMonth() + 1}월 {startDay.getDay() + 1}일 ~{' '}
+          {endDay.getFullYear()}년 {endDay.getMonth() + 1}월{' '}
+          {endDay.getDay() + 1}일
         </Text>
       </View>
       <View

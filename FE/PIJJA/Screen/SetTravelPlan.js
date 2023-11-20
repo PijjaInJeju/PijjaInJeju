@@ -251,6 +251,7 @@ const SetTravelPlan = ({ navigation, route }) => {
           textAlign: 'center',
           color: '#000000',
           width: screenWidth * 0.5,
+          height: screenHeight * 0.08,
           alignSelf: 'center',
           marginTop: screenHeight * 0.05,
         }}
@@ -409,7 +410,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: screenWidth * 1.2,
-    height: screenWidth * 0.84,
+    height: screenWidth * 0.94,
     borderRadius: screenWidth,
     backgroundColor: 'rgb(254, 196, 38)',
     zIndex: -1,

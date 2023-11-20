@@ -188,6 +188,7 @@ const CheckTripPlan = ({ navigation }) => {
                     planId: item.planId,
                   },
                   res => {
+                    console.log('Check 데이터: ', JSON.stringify(res));
                     navigation.navigate('CheckTripPlanDetail', {
                       plan: item,
                       data: res,
@@ -213,9 +214,9 @@ const CheckTripPlan = ({ navigation }) => {
                   item.startDay.split('T')[0].split('-')[2]
                 } - `}</Text>
                 <Text style={styles.historyContentText}>{`${
-                  item.startDay.split('T')[0].split('-')[0]
-                }.${item.startDay.split('T')[0].split('-')[1]}.${
-                  item.startDay.split('T')[0].split('-')[2]
+                  item.endDay.split('T')[0].split('-')[0]
+                }.${item.endDay.split('T')[0].split('-')[1]}.${
+                  item.endDay.split('T')[0].split('-')[2]
                 }`}</Text>
               </View>
             </TouchableOpacity>
