@@ -46,6 +46,8 @@ const CreateScheduleMap = ({ navigation, route }) => {
   const sheetRef = useRef(null);
   const mapRef = useRef(null);
 
+  let delaySearch = setTimeout(()=>{}, 1);
+
   //console.log('CreateScheduleMap route: ', route.params);
 
   // variables
@@ -396,19 +398,33 @@ const CreateScheduleMap = ({ navigation, route }) => {
               onChangeText={keyword => {
                 console.log('검색 키워드 : ', keyword);
                 setSearch(keyword);
-                Rest(
-                  '/api/places/serachPlace',
-                  'POST',
-                  {
-                    title: keyword,
-                  },
-                  res => {
-                    console.log('검색결과 : ', res);
-                    setSearchList(res);
-                  },
-                  e => {
-                    console.error(e);
-                  },
+                clearInterval(delaySearch);
+                delaySearch = setInterval(
+                  () => {
+                    Rest(
+                      '/api/places/serachPlace',
+                      'POST',
+                      {
+                        title: keyword,
+                      },
+                      res => {
+                        let i = 0;
+                        console.log('검색결과 : ', res);
+                        let newRes = res.filter(
+                          (item) => {
+                            if( i < 50){
+                              i++;
+                              return item;
+                            }
+                          }
+                        );
+                        setSearchList(newRes);
+                      },
+                      e => {
+                        console.error(e);
+                      },
+                    )
+                  }
                 );
               }}
               value={search}
