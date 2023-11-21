@@ -34,7 +34,7 @@
 <img src="https://img.shields.io/badge/Amazon Rds-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white">
 <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
 <img src="https://img.shields.io/badge/Docker Compose-4285F4style=for-the-badge&logo=docker&logoColor=white">
-<img src="https://img.shields.io/badge/Jenkins-D24939style=for-the-badge&logo=jenkins&logoColor=white">
+<img src="https://img.shields.io/badge/jenkins-D24939style=for-the-badge&logo=jenkins&logoColor=white">
 <br>
 
 
