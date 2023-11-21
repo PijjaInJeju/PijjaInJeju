@@ -21,13 +21,18 @@
 >빅데이터 추천을 통해 여행자의 성향 분석 및 입력된 여행지에 대한 최적의 여행 동선 제공해주는 어플리케이션입니다.
 # 기술 스택
 
-<img src="https://img.shields.io/badge/React Native-007396?style=for-the-badge&logo=react&logoColor="#61DAFB"><br>
-<img src="https://img.shields.io/badge/Spring Boot-007396?style=for-the-badge&logo=springboot&logoColor="#6DB33F"><br>
-<img src="https://img.shields.io/badge/Python-007396?style=for-the-badge&logo=python&logoColor="#3776AB"><br>
-<img src="https://img.shields.io/badge/MySql-007396?style=for-the-badge&logo=mysql&logoColor="#4479A1"><br>
-<img src="https://img.shields.io/badge/Amazon Rds-007396?style=for-the-badge&logo=amazonrds&logoColor="#527FFF"><br>
-<img src="https://img.shields.io/badge/Docker-007396?style=for-the-badge&logo=docker&logoColor="#2496ED"><br>
-<img src="https://img.shields.io/badge/Redis-007396?style=for-the-badge&logo=redis&logoColor="#DC382D"><br>
+#### Front End
+<img src="https://img.shields.io/badge/React Native-61DAFB?style=for-the-badge&logo=react&logoColor=white"><br>
+
+#### Back End
+<img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
+<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
+<img src="https://img.shields.io/badge/MySql-4478A1?style=for-the-badge&logo=mysql&logoColor=white"><br>
+
+#### Infra
+<img src="https://img.shields.io/badge/Amazon Rds-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white">
+<img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
+<img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white"><br>
 
 # 주요 기능
 
