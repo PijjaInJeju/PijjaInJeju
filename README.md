@@ -26,13 +26,18 @@
 
 #### Back End
 <img src="https://img.shields.io/badge/Spring Boot-6DB33F?style=for-the-badge&logo=springboot&logoColor=white">
-<img src="https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white">
-<img src="https://img.shields.io/badge/MySql-4478A1?style=for-the-badge&logo=mysql&logoColor=white"><br>
+<img src="https://img.shields.io/badge/MySql-4478A1?style=for-the-badge&logo=mysql&logoColor=white">
+<img src="https://img.shields.io/badge/Spring Jpa-6DB33Fstyle=for-the-badge&logo=spring&logoColor=white">
+<br>
 
 #### Infra
 <img src="https://img.shields.io/badge/Amazon Rds-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white">
 <img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white">
-<img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white"><br>
+<img src="https://img.shields.io/badge/Docker Compose-4285F4style=for-the-badge&logo=docker&logoColor=white">
+<img src="https://img.shields.io/badge/Jenkins-D24939style=for-the-badge&logo=jenkins&logoColor=white">
+<br>
+
+
 
 # 주요 기능
 
