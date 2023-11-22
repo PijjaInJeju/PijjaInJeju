@@ -137,6 +137,7 @@
 </table>
 
 # 아키텍쳐
+<img src="/images/SA2.png" width=80% margin="auto">
 
 # 팀 정보
 <table>
