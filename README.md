@@ -190,7 +190,7 @@
       </td>
       <td>
       <p align="center">
-        <img src="/images/여행지 자동 추천.gif" width="260" height="450"  >
+        <img src="/images/추천.gif" width="260" height="450"  >
         </p>
       </td>
     <tr/>
