@@ -59,6 +59,88 @@
 여행지들을 추천합니다.<br>
 
 # 화면 구성
+<table>
+  <tbody>
+    <tr>
+      <td>
+        <B>로그인</B>
+      </td>
+      <td>
+        <B>메인페이지</B>
+      </td>
+      <td>
+        <B>성향 설정</B>
+      </td>
+      <td>
+        <B>일정 설정</B>
+      </td>
+    <tr/>
+    <tr>
+      <td>
+        <img src="/uploads/4352a18e8f2f67cb6bb9fc8471ec15e0/로그인.gif" width="1500" height="400" style="object-fit: cover;">
+      </td>
+      <td>
+        <img src="/uploads/a4cdcd7338feeb6971e0bfe99306ec88/메인화면.gif" width="1500" height="400" style="object-fit: cover;">
+      </td>
+      <td>
+        <img src="/uploads/037d9a14c20fc06a51cf73995b3b0090/성향체크.gif" width="1500" height="400" style="object-fit: cover;">
+      </td>
+      <td>
+        <img src="/uploads/5703c3bf5b304bf0eeccc53a10988083/여행일정설정.gif" width="1500" height="400" style="object-fit: cover;">
+      </td>
+    <tr/>
+    <tr>
+      <td>
+        <B>지도 리사이즈 조작</B>
+      </td>
+      <td>
+        <B>여행지 선정 추가</B>
+      </td>
+      <td>
+        <B>여행 일정 자동 추천</B>
+      </td>
+      <td>
+        <B>여행 모임 리스트 확인</B>
+      </td>
+    <tr/>
+    <tr>
+      <td>
+        <img src="/uploads/29ccc98ad5bd230a134e5ce9d1992396/지도_리사이즈.gif" width="1500" height="400" style="object-fit: cover;">
+      </td>
+      <td>
+        <img src="/uploads/15a088355f7e5930b4441e4ff6b1c8ed/여행지_추가.gif" width="1500" height="400" style="object-fit: cover;">
+      </td>
+      <td>
+        <img src="/uploads/c2530fa332ce941dff0541e1048ea81e/여행지_자동_추천.gif" width="1500" height="400" style="object-fit: cover;">
+      </td>
+      <td>
+        <img src="/uploads/9682286434ffba80a1e48c2ad7c07011/여행_계획보기.gif" width="1500" height="400" style="object-fit: cover;">
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <B>모임지 지도 사용 가능</B>
+      </td>
+      <td>
+        <B>티맵 연동</B>
+      </td>
+      <td>
+        <B>네이버맵 연동</B>
+      </td>
+    <tr/>
+    <tr>
+      <td>
+        <img src="/uploads/e8d17562bc440e7fc97a6054e2217750/지도사용법.gif" width="1500" height="400" style="object-fit: cover;">
+      </td>
+      <td>
+        <img src="/uploads/dc14131f87f1db28929c8a0887e9161f/티맵연동.gif" width="1500" height="400" style="object-fit: cover;">
+      </td>
+      <td>
+        <img src="/uploads/6a4f3ad6bf99f79d4ab0925e10f6e817/네이버맵_연동.gif" width="1500" height="400" style="object-fit: cover;">
+      </td>
+    </tr>
+  </tbody>
+</table>
 # 아키텍쳐
 # 팀 정보
 <table>
