@@ -141,7 +141,9 @@
     </tr>
   </tbody>
 </table>
+
 # 아키텍쳐
+
 # 팀 정보
 <table>
   <tbody>
