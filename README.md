@@ -7,7 +7,8 @@
 #### 3. [주요 기능](#주요-기능)
 #### 4. [화면 구성](#화면-구성)
 #### 5. [아키텍쳐](#아키텍쳐)
-#### 6. [팀 정보](#팀-정보)
+#### 6. [디렉토리 구조](#디렉토리-구조)
+#### 7. [팀 정보](#팀-정보)
 
 # 프로젝트 개요
 >#### 프로젝트 명
@@ -199,6 +200,157 @@
 
 # 아키텍쳐
 <img src="/images/SA2.png" width=80% margin="auto">
+
+# 디렉토리 구조
+```bash
+📦pijja
+ ┣ 📂domain
+ ┃ ┣ 📂member
+ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┣ 📜CompanionController.java
+ ┃ ┃ ┃ ┣ 📜MemberController.java
+ ┃ ┃ ┃ ┗ 📜TendencyController.java
+ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┣ 📂request
+ ┃ ┃ ┃ ┃ ┣ 📜CompanionAddRequestDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜CompanionIdRequestDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜CompanionInviteRequestDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜CompanionJoinRequestDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜MemberRegistRequestDto.java
+ ┃ ┃ ┃ ┃ ┗ 📜TendencyAddDto.java
+ ┃ ┃ ┃ ┣ 📂response
+ ┃ ┃ ┃ ┃ ┣ 📜CompanionCreateDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜CompanionJoinDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜CompanionListDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜MemberDetailDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜MemberListDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜MyCompanionListDto.java
+ ┃ ┃ ┃ ┃ ┗ 📜TendencyCreateDto.java
+ ┃ ┃ ┃ ┣ 📜FailResponseDto.java
+ ┃ ┃ ┃ ┣ 📜MemberCompanionDto.java
+ ┃ ┃ ┃ ┗ 📜SuccessResponseDto.java
+ ┃ ┃ ┣ 📂entity
+ ┃ ┃ ┃ ┣ 📜Companion.java
+ ┃ ┃ ┃ ┣ 📜CompanionTendency.java
+ ┃ ┃ ┃ ┣ 📜Member.java
+ ┃ ┃ ┃ ┣ 📜MemberCompanion.java
+ ┃ ┃ ┃ ┣ 📜Role.java
+ ┃ ┃ ┃ ┗ 📜Tendency.java
+ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┣ 📜CompanionRepository.java
+ ┃ ┃ ┃ ┣ 📜CompanionTendencyRepository.java
+ ┃ ┃ ┃ ┣ 📜MemberCompanionRepository.java
+ ┃ ┃ ┃ ┣ 📜MemberRepository.java
+ ┃ ┃ ┃ ┗ 📜TendencyRepository.java
+ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┣ 📜CompanionInviteService.java
+ ┃ ┃ ┃ ┣ 📜CompanionJoinedListService.java
+ ┃ ┃ ┃ ┣ 📜CompanionJoinService.java
+ ┃ ┃ ┃ ┣ 📜CompanionListService.java
+ ┃ ┃ ┃ ┣ 📜CompanionRegistService.java
+ ┃ ┃ ┃ ┣ 📜CompanionsMemberService.java
+ ┃ ┃ ┃ ┣ 📜MemberRegistService.java
+ ┃ ┃ ┃ ┗ 📜TendencyAddService.java
+ ┃ ┣ 📂place
+ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┗ 📜PlaceController.java
+ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┣ 📂request
+ ┃ ┃ ┃ ┃ ┗ 📜SearchPlaceRequestDto.java
+ ┃ ┃ ┃ ┗ 📂response
+ ┃ ┃ ┃ ┃ ┣ 📜AllPlacesResponseDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜PlaceDetailResponseDto.java
+ ┃ ┃ ┃ ┃ ┗ 📜SearchPlaceResponseDto.java
+ ┃ ┃ ┣ 📂entity
+ ┃ ┃ ┃ ┣ 📜Place.java
+ ┃ ┃ ┃ ┗ 📜Visit.java
+ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┣ 📜PlaceRepository.java
+ ┃ ┃ ┃ ┣ 📜PlaceRepositoryCustom.java
+ ┃ ┃ ┃ ┣ 📜PlaceRepositoryImpl.java
+ ┃ ┃ ┃ ┣ 📜VisitRepository.java
+ ┃ ┃ ┃ ┣ 📜VisitRepositoryCustom.java
+ ┃ ┃ ┃ ┗ 📜VisitRepositoryImpl.java
+ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┣ 📜PlaceService.java
+ ┃ ┃ ┃ ┗ 📜PlaceServiceImpl.java
+ ┃ ┣ 📂plan
+ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┣ 📜PathController.java
+ ┃ ┃ ┃ ┗ 📜PlanController.java
+ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┣ 📂request
+ ┃ ┃ ┃ ┃ ┣ 📜AddRecommendPlaceRequestDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜AddRouteRequestDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜CompleteMakePlanRequestDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜GetRouteTmapRequestDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜KruskalRequestDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜ListRecommendPlacesRequestDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜MakePlanRequestDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜PlanDetailRequestDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜PlanListRequestDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜SearchPlaceFromTmapRequestDto.java
+ ┃ ┃ ┃ ┃ ┗ 📜TmapRequestDto.java
+ ┃ ┃ ┃ ┗ 📂response
+ ┃ ┃ ┃ ┃ ┣ 📜CompleteMakePlanResonseDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜GetRouteResponseDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜GetRouteTmapResponseDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜MakePlanResonseDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜PathDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜PlaceDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜PlanGroupingResponseDto.java
+ ┃ ┃ ┃ ┃ ┣ 📜PlanListResponseDto.java
+ ┃ ┃ ┃ ┃ ┗ 📜SearchPlaceFromTmapResponseDto.java
+ ┃ ┃ ┣ 📂entity
+ ┃ ┃ ┃ ┣ 📜DayPlan.java
+ ┃ ┃ ┃ ┣ 📜DayPlanPlace.java
+ ┃ ┃ ┃ ┣ 📜Path.java
+ ┃ ┃ ┃ ┗ 📜Plan.java
+ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┣ 📜DayPlanPlaceRepository.java
+ ┃ ┃ ┃ ┣ 📜DayPlanPlaceRepositoryCustom.java
+ ┃ ┃ ┃ ┣ 📜DayPlanPlaceRepositoryImpl.java
+ ┃ ┃ ┃ ┣ 📜DayPlanRepository.java
+ ┃ ┃ ┃ ┣ 📜DayPlanRepositoryCumstom.java
+ ┃ ┃ ┃ ┣ 📜DayPlanRepositoryImpl.java
+ ┃ ┃ ┃ ┣ 📜PathRepository.java
+ ┃ ┃ ┃ ┣ 📜PathRepositoryCustom.java
+ ┃ ┃ ┃ ┣ 📜PathRepositoryImpl.java
+ ┃ ┃ ┃ ┣ 📜PlanRepository.java
+ ┃ ┃ ┃ ┣ 📜PlanRepositoryCustom.java
+ ┃ ┃ ┃ ┗ 📜PlanRepositoryImpl.java
+ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┣ 📜PathService.java
+ ┃ ┃ ┃ ┣ 📜PathServiceImpl.java
+ ┃ ┃ ┃ ┣ 📜PlanService.java
+ ┃ ┃ ┃ ┗ 📜PlanServiceImpl.java
+ ┃ ┗ 📂recommend
+ ┃ ┃ ┣ 📂controller
+ ┃ ┃ ┃ ┗ 📜RecommendController.java
+ ┃ ┃ ┣ 📂dto
+ ┃ ┃ ┃ ┣ 📂request
+ ┃ ┃ ┃ ┃ ┗ 📜RecommendRequestDto.java
+ ┃ ┃ ┃ ┗ 📂response
+ ┃ ┃ ┃ ┃ ┗ 📜RecommendResponseDto.java
+ ┃ ┃ ┣ 📂entity
+ ┃ ┃ ┃ ┗ 📜Recommend.java
+ ┃ ┃ ┣ 📂mapper
+ ┃ ┃ ┃ ┗ 📜PathMapper.java
+ ┃ ┃ ┣ 📂repository
+ ┃ ┃ ┃ ┣ 📜RecommendRepository.java
+ ┃ ┃ ┃ ┣ 📜RecommendRepositoryCustom.java
+ ┃ ┃ ┃ ┗ 📜RecommendRepositoryImpl.java
+ ┃ ┃ ┗ 📂service
+ ┃ ┃ ┃ ┣ 📜RecommendService.java
+ ┃ ┃ ┃ ┗ 📜RecommendServiceImpl.java
+ ┣ 📂global
+ ┃ ┣ 📂time
+ ┃ ┃ ┗ 📜TimeUtil.java
+ ┃ ┗ 📂tmap
+ ┃ ┃ ┗ 📜TmapConfig.java
+ ┣ 📜AppConfig.java
+ ┗ 📜PijjaApplication.java
+```
 
 # 팀 정보
 <table>
