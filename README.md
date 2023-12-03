@@ -199,7 +199,7 @@
 </table>
 
 # 아키텍쳐
-<img src="/images/SA2.png" width=80% margin="auto">
+<img src="/images/System_Architecture.png" width=80% margin="auto">
 
 # 디렉토리 구조
 ```bash
